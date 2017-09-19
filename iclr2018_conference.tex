@@ -2,10 +2,65 @@
 \usepackage{iclr2018_conference,times}
 \usepackage{hyperref}
 \usepackage{url}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{comment}
+\usepackage{float}
+\usepackage{import}
+\usepackage{multirow}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage[inline]{enumitem}
+\usepackage{amsthm}
+\graphicspath{ {images/} }
 \usepackage{soul}
-\newcommand{\etal}{et~al.}
 
-\title{BLINC: Querying the Internal States of \\Navigation Based Deep-Reinforcement \\Learning Models}
+%%%%%%%%% Macros %%%%%%%%%%%%%%%%%%
+\newtheorem{defn}{Definition}
+\newif\ifblind
+\def\goldenr{1.618}
+\newcommand*\textfrac[2]{
+      \frac{\text{#1}}{\text{#2}}
+  }
+\newcommand{\TODO}[1]{TODO:{#1}}
+\newcommand{\etal}{et~al.}
+\def\state{s}
+\def\statet{\state_t}
+\def\statetp{\state_{t-1}}
+\def\statetn{\state_{t+1}}
+\def\obs{o}
+\def\obst{\obs_t}
+\def\act{a}
+\def\actt{\act_t}
+\def\acttp{\act_{t-1}}
+\def\acttn{\act_{t+1}}
+\def\Obs{\mathcal{O}}
+\def\ObsFunc{C}
+\def\ObsFuncFull{\ObsFunc(\statet, \actt) \rightarrow \obst}
+\def\ObsFuncInv{\ObsFunc^{-1}}
+\def\ObsFuncInvFull{\ObsFuncInv(\obst, \statetp, \actt) \rightarrow \statet}
+\def\State{\mathcal{S}}
+\def\Action{\mathcal{A}}
+\def\Trans{T}
+\def\TransFull{\Trans(\statet, \actt) \rightarrow \statetn}
+\def\TransObs{T_c}
+\def\Rew{R}
+\def\rew{r}
+\def\rewt{\rew_t}
+\def\rewtp{\rew_{t-1}}
+\def\rewtn{\rew_{t+1}}
+\def\RewFull{\Rew(\statet, \actt) \rightarrow \rewtn}
+\def\TransObsFull{\TransObs(\statet, \obst, \actt, \rewt; \theta_T) \rightarrow \statetn}
+\def\Value{V}
+\def\pit{\pi_t}
+\def\piDef{\pi(\acttn|\statet, \obst, \actt, \rewt; \theta_\pi) \rightarrow \pit(\acttn ; \theta_\pi)}
+\def\Valuet{\Value_t}
+\def\ValueDef{\Value(\statet, \obst, \actt, \rewt; \theta_\Value) \rightarrow \Valuet(\theta_\Value)}
+\def\R{\mathbb{R}}
+\def\E{\mathbb{E}}
+
+\title{BLINC: Querying the Internal Belief States of Deep-Reinforcement Learning Methods}
 
 % Authors must not appear in the submitted version. They should be hidden
 % as long as the \iclrfinalcopy macro remains commented out below.
@@ -42,11 +97,13 @@ Deep reinforcement learning (DRL) algorithms have demonstrated strong progress i
 \end{abstract}
 
 \section{Introduction}
-\input{intro-drl-is-black-box}
+\input{blinc-intro-drl-is-black-box}
 
 \section{Related Work}
 \input{blinc-related-work}
 
+\section{Background}
+\input{blinc-background}
 
 \section{Approach}
 \input{blinc-approach}
@@ -67,7 +124,7 @@ Use unnumbered third level headings for the acknowledgments. All
 acknowledgments, including those to funding agencies, go at the end of the paper.
 
 \bibliography{iclr2018_conference}
-\bibliography{/z/home/dhiman/wrk/group-bib/shared}
+\bibliography{shared}
 \bibliographystyle{iclr2018_conference}
 
 \end{document}

@@ -29,10 +29,10 @@ Despite this potential and recent successes, state-of-the-art DRL based methods 
 
 % 4.1 We find that it is not remembering the map it is being trained on
 % 4.2 We find that no path planning is  happening only, memorizing and regeneration of the sequence of steps. However, it is not 
-In this work, we attempt to pull back the lid of how these networks appear to be in fact be performing this navigation. We phrase these queries within the context of exploration and exploitation as is traditional in the SLAM world. Our contributions are two-fold:
+In this work, we attempt to pull back the lid of how these networks appear to be in fact be performing this navigation. We phrase these queries within the context of exploration and exploitation as is traditional in the SLAM world. Our contributions are three-fold:
 \begin{enumerate}
-\item We succesively blind state-of-the art DRL agents to gain a better understanding of these agents to convert short term actions to more long-term path planning. 
-\item We introduce BLINC - a new training paradigm wherein agents are incentivized to blind themselves during navigation that is applicable to any DRL based method. Extra  incentives are provided when this blind is chained together in a contigous sense.  We showcase how agents trained via BLINC acheive better performance on state-of-the-art methods that is applicable to any state-of-the-art DRL method to improve reward scores. 
-\item We showcase how BLINC affords ways in which the internal understanding and representations of these agents can be queries. Specifically, upon blindfolding our agents we showcase we studying the amount of long-term path planning they are implicitly able to perform. 
+\item We succesively blind state-of-the art DRL agents in a curriculum fashion to gain an understanding of whether these agents can be forced to perform long-term planning in the execution of their learned navigation strategies.
+\item In a bid to more easily teach agents to perform long-term planning, we introduce BLINC. BLINC, is a conceptually simple modification applicable to all DRL methods wherein agents are incentivized to blind themselves during navigation as often as possible. Extra  incentives are provided when this blindness is contiguously performed over several frames.  We showcase how agents trained via BLINC acheive better performance then current state-of-the-art methods. 
+\item We showcase BLINCs great strength in affording the ability to easily query the hidden states of the networks used by these models. We use this method to gain an understanding of each agent's explicit understanding of its surroundings at given points of time.
 \end {enumerate}
 
