@@ -1,0 +1,37 @@
+%% Outline
+% 1. Navigation is important problem
+% 1.5 Traditionally addressed by mapping during exploration and path
+%      planning during exploitation.
+% 2. End to end learning algorithms have shown promise to take over
+%      mapping and path
+% 3. We do not know how these algorithms work. There has been work in computer vision that shows the learning on neural network based methods can be learning totally different kind of patterns from what we would expect.
+% 4 We introduce the concept of blinding to force the learning of of long term planning. We showcase improved scores over industry standard baselines.
+% 5 We showcase that blinding affords an understand of the implicit abilities of these DRL agents.
+
+% 1. Navigation is important problem
+% 1.5 Traditionally addressed by mapping during exploration and path
+%      planning during exploitation.
+Deep Reinforcement Learning (\textbf{DRL}) has gained a wide amount of interest in the artificial intelligence and computer vision communities in the last few years.
+From Mnih. et. al's seminal paper of learning to play Atari games from pure visual input (Mnih. et. al, 2013) and the much publicized defeat of Go's world champions by Deepmind's Alpha-Go agent (Silver, Huang and Maddison, 2016) to the recent defeat of the DOTA2 world champion by OpenAI, the successes of DRL have been wide, varied and promising. 
+
+Recent work by Mirowski et. al. has shown the potential applicability of DRL methods to robotic navigation. Agents, trained on pure monocular vision, have been demonstrated to learn simple navigation tasks in complicated three dimensional worlds without any requirements for explicit SLAM or path-planning. 
+ 
+What makes these DRL navigation systems (\textbf{DRLNAV}) particularly attractive is the property of \textbf{environment invariance}. The exact same methods work on a variety of worlds ranging from simple 2D mazes to complicated 3D physics engines without requiring any form of architectural modifications.
+
+In their current form, however, DRLNAV agents are yet to showcase the generalized performance to serve as a true viable alternative to classical methods. As with all deep network related work, they require enormously large amounts of training data. Oftentimes, the agents are trained and validated upon the \textbf{same environments} over hundreds of millions of iterations. With no precautions taken against overfitting, the millions of parameters availed by deep learning architectures, and the usage of the same maps for training and testing, it is important to ascertain that DRL agents aren't simply memorizing environments in their entirety instead of truly learning navigation based explorative skills.
+ 
+For game-like environments such as Atari-Breakout or GO with a fixed set of rules, exploring and over-fitting to the entirety of the state space allows for agents that are able to defeat any form of competitor. In the context of navigation, however, agents must be able to generalize learned navigational directives to unseen worlds. 
+ 
+Our contributions in this work are four-fold:
+
+\begin{enumerate}
+    \item \textbf{DRL and Generalized Navigation}\\
+        We analyze the ability of current state-of-the-art DRL agents at navigating unseen environments. Our experiments are carried out across both fully observable and partially observable environments so as to quantify the strengths and weaknesses of these agents across different domains. For our simplest environments, we carry out this analysis against the backdrop of path-planning so as to have an additional comparison metric against explicitly created classical non-learning based methods. 
+
+
+    \item \textbf{Blindfolded-Curriculum Training}\\
+        We introduce modifications to the DRL architecture for agent training across different environments which we dub Blindfolded Curriculum Training (BCT). We showcase how BCT achieves \textit{improved} performance over traditional methods and leads to agents more suited for long term planning.
+    \item \textbf{Implicit Map Querying}\\
+        We showcase BCTs greatest strength - mainly the ability to query an agent's implicit understanding of its surroundings at any point in time. We quantify this ability as measure of the agent's ability to internalize local map structures and call it \textbf{implicit mapping}. 
+\end{enumerate}
+
