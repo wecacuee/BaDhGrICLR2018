@@ -13,8 +13,16 @@
 \usetikzlibrary{positioning}
 \usepackage[inline]{enumitem}
 \usepackage{amsthm}
+\usepackage{booktabs}
 \graphicspath{ {images/} }
 \usepackage{soul}
+
+%%%%%%%% Customizations %%%%%%%%%%
+\setlist[description]{style=unboxed,leftmargin=2ex}
+\tikzset{
+every path/.style={line width=1pt}
+, every node/.style={font=\tiny}
+, networknode/.style={inner sep=5.0,rounded corners,fill=black!5,font=\tiny}}
 
 %%%%%%%%% Macros %%%%%%%%%%%%%%%%%%
 \newtheorem{defn}{Definition}
@@ -84,7 +92,7 @@ Ann Arbor, MI 48109, USA \\
 \newcommand{\fix}{\marginpar{FIX}}
 \newcommand{\new}{\marginpar{NEW}}
 
-\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+%\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
 
 \begin{document}
 
@@ -122,8 +130,11 @@ In recent years, agents trained via Deep Reinforcement Learning based methods ha
 Use unnumbered third level headings for the acknowledgments. All
 acknowledgments, including those to funding agencies, go at the end of the paper.
 
-\bibliography{iclr2018_conference}
-\bibliography{shared}
+\IfFileExists{/z/home/dhiman/wrk/group-bib/shared.bib}{
+  \bibliography{/z/home/dhiman/wrk/group-bib/shared,gennav_conference,gennav_conference_filtered}
+}{
+  \bibliography{gennav_conference,gennav_conference_filtered}
+}
 \bibliographystyle{iclr2018_conference}
 
 \end{document}

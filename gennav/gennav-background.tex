@@ -1,4 +1,4 @@
-Our experimental setup is inspired by Mirowski \etal{} work \cite{MiPaViICLR2017}. We summarize the technical setup here for completeness. We recommend \cite{MnBaMiICML2016,MnBaMiICML2016,MiPaViICLR2017}
+Our experimental setup is inspired by Mirowski \etal{} work \cite{MiPaViICLR2017}. We summarize the technical setup here for completeness. We recommend \cite{MnBaMiICML2016,MnBaMiICML2016,MiPaViICLR2017} for more details of the setup.
 
 The problem of navigation is formulated as interaction between environment and agent. At time time $t$ the agent takes an action $\actt \in \Action$ and observes observation $\obst \in \Obs$ along with a real reward $\rewt \in \R$.
 We assume the environment to be Partially Observable Markov Decision Process (POMDP).
@@ -17,12 +17,16 @@ Our objective is to estimate unknown weights $\theta = \theta_T \cup \theta_\pi 
 \end{align}
 %
 % need \graphicspath{{images/}}
-\def\svgwidth{0.5\columnwidth}%
+\def\svgwidth{0.25\columnwidth}%
 \begin{figure}%
 \input{images/a3c-as-pomdp.pdf_tex}%
-\def\svgwidth{0.5\columnwidth}%
-\input{images/a3c-as-nn.pdf_tex}
-\caption{POMDP on the left, neural network implementation on the right.}
+\def\svgwidth{0.25\columnwidth}%
+\input{images/a3c-as-nn.pdf_tex}%
+\input{fig-nav-a3c}\hspace{-1ex}%
+\input{fig-cnn-enc}\hspace{-1ex}%
+\input{fig-fc-enc}%
+\caption{POMDP on the left, neural network implementation on the right. Nav A3C architecture on left and two possible Encoders: CNN encoder on center, FC encoder on right. We use CNN encoder for the 3D world while FC encoder for the gridworld.
+}
 \end{figure}
 
 \paragraph{Asynchronous Advantage Actor-Critic}
