@@ -29,9 +29,9 @@ Despite this potential and recent successes, state-of-the-art DRL based methods 
 
 % 4.1 We find that it is not remembering the map it is being trained on
 % 4.2 We find that no path planning is  happening only, memorizing and regeneration of the sequence of steps. However, it is not 
-In this work, we attempt to pull back the lid of how these networks appear to be in fact be performing this navigation. We phrase these queries within the context of exploration and exploitation as is traditional in the SLAM world. Our contributions are three-fold:
+In this work, we introduce qualitative and quantitative metrics to better understand how these networks appear to be learning and performing these navigation tasks. Our contributions are three-fold:
 \begin{enumerate}
-\item We succesively blind state-of-the art DRL agents in a curriculum fashion to gain an understanding of whether these agents can be forced to perform long-term planning in the execution of their learned navigation strategies.
+\item In the course of their navigation, we ask the question of how much visual information is actually required by state-of-the-art drl agents in the course of navigating previously explored environments. To guage this, we incrementally blind agents at training time so as to quanititavely assess the point at which navigation failiure occurs.
 \item In a bid to more easily teach agents to perform long-term planning, we introduce BLINC. BLINC, is a conceptually simple modification applicable to all DRL methods wherein agents are incentivized to blind themselves during navigation as often as possible. Extra  incentives are provided when this blindness is contiguously performed over several frames.  We showcase how agents trained via BLINC acheive better performance then current state-of-the-art methods. 
 \item We showcase BLINCs great strength in affording the ability to easily query the hidden states of the networks used by these models. We use this method to gain an understanding of each agent's explicit understanding of its surroundings at given points of time.
 \end {enumerate}
