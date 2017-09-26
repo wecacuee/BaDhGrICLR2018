@@ -14,7 +14,9 @@ As we have shown this is going to be hard.
     We propose the evaluation metric to be : the time taken to hit the goal once. We show the results on this benchmark in Table~\ref{tab:TODO-RUNEXP}.
     We compare the results against optimal planning methods which take the support of external map input.
   \item [Evaluate on training maps with random goal location]
-    This make the problem harder becuase the policy function needs to depend up on the goal location.
+    Solving this problem through Reinforcement learning is harder becuase the policy function needs to depend up on the goal location.
+    This problem is attempted by \cite{MiPaViICLR2017} with limited success.
+    As their experiments and confirmed by our experiments, the navigation strategy learnt by the agent is nowhere near optimal.
     So instead of learning a static policy function the learning algorithm needs to learn a function that returns a different policy for different goal locations.
     This can be evaluated into ways, (a) providing the goal location as an external input to the method or (b) let the agent explore the map randomly and ask the agent to return to goal location after first round of exploration.
     We chose method (b) and show our results on this in Table~\ref{tab:TODO}.
