@@ -1,0 +1,49 @@
+Our experimental setup is inspired by Mirowski \etal{} work \cite{MiPaViICLR2017}. We summarize the technical setup here for completeness. We recommend \cite{MnBaMiICML2016,MnBaMiICML2016,MiPaViICLR2017} for more details of the setup.
+
+The problem of navigation is formulated as interaction between environment and agent. At time time $t$ the agent takes an action $\actt \in \Action$ and observes observation $\obst \in \Obs$ along with a real reward $\rewt \in \R$.
+We assume the environment to be Partially Observable Markov Decision Process (POMDP).
+In a POMDP the state of the environment $\statet \in \State$ is assumed to be the only information that is propagated over time and both $\obst$ and $\rewt$ are assumed to be independent of previous states given current state and last action. Formally, a POMDP is a six tuple $(\Obs, \ObsFunc, \State, \Action, \Trans, \Rew)$ that is observation space $\Obs$, observation function $\ObsFuncFull$, state space $\State$, action space $\Action$, transition function $\TransFull$ and reward function $\RewFull$ respectively.
+For our problem setup, the observation space $\Obs$ is the space of encoded feature vector that can be generated from input image or combination of other inputs, action space $\Action$ contains four actions: rotate left, rotate right, moved forward and move backward and reward function $\Rew$ is defined for each experiment so that the reaching the goal leads to high reward with auxilary reward to encourage certain kind of behavior.
+
+For Deep reinforement learning the state space $\State$ is not hand tuned, instead it is modeled as semantically meaningless \emph{hidden state} of a fixed size float vector.
+Also, instead of modeling observation function $\ObsFuncFull$ and $\TransFull$, a combined transition function $\TransObsFull$ is modeled such that it estimates next state $\statetn$ directly considering previous observation as well as reward into account. For policy-based DRL a policy function $\piDef$ and a value function $\ValueDef$ are also modeled. All three functions $\TransObs$, $\pit$, $\Valuet$ share most of the parameters in a way such that $\theta_T \subseteq \theta_{\pi} \cap \theta_\Value$
+
+%Since we aim to estimate $\ObsFuncInv$ and $\Trans$ from experience, we formulate the experience as observation tuples divided into episodes of fixed length $E$.
+%Each episode experience contains $E$ tuples with observation, action and corresponding reward $D_E = \{(\obs_0, \act_0, r_0), \dots, (\obs_E, \act_E, r_E)\}$. After each episode the state $\state_t$ is reset to all zeros and another data sequence is collected. Let the collected dataset be $D_N = \{
+Our objective is to estimate unknown weights $\theta = \theta_T \cup \theta_\pi \cup \theta_V$ that maximizes the expected future reward, $R_t = \sum_{k=t}^{t_{end} - t} \gamma^{k-t} r_k$, where $\gamma$ is the discount factor,
+%
+\begin{align}
+\theta^* = \arg\max_{\theta} \E[R_t] \,.
+\end{align}
+%
+% need \graphicspath{{images/}}
+\def\svgwidth{0.25\columnwidth}%
+\begin{figure}%
+\input{images/a3c-as-pomdp.pdf_tex}%
+\def\svgwidth{0.25\columnwidth}%
+\input{images/a3c-as-nn.pdf_tex}%
+\input{fig-nav-a3c}\hspace{-1ex}%
+\input{fig-cnn-enc}\hspace{-1ex}%
+\input{fig-fc-enc}%
+\caption{POMDP on the left, neural network implementation on the right. Nav A3C architecture on left and two possible Encoders: CNN encoder on center, FC encoder on right. We use CNN encoder for the 3D world while FC encoder for the gridworld.
+}
+\end{figure}
+
+\paragraph{Asynchronous Advantage Actor-Critic}
+\def\charelig{\nabla_{\theta_\pi}\ln \pit(\acttn; \theta_\pi)}
+% There are many different variations of RL. There are many different RL algorithms: value-based methods like Q-learning and SARSA and policy-based method like actor-critic.
+In this paper we use policy-based method called Asynchronous Advantage Actor-Critic (A3C) \cite{MnBaMiICML2016} that allows weight updates to happen asynchronously in a multi-threaded environment.
+It works by keeping a ``shared and slowly changing copy of target network'' that is updated every few iterations by accumulated gradients in each of the threads.
+The gradients are never applied to the local copy of the weights, but the local copy of weights is periodically synced from the shared copy of target weights.
+The gradient for weight update is proportional to the product of \emph{advantage}, $R_t - \Value_t(\theta_\Value)$, and \emph{characteristic eligibility}, $\charelig$ \cite{WiML1992}, updating the weights according to the following update equations
+\begin{align}
+  \theta_\pi &\leftarrow \theta_\pi
+  + \sum_{t \in \text{episode}}\alpha_\pi \charelig (R_t - \Value_t(\theta_\Value))
+  \\
+  \theta_\Value &\leftarrow \theta_\Value
+  + \sum_{t \in \text{episode}} \alpha_\Value \frac{\partial (R_t - \Value_t(\theta_\Value))^2}
+                  {\partial\theta_\Value}
+                  \, .
+\end{align}
+
+For more details of the A3C algorithm please refer to \cite{MnBaMiICML2016}.

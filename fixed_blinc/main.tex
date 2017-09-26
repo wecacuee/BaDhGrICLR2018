@@ -1,20 +1,31 @@
-\documentclass{article} % For LaTeX2e
+\documentclass[]{article} % For LaTeX2e
 \usepackage{iclr2018_conference,times}
-\usepackage{hyperref}
-\usepackage{url}
 \usepackage{amsfonts}
 \usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{booktabs}
 \usepackage{comment}
 \usepackage{float}
+\usepackage{hyperref}
 \usepackage{import}
+\usepackage[inline]{enumitem}
 \usepackage{multirow}
+\usepackage{soul}
 \usepackage{subfigure}
 \usepackage{tikz}
+\usepackage{url}
+
 \usetikzlibrary{positioning}
-\usepackage[inline]{enumitem}
-\usepackage{amsthm}
+
+%%%%%%%% Customizations %%%%%%%%%%
 \graphicspath{ {images/} }
-\usepackage{soul}
+% Global style for description lists
+\setlist[description]{style=unboxed,leftmargin=2ex}
+% Global style for all network drawings in tikz
+\tikzset{
+every path/.style={line width=1pt}
+, every node/.style={font=\tiny}
+, networknode/.style={inner sep=5.0,rounded corners,fill=black!5,font=\tiny}}
 
 %%%%%%%%% Macros %%%%%%%%%%%%%%%%%%
 \newtheorem{defn}{Definition}
@@ -66,7 +77,7 @@
 % as long as the \iclrfinalcopy macro remains commented out below.
 % Non-anonymous submissions will be rejected without review.
 
-\author{Shurjo Banerjee*, Vikas Dhiman*, Brent Griffin \& Jason J. Corso \thanks{indicates equal contribution} \\
+\author{Shurjo Banerjee*, Vikas Dhiman\thanks{indicates equal contribution} , Brent Griffin \& Jason J. Corso  \\
 The Electrical Engineering and Computer Science Deparment\\
 The University of Michigan\\
 Ann Arbor, MI 48109, USA \\
@@ -84,7 +95,7 @@ Ann Arbor, MI 48109, USA \\
 \newcommand{\fix}{\marginpar{FIX}}
 \newcommand{\new}{\marginpar{NEW}}
 
-\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
+%\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
 
 \begin{document}
 
@@ -92,29 +103,29 @@ Ann Arbor, MI 48109, USA \\
 \maketitle
 
 \begin{abstract}
-    Deep reinforcement learning (DRL) algorithms have demonstrated strong progress in learning to reach a goal in challenging three-dimensional environments without requiring any explicit SLAM or path-planning in their navigation. While promising, the limitations and underlying pattern recognitions performed by these networks based approaches are not very well understood. In this work we introduce the BLINC training paradigm - an appendum to standard DRL models that can be used to (a) Fine-tune DRL algorithms and improve their performance (b) Afford new mechanics allowing for the querying of the internal states of these methods (more details as I figure it out). In BLINC, agents are incentivized to blind themselves as often as possible in the course of their navigation so as to more naturally lock on to aspects of long-term planning in the context of their motion. We find that BLINC consistently improves rewards scores by x\% across multiple environments and worlds. Our querying mechanics provide both qualitative and quantiative notions of the kind of beliefs learned and propagated by the underlying layers of these network based agents. 
+\input{abstract}
 \end{abstract}
 
 \section{Introduction}
-\input{blinc-intro-drl-is-black-box}
+\input{intro-drl-doesnt-generalize}
 
 \section{Related Work}
-\input{blinc-related-work}
+\input{related-work}
 
 \section{Background}
-\input{blinc-background}
+\input{background}
 
 \section{Approach}
-\input{blinc-approach}
+\input{approach}
 
 \section{Experiments}
-\input{blinc-experiments}
+\input{experiments}
 
 \section{Analysis}
-\input{blinc-analysis}
+\input{analysis}
 
 \section{Conclusion}
-\input{blinc-conclusion}
+\input{conclusion}
 
 
 \subsubsection*{Acknowledgments}
@@ -122,8 +133,11 @@ Ann Arbor, MI 48109, USA \\
 Use unnumbered third level headings for the acknowledgments. All
 acknowledgments, including those to funding agencies, go at the end of the paper.
 
-\bibliography{iclr2018_conference}
-\bibliography{shared}
+\IfFileExists{/z/home/dhiman/wrk/group-bib/shared.bib}{
+  \bibliography{/z/home/dhiman/wrk/group-bib/shared,main,main_filtered}
+}{
+  \bibliography{main,main_filtered}
+}
 \bibliographystyle{iclr2018_conference}
 
 \end{document}
