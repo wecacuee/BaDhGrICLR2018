@@ -1,83 +1,15 @@
 \documentclass[]{article} % For LaTeX2e
-\usepackage{iclr2018_conference,times}
-\usepackage{amsfonts}
-\usepackage{amsmath}
-\usepackage{amsthm}
-\usepackage{booktabs}
-\usepackage{comment}
-\usepackage{float}
-\usepackage{hyperref}
-\usepackage{import}
-\usepackage[inline]{enumitem}
-\usepackage{multirow}
-\usepackage{soul}
-\usepackage{subfigure}
-\usepackage{tikz}
-\usepackage{url}
-
-\usetikzlibrary{positioning}
-
-%%%%%%%% Customizations %%%%%%%%%%
-\graphicspath{ {images/} }
-% Global style for description lists
-\setlist[description]{style=unboxed,leftmargin=2ex}
-% Global style for all network drawings in tikz
-\tikzset{
-every path/.style={line width=1pt}
-, every node/.style={font=\tiny}
-, networknode/.style={inner sep=5.0,rounded corners,fill=black!5,font=\tiny}}
-
-%%%%%%%%% Macros %%%%%%%%%%%%%%%%%%
-\newtheorem{defn}{Definition}
-\newif\ifblind
-\def\goldenr{1.618}
-\newcommand*\textfrac[2]{
-      \frac{\text{#1}}{\text{#2}}
-  }
-\newcommand{\TODO}[1]{TODO:{#1}}
-\newcommand{\etal}{et~al.}
-\def\state{s}
-\def\statet{\state_t}
-\def\statetp{\state_{t-1}}
-\def\statetn{\state_{t+1}}
-\def\obs{o}
-\def\obst{\obs_t}
-\def\act{a}
-\def\actt{\act_t}
-\def\acttp{\act_{t-1}}
-\def\acttn{\act_{t+1}}
-\def\Obs{\mathcal{O}}
-\def\ObsFunc{C}
-\def\ObsFuncFull{\ObsFunc(\statet, \actt) \rightarrow \obst}
-\def\ObsFuncInv{\ObsFunc^{-1}}
-\def\ObsFuncInvFull{\ObsFuncInv(\obst, \statetp, \actt) \rightarrow \statet}
-\def\State{\mathcal{S}}
-\def\Action{\mathcal{A}}
-\def\Trans{T}
-\def\TransFull{\Trans(\statet, \actt) \rightarrow \statetn}
-\def\TransObs{T_c}
-\def\Rew{R}
-\def\rew{r}
-\def\rewt{\rew_t}
-\def\rewtp{\rew_{t-1}}
-\def\rewtn{\rew_{t+1}}
-\def\RewFull{\Rew(\statet, \actt) \rightarrow \rewtn}
-\def\TransObsFull{\TransObs(\statet, \obst, \actt, \rewt; \theta_T) \rightarrow \statetn}
-\def\Value{V}
-\def\pit{\pi_t}
-\def\piDef{\pi(\acttn|\statet, \obst, \actt, \rewt; \theta_\pi) \rightarrow \pit(\acttn ; \theta_\pi)}
-\def\Valuet{\Value_t}
-\def\ValueDef{\Value(\statet, \obst, \actt, \rewt; \theta_\Value) \rightarrow \Valuet(\theta_\Value)}
-\def\R{\mathbb{R}}
-\def\E{\mathbb{E}}
-
+\input{preamble}
 \title{Navigating Unseen Environments using Deep Reinforcement Learning}
 
 % Authors must not appear in the submitted version. They should be hidden
 % as long as the \iclrfinalcopy macro remains commented out below.
 % Non-anonymous submissions will be rejected without review.
 
-\author{Shurjo Banerjee*, Vikas Dhiman\thanks{indicates equal contribution} , Brent Griffin \& Jason J. Corso  \\
+\author{Shurjo Banerjee\footnotemark[1]%
+  \And Vikas Dhiman\thanks{indicates equal contribution}%
+  \And Brent Griffin%
+  \And Jason J. Corso  \\
 The Electrical Engineering and Computer Science Deparment\\
 The University of Michigan\\
 Ann Arbor, MI 48109, USA \\
@@ -91,9 +23,6 @@ Ann Arbor, MI 48109, USA \\
 % the lines. Using \AND forces a linebreak at that point. So, if \LaTeX{}
 % puts 3 of 4 authors names on the first line, and the last on the second
 % line, try using \AND instead of \And before the third author name.
-
-\newcommand{\fix}{\marginpar{FIX}}
-\newcommand{\new}{\marginpar{NEW}}
 
 %\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
 
