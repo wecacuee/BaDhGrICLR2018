@@ -1,24 +1,27 @@
-\documentclass{article} % For LaTeX2e
+\documentclass[]{article} % For LaTeX2e
 \usepackage{iclr2018_conference,times}
-\usepackage{hyperref}
-\usepackage{url}
 \usepackage{amsfonts}
 \usepackage{amsmath}
-\usepackage{comment}
-\usepackage{float}
-\usepackage{import}
-\usepackage{multirow}
-\usepackage{subfigure}
-\usepackage{tikz}
-\usetikzlibrary{positioning}
-\usepackage[inline]{enumitem}
 \usepackage{amsthm}
 \usepackage{booktabs}
-\graphicspath{ {images/} }
+\usepackage{comment}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{import}
+\usepackage[inline]{enumitem}
+\usepackage{multirow}
 \usepackage{soul}
+\usepackage{subfigure}
+\usepackage{tikz}
+\usepackage{url}
+
+\usetikzlibrary{positioning}
 
 %%%%%%%% Customizations %%%%%%%%%%
+\graphicspath{ {images/} }
+% Global style for description lists
 \setlist[description]{style=unboxed,leftmargin=2ex}
+% Global style for all network drawings in tikz
 \tikzset{
 every path/.style={line width=1pt}
 , every node/.style={font=\tiny}

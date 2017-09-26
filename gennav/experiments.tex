@@ -59,10 +59,17 @@ We propose a 5-stage benchmark for reinforcement learning based methods to takeo
     \begin{enumerate}
     \item Explore different paths, remember the shortest path and repeat it.
     \item Explore different paths, learn frame to action mapping to follow the shortest path from any point.
-      \item Explore different paths, learn to compute and follow optimal path.
+    \item Explore different paths, learn to compute and follow optimal path.
     \end{enumerate}
   \item Train to find optimal path on the unseen map with varying goal. 
 \end{enumerate}
 
-
+\begin{figure}
+ \vspace{-3em}%
+\includegraphics[width=0.5\columnwidth]{images/plot_reward_3D-1000.pdf}%
+\includegraphics[width=0.5\columnwidth]{images/plot_probability_3D-1000.pdf}%
+\vspace{-1em}%
+\caption{Mean reward while tested on 100 unseen maps, while being trained on different number of training maps. Note that while training on 1000 maps eventually achieves high reward, it is only higher mean reward (44.2), training on 1 map hits the maximum (31) much faster.}
+\label{fig:plot_reward_on_testing}
+\end{figure}
 
