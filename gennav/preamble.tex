@@ -4,6 +4,7 @@
 \usepackage{amsthm}
 \usepackage{booktabs}
 \usepackage{comment}
+\usepackage{enumerate}
 \usepackage{float}
 \usepackage{hyperref}
 \usepackage{import}
@@ -71,3 +72,8 @@ every path/.style={line width=1pt}
 \def\E{\mathbb{E}}
 \newcommand{\fix}{\marginpar{FIX}}
 \newcommand{\new}{\marginpar{NEW}}
+
+\newcounter{Benchmark}
+\newcounter{BenchmarkB}[Benchmark]
+\newcommand{\ditem}[1]{\stepcounter{Benchmark}\item[\arabic{Benchmark}. {#1}]}
+\newcommand{\dditem}[1]{\stepcounter{BenchmarkB}\item[\arabic{Benchmark}.\alph{BenchmarkB}. {#1}]}
