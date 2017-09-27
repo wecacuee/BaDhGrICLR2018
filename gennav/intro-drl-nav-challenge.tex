@@ -8,8 +8,7 @@ As we have shown this is going to be hard.
 
 \begin{description}
   \ditem{Evaluate on training map with fixed goal location}
-    This is the textbook version of reinforcement learning problem,
-    especially in gridworld. This problem is easier because the policy
+    This is the textbook version of reinforcement learning problem, especially in gridworld. This problem is easier because the policy
     is stationary at the train time and does not changes during
     testing.
     We propose the evaluation metric to be : the time taken to hit the goal once. We show the results on this benchmark in Table~\ref{tab:TODO-RUNEXP}.
@@ -25,13 +24,23 @@ As we have shown this is going to be hard.
   \ditem{Evaluate on unseen maps}
     Any proposed algorithms on navigation problems, should be evaluated on unseen maps.
     Since this is a hard problem, we should compare it against random systematic explorers and should be analyzed to understand the kind of approach the learning algorithm is using.
+    To our knowledge, this is the first paper to evaluate Deep reinforcement learning agents on unseen maps.
     \begin{description}
-      \dditem{Remember and repeat}
+      \dditem{Remember and repeat (Wrench map)}
         We propose a series of maps, goal and spawn locations where the optimal performance can be achieved by repeating the action sequence that lead to the goal for the first time.
-      \dditem{Frame to action mapping}
-        We propose a series of maps, goal and spawn locations where the optimal performance can be achieved by learning a frame to action greedy mapping but not just by remember and repeat.
-      \dditem{Full path planning}
-        We propose a series of maps, goal and spawn locations, where the optimal performance cannot be achieved unless full path planning is done.
+        Wrench map (Top right in Fig~\ref{fig:environments}) has one loop and a corridor.
+        The goal is placed asymmetrically in the loop and the agent is spawned in the corridor.
+        Because of asymmetrical placement of the goal, one of the path to the goal is shorter than the other and there are only two possible paths.
+        We record the path taken each time. If the agent has learned a greedy strategy, then it would repeat the path taken for the first time.
+        We evaluate the fraction of times, the agent repeats the first path. A higher number indicates a greedy strategy.
+
+        In second evaluation, we let the agent explore randomly untill it hits the goal via the shorterst path.
+        At this point we evaluate the  fraction of times shortest path is taken. For this score 
+
+      %\dditem{Frame to action mapping}
+
+      %\dditem{Full path planning}
+      %  We propose a series of maps, goal and spawn locations, where the optimal performance cannot be achieved unless full path planning is done.
     \end{description}
 \end{description}
 
