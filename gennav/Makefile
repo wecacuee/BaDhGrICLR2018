@@ -1,5 +1,9 @@
 OO=out
-BaDhGrICLR2018.pdf: $(OO)/main.pdf iclr2018_conference.sty main_filtered.bib
+
+$(OO)/main.pdf: images/plot_reward_3D-1000.pdf images/plot_probability_3D-1000.pdf \
+			iclr2018_conference.sty main_filtered.bib 
+
+BaDhGrICLR2018.pdf: $(OO)/main.pdf
 	ln -fs $< $@
 
 images/plot_reward_%.pdf: npz_files/%.npz py/plot.py
