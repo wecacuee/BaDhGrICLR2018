@@ -29,7 +29,7 @@ In the constant-reward version of the experiment, agents are rewarded with a con
 \subsubsection{Contiguous-Linear Reward}
 In the contiguous-linear case, the first blind action is rewarded with a small position value. For every subsquent blind action performed immediately afterwards, the reward is linearly increased by a the number of blind frames till that point. The reward at the $n^{th}$ contiguous blind frame is:
 
-\center{$r_n = \frac{R}{2*F} + \frac{R}{(2*F)(2*(F+1))}$}
+\center{$r_n = \frac{R}{2F} + \frac{R}{(2F)(2F+2)}$}
 
 \subsubsection{Contiguous-Quadratic Reward}
 Some contiguous reward structure that solves ALL our problems. WHERE ARE YOU!

@@ -3,6 +3,62 @@
 % 2. The doubling of the action space - that's the brilliance
 %
 
+\begin{table}[h]
+    \label{sample-table}
+    \begin{center}
+        \resizebox{\textwidth}{!}{%
+        \begin{tabular}{llllllll}
+          \toprule
+            Static Goal Mazes & Agent & Reward & Latency 1:$>1$ & Goals & \% Blindfolding & Cont. Blind Frames \\
+          \midrule
+            \textbf{Static 1} &A3C & 41.01 & 152.3 & 3.48 \\
+                              &A3C-CB & 41.01 & 152.3 & 3.48 \\
+                              &A3C-FT & 41.01 & 152.3 & 3.48 \\
+                              &A3C-BLINC & 41.01 & 152.3 & 3.48 \\
+          \midrule
+            \textbf{Static 2} &A3C & 41.01 & 152.3 & 3.48 \\
+                              &A3C-CB & 41.01 & 152.3 & 3.48 \\
+                              &A3C-FT & 41.01 & 152.3 & 3.48 \\
+                              &A3C-BLINC & 41.01 & 152.3 & 3.48 \\
+          
+            \midrule
+            \textbf{Static-9x9} &A3C & 41.01 & 152.3 & 3.48 \\
+                              &A3C-CB & 41.01 & 152.3 & 3.48 \\
+                              &A3C-FT & 41.01 & 152.3 & 3.48 \\
+                              &A3C-BLINC & 41.01 & 152.3 & 3.48 \\
+          \bottomrule
+        \end{tabular}}
+    \end{center}
+    \caption{We achieve comparable results when we test and train on the same experiments.}
+\end{table}
+
+\begin{table}[h]
+    \label{sample-table}
+    \begin{center}
+        \resizebox{\textwidth}{!}{%
+        \begin{tabular}{llllllll}
+          \toprule
+            Random Goal Mazes & Agent & Reward & Latency 1:$>1$ & Goals & \% Blindfolding & Cont. Blind Frames \\
+          \midrule
+            \textbf{Random 1} & 41.01 & 152.3 & 3.48 \\
+                              & 41.01 & 152.3 & 3.48 \\
+                              & 41.01 & 152.3 & 3.48 \\
+                              & 41.01 & 152.3 & 3.48 \\
+          \midrule
+            \textbf{Random 2} & 41.01 & 152.3 & 3.48 \\
+                              & 41.01 & 152.3 & 3.48 \\
+                              & 41.01 & 152.3 & 3.48 \\
+                              & 41.01 & 152.3 & 3.48 \\
+          \midrule
+            \textbf{Random-9x9-10} & 41.01 & 152.3 & 3.48 \\
+                              & 41.01 & 152.3 & 3.48 \\
+                              & 41.01 & 152.3 & 3.48 \\
+                              & 41.01 & 152.3 & 3.48 \\
+          \bottomrule
+        \end{tabular}}
+    \end{center}
+    \caption{We achieve comparable results when we test and train on the same experiments.}
+\end{table}
 
 
 \subsection{Blinding: Curriculum and Finetuning}
