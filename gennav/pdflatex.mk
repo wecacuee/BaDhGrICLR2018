@@ -6,7 +6,7 @@ PDFLATEX_CMD?=TEXINPUTS=$(TEXINPUTS) $(PDFLATEX) -shell-escape -interaction=nons
 PDFLATEX_R:=$(PDFLATEX_CMD) -recorder
 PWD:=$(shell pwd)
 BIBTEX?=BIBINPUTS=.:$(PWD):$(BIBINPUTS) BSTINPUTS=.:$(PWD):$(BSTINPUTS) bibtex
-SED:=sed --posix
+SED:=sed # --posix
 GREP:=grep
 
 define BIBTEXRECIPE =
