@@ -6,6 +6,8 @@ PDFLATEX_CMD?=TEXINPUTS=$(TEXINPUTS) $(PDFLATEX) -shell-escape -interaction=nons
 PDFLATEX_R:=$(PDFLATEX_CMD) -recorder
 PWD:=$(shell pwd)
 BIBTEX?=BIBINPUTS=.:$(PWD):$(BIBINPUTS) BSTINPUTS=.:$(PWD):$(BSTINPUTS) bibtex
+SED:=sed --posix
+GREP:=grep
 
 define BIBTEXRECIPE =
 	cd $1
@@ -14,7 +16,7 @@ define BIBTEXRECIPE =
 	# The bibfile is present in log output as Database file #1: <filename>
 	# Parse the blg file to generate the list of dependent bib files.
 	echo "$@: \\" > $1/$2.bbl.mk
-	sed -n 's/INPUT \(.\+.bib\)$$/$(INDENT)\1 \\/p' $1/$2.fls >> $1/$2.bbl.mk
+	$(SED) -n 's/INPUT \(.*.bib\)$$/$(INDENT)\1 \\/p' $1/$2.fls >> $1/$2.bbl.mk
 endef
 
 -include $(OO)/*.mk
@@ -28,20 +30,21 @@ $(OO)/%.pdf: %.tex $(OO)/.mkdir
 	### Create a dependency list in makefile format
 	echo "$@: \\" > $(OO)/$*.mk
 	# If some file is missing add it to dependency list (e.g $*.bbl)
-	sed -n 's/No file \([^ ]\+\.\w\{3,4\}\)\.\?/$(INDENT)$(OO)\/\1 \\/p' $(OO)/$*.log >> $(OO)/$*.mk
+	$(SED) -n 's/No file \([^ ]\+\.\w\{3,4\}\)\.\?/$(INDENT)$(OO)\/\1 \\/p' $(OO)/$*.log >> $(OO)/$*.mk
+	$(SED) -n "s/LaTeX Warning: File \`\([^']*\)' not found.*$/$(INDENT)$(OO)\/\1 \\\\/p" $(OO)/$*.log >> $(OO)/$*.mk
 	# -recorder flag will output the files that were opened by pdflatex to
 	# $*.fls
 	# Parse the input files into the makefile. Remove the aux file from
 	# dependency list.
-	sed -n 's/INPUT \(.\+\)$$/$(INDENT)\1 \\/p' $(OO)/$*.fls | grep -Ev '$*.(w18|aex|aux)' >> $(OO)/$*.mk
+	$(SED) -n 's/INPUT \(.*\)$$/$(INDENT)\1 \\/p' $(OO)/$*.fls | $(GREP) -Ev '$*.(w18|aex|aux)' >> $(OO)/$*.mk
 	# Run bibtex if log file says so
-	if grep -Fq 'LaTeX Warning: There were undefined references.' $(OO)/$*.log; \
+	if $(GREP) -Fq 'LaTeX Warning: There were undefined references.' $(OO)/$*.log; \
 		then \
 		$(call BIBTEXRECIPE,$(OO),$*); \
 		$(PDFLATEX_R) $<; \
 	fi
 	# Rerun pdflatex if the log file says so
-	if grep -q 'Rerun to get cross-references right' $(OO)/$*.log; \
+	if $(GREP) -q 'Rerun to get cross-references right' $(OO)/$*.log; \
 		then $(PDFLATEX_R) $<; \
 	fi
 
