@@ -14,4 +14,6 @@ images/plot_probability_%.pdf: npz_files/%.npz #py/plot.py
 main_filtered.bib: main.bib /z/home/dhiman/wrk/group-bib/shared.bib
 	aux2bib $(OO)/main.aux > $@
 
+$(OO)/grid-2d-dmlab-figure-standalone.pdf:
+
 include pdflatex.mk
