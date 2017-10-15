@@ -3,63 +3,154 @@
 % 2. The doubling of the action space - that's the brilliance
 %
 
+\newpage
 \begin{table}[h]
     \label{sample-table}
     \begin{center}
         \resizebox{\textwidth}{!}{%
         \begin{tabular}{llllllll}
           \toprule
-            Static Goal Mazes & Agent & Reward & Latency 1:$>1$ & Goals & \% Blindfolding & Cont. Blind Frames \\
+            Static Goal, Static Spawn & Agent & Reward & Latency 1:$>1$ & Goals & \% Blindfolding & Cont. Blind Frames \\
           \midrule
-            \textbf{Static 1} &A3C & 41.01 & 152.3 & 3.48 \\
-                              &A3C-CB & 41.01 & 152.3 & 3.48 \\
-                              &A3C-FT & 41.01 & 152.3 & 3.48 \\
-                              &A3C-BLINC & 41.01 & 152.3 & 3.48 \\
+            \textbf{I-Maze} &A3C &  &  &  \\
+                              &A3C-CB &  &  &  \\
+                              &A3C-FT &  &  &  \\
+                              &A3C-BLINC &  &  &  \\
           \midrule
-            \textbf{Static 2} &A3C & 41.01 & 152.3 & 3.48 \\
-                              &A3C-CB & 41.01 & 152.3 & 3.48 \\
-                              &A3C-FT & 41.01 & 152.3 & 3.48 \\
-                              &A3C-BLINC & 41.01 & 152.3 & 3.48 \\
+            \textbf{Static 1} &A3C &  &  &  \\
+                              &A3C-CB &  &  &  \\
+                              &A3C-FT &  &  &  \\
+                              &A3C-BLINC &  &  &  \\
+          \midrule
+            \textbf{Static 2} &A3C &  &  &  \\
+                              &A3C-CB &  &  &  \\
+                              &A3C-FT &  &  &  \\
+                              &A3C-BLINC &  &  &  \\
           
             \midrule
-            \textbf{Static-9x9} &A3C & 41.01 & 152.3 & 3.48 \\
-                              &A3C-CB & 41.01 & 152.3 & 3.48 \\
-                              &A3C-FT & 41.01 & 152.3 & 3.48 \\
-                              &A3C-BLINC & 41.01 & 152.3 & 3.48 \\
+            \textbf{Training-9x9-*} &A3C &  &  &  \\
+                              &A3C-CB &  &  &  \\
+                              &A3C-FT &  &  &  \\
+                              &A3C-BLINC &  &  &  \\
+          \toprule
+            Static Goal, Random Spawn & Agent & Reward & Latency 1:$>1$ & Goals & \% Blindfolding & Cont. Blind Frames \\
+          \midrule
+            \textbf{I-Maze} &A3C &  &  &  \\
+                              &A3C-CB &  &  &  \\
+                              &A3C-FT &  &  &  \\
+                              &A3C-BLINC &  &  &  \\
+          \midrule
+            \textbf{Static 1} &A3C &  &  &  \\
+                              &A3C-CB &  &  &  \\
+                              &A3C-FT &  &  &  \\
+                              &A3C-BLINC &  &  &  \\
+          \midrule
+            \textbf{Static 2} &A3C &  &  &  \\
+                              &A3C-CB &  &  &  \\
+                              &A3C-FT &  &  &  \\
+                              &A3C-BLINC &  &  &  \\
+          
+            \midrule
+            \textbf{Training-9x9-*} &A3C &  &  &  \\
+                              &A3C-CB &  &  &  \\
+                              &A3C-FT &  &  &  \\
+                              &A3C-BLINC &  &  &  \\
+          \toprule
+            Random Goal, Random Spawn & Agent & Reward & Latency 1:$>1$ & Goals & \% Blindfolding & Cont. Blind Frames \\
+          \midrule
+            \textbf{I-Maze} &A3C &  &  &  \\
+                              &A3C-CB &  &  &  \\
+                              &A3C-FT &  &  &  \\
+                              &A3C-BLINC &  &  &  \\
+          \midrule
+            \textbf{Random 1} &A3C &  &  &  \\
+                              &A3C-CB &  &  &  \\
+                              &A3C-FT &  &  &  \\
+                              &A3C-BLINC &  &  &  \\
+          \midrule
+            \textbf{Random 2} &A3C &  &  &  \\
+                              &A3C-CB &  &  &  \\
+                              &A3C-FT &  &  &  \\
+                              &A3C-BLINC &  &  &  \\
+          
+            \midrule
+            \textbf{Random-9x9-*} &A3C &  &  &  \\
+                              &A3C-CB &  &  &  \\
+                              &A3C-FT &  &  &  \\
+                              &A3C-BLINC &  &  &  \\
           \bottomrule
         \end{tabular}}
     \end{center}
     \caption{We achieve comparable results when we test and train on the same experiments.}
 \end{table}
-
+\newpage
+\newpage
+\begin{table}[h]
+    \label{sample-table}
+    \begin{center}
+        \begin{tabular}{lccccc}
+          \toprule
+            Static Goal, Static Spawn  & Reward & Latency 1:$>1$ & Goals & Done\\
+          \midrule
+            \textbf{Planning-I-Maze}  &  &  & & \xmark  \\
+            \textbf{Static 1}  &  &  & &  \\
+            \textbf{Static 2}  &  &  & & \xmark \\
+            \textbf{Training-9x9-1}  &  &  & & \xmark \\
+            -Training-9x9-120  &  &  & &  \\
+            -Training-9x9-121  &  &  & &  \\
+            -Training-9x9-122  &  &  & &  \\
+            -Training-9x9-123  &  &  & &  \\
+            -Training-9x9-124  &  &  & &  \\
+            -Training-9x9-125  &  &  & &  \\
+            -Training-9x9-126  &  &  & &  \\
+            -Training-9x9-127  &  &  & &  \\
+            -Training-9x9-128  &  &  & &  \\
+            -Training-9x9-129  &  &  & &  \\
+          \toprule
+            Static Goal, Random Spawn  & Reward & Latency 1:$>1$ & Goals & Done\\
+          \midrule
+            \textbf{Planning-I-Maze}  &  &  &  \\
+            \textbf{Static 1}  &  &  &  \\
+            \textbf{Static 2}  &  &  &  \\
+            \textbf{Training-9x9-1}  &  &  &  \\
+          \toprule
+            Random Goal, Static Spawn  & Reward & Latency 1:$>1$ & Goals & Done\\
+          \midrule
+            \textbf{Planning-I-Maze} &  &  &  \\
+            \textbf{Random 1}  &  &  &  \\
+            \textbf{Random 2}  &  &  &  \\
+            \textbf{Training-9x9-1}  &  &  &  \\
+          \toprule
+            Random Goal, Random Spawn  & Reward & Latency 1:$>1$ & Goals & Done\\
+          \midrule
+            \textbf{I-Maze}  &  &  &  \\
+            \textbf{Random 1}  &  &  & &\xmark \\
+            \textbf{Random 2}  &  &  & &\xmark \\
+            \textbf{Training-9x9-1}  &  &  & & \cmark \\
+          \bottomrule
+        \end{tabular}
+    \end{center}
+    \caption{We achieve comparable results when we test and train on the same experiments.}
+\end{table}
 \begin{table}[h]
     \label{sample-table}
     \begin{center}
         \resizebox{\textwidth}{!}{%
-        \begin{tabular}{llllllll}
+        \begin{tabular}{lllllllc}
           \toprule
-            Random Goal Mazes & Agent & Reward & Latency 1:$>1$ & Goals & \% Blindfolding & Cont. Blind Frames \\
+            Random Mazes & Train Reward & Train Latency & Train Goals & Test Reward & Test Latency & Test Goals & Done\\
           \midrule
-            \textbf{Random 1} & 41.01 & 152.3 & 3.48 \\
-                              & 41.01 & 152.3 & 3.48 \\
-                              & 41.01 & 152.3 & 3.48 \\
-                              & 41.01 & 152.3 & 3.48 \\
-          \midrule
-            \textbf{Random 2} & 41.01 & 152.3 & 3.48 \\
-                              & 41.01 & 152.3 & 3.48 \\
-                              & 41.01 & 152.3 & 3.48 \\
-                              & 41.01 & 152.3 & 3.48 \\
-          \midrule
-            \textbf{Random-9x9-10} & 41.01 & 152.3 & 3.48 \\
-                              & 41.01 & 152.3 & 3.48 \\
-                              & 41.01 & 152.3 & 3.48 \\
-                              & 41.01 & 152.3 & 3.48 \\
+            \textbf{Training-9x9-10} &  &  & & & & & \cmark \\
+            \textbf{Training-9x9-100} &  &  & & & & & \cmark \\
+            \textbf{Training-9x9-500} &  &  & & & & & \cmark \\
+            \textbf{Training-9x9-1000} &  &  & & & & & \cmark \\
           \bottomrule
-        \end{tabular}}
+        \end{tabular}
+        }
     \end{center}
     \caption{We achieve comparable results when we test and train on the same experiments.}
 \end{table}
-
+\newpage
 
 \subsection{Blinding: Curriculum and Finetuning}
 
