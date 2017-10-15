@@ -12,17 +12,18 @@
 % 1.5 Traditionally addressed by mapping during exploration and path
 %      planning during exploitation.
 Navigation remains a fundamental problems in mobile robotics and artificial intelligence~\cite{SmChIJRR1986,ElCOMPUTER1980}.
-The problem is classically addressed by separating the eventual task of navigation into exploration, where the environment is represented in some sort of \emph{map} data-structure, and exploitation, where the map is used for localization and path-planning to find an optimal path to a given destination based on a given optimality criterion.  Although there have been many advances in this classical approach \cite{XXX}, it remains a difficult challenge: for example, mapping errors propagate to localization and path-planning tasks; monocular navigation remains a challenge in textureless or repeated texture environments 
+The problem is classically addressed by separating the eventual task of navigation into exploration, where the environment is represented in some sort of \emph{map} data-structure, and exploitation, where the map is used for localization and path-planning to find an optimal path to a given destination based on a given optimality criterion.  Although there have been many advances in this classical approach \cite{RaMoTaTROB2015,EnScCrECCV2014}, it remains a difficult challenge: for example, mapping errors propagate to localization and path-planning tasks; monocular navigation remains a challenge in textureless \cite{YaSoKaIROS2016} or repeated texture environments 
 
 More recently, end-to-end navigation methods---methods that attempt to  
 solve the navigation problem without breaking it down into separate parts of localization, mapping and path-planning---have gained traction.
 %
 % 2. End to end learning algorithms have shown promise to take over
 %      mapping and path-planning
-With the recent success of Deep Reinforcement Learning (DRL) \cite{MnKaSiNATURE2015,MnKaSiNATURE2015}, these end-to-end navigation methods \cite{MnBaMiICML2016,SiHuMaNATURE2016,LePaKrISER2017,MiPaViICLR2017,OhChSiICML2016} forego decisions about the details that are required in the intermediate step of map building.  The potential for simpler yet capable methods is rich; for example, one can optimize to store only the minimal amount of map information that is required to optimally perform the end task of navigation.  One method \hl{XXX Give a citation from the list about (nominally, the method you will focus on in this paper) and a sentence about its great contribution or new capability.}
-\input{grid-2d-dmlab-figure}
+With the recent success of Deep Reinforcement Learning (DRL) \cite{MnKaSiNATURE2015}, these end-to-end navigation methods \cite{MnBaMiICML2016,SiHuMaNATURE2016,LePaKrISER2017,MiPaViICLR2017,OhChSiICML2016} forego decisions about the details that are required in the intermediate step of mapping.
+The potential for simpler yet capable methods is rich; for example, one can optimize to store only the minimal amount of map information that is required to optimally perform the end task of navigation.
+One such method \cite{MiPaViICLR2017} has recently shown promise of navigation using only first person monocular view in randomly generated mazes. Not only their algorithm shows evidence of localization, but they also show some of evidence of better than random path planning when the goal location is randomly chosen during evaluation time. 
 
-\hl{What role does Fig 1 play?  Figure this out and refer to it in the text}
+\input{grid-2d-dmlab-figure}
 
 % 3. We do not know how these algorithms work. There has been work in computer vision that shows the learning on neural network based methods can be learning totally different kind of patterns from what we would expect.
 Despite this potential and recent successes, 
@@ -31,11 +32,22 @@ On similar lines, \cite{NgYoClCVPR2015} show that neural-network-based object de
 
 % 4.1 We find that it is not remembering the map it is being trained on
 % 4.2 We find that no path planning is  happening only, memorizing and regeneration of the sequence of steps. However, it is not 
-We analyze the navigation algorithm proposed in recent work \cite{MiPaViICLR2017}, to analyze if the trained agent (1) is able to navigate in unseen environments (2) is able perform fastest path planning.
+
+In this work, we focus on the work of \cite{MiPaViICLR2017} and analyze the method using multiple random maps with different degrees of randomness. As a generalization, we propose a 4-stage benchmark for end-to-end navigation methods.
+Our experimental setup is similar to \cite{MiPaViICLR2017} and uses the same open source library Deepmind's Lab \cite{BeLeTeARXIV2016}.
+We setup a maze where the goal is randomly placed and the agent is randomly spawned.
+The objective of the agent is to hit the goal as many times as possible within a fixed episode time.
+Every time the agent hits the goal, it respawns at a random location.
+With this setup \cite{MiPaViICLR2017} found that the agent finds the goal faster the second time onwards as compared to the first time.
+One of the possible explnations is that agent is able to remember the position of the goal and the path of the goal.
+However, \cite{MiPaViICLR2017} do not rule out random chance because they only show the successful result on random goal case with only one map.
+We expand on their analysis and evaluate the same metric on multiple types of maps including randomly generated maps.
 Even though separting training and testing sets is the obvious thing to do in machine learning, we are the first work to evaluate any DRL based navigation method on unseen maps.
 
-\hl{XXX there needs to be a quite more detailed explanation of the study setup and experiments here.  The reader should ``know the paper'' from only reading the introduction. XXX}
-
-Our experiments give a clear answer of ``No'' to the posed question in the paper.
-We find no evidence of DRL agents being able to perform shortest path-planning even in simple mazes. We observe that the agent prefers to take a particular path just as an artifact of initialization. We hypothesize that the agents are learning a correspondence between local sequence of frames and actions.  These findings are the results \hl{XXX tens of thousands of trials XXX}. We provide thorough and clear summary data to substantiate these findings as well as individual maps and results to explain them carefully.  A secondary finding is that even if the agent is trained on a single maze it is able to navigate better than random in unseen mazes. Furthermore, training the agent on randomly generated maps makes it generalize better to unseen mazes. 
+We find no evidence of DRL agents being able to perform shortest path-planning in unseen mazes even in simple mazes.
+We observe that the agent prefers to take a particular path just as an artifact of initialization.
+We hypothesize that the agents are learning a correspondence between local sequence of frames and actions.
+These findings are the results on testing and training on multiple maps that were randomly chosen from set of one thousand randomly generated maps.
+We provide thorough and clear summary data to substantiate these findings as well as individual maps and results to explain them carefully.
+A secondary finding is that even if the agent is trained on a single maze it is able to navigate better than random in unseen mazes.
 

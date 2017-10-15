@@ -1,47 +1,52 @@
 
 
 \subsection{DeepmindLab navigation challenge}
-We propose a 5-stage benchmark for reinforcement learning based methods to address the navigation problem.
-While there already exists optimal algorithms to find shortest path between two points and perform optimal navigation between given set of points in a given map, the advantage of Deep reinforcement learning comes from it's ability to extract required features from the input images.
+We propose a 4-stage benchmark for reinforcement learning based methods to address the navigation problem.
+While there already exists optimal algorithms to find shortest path between two points and perform optimal navigation between given set of points in a given map, the advantage of Deep reinforcement learning comes from its ability to extract required features from the input images and its promise
+optimize mapping and path planning in end-to-end fashion. 
 Thus we need to either integrate existing path planning and mapping methods with deep learning methods to perform end-to-end training or extend deep learning methods to learn path planning and mapping.
-As we have shown this is going to be hard.
 
 \begin{description}
-  \ditem{Evaluate on training map with fixed goal location}
-    This is the textbook version of reinforcement learning problem, especially in gridworld. This problem is easier because the policy
-    is stationary at the train time and does not changes during
-    testing.
-    We propose the evaluation metric to be : the time taken to hit the goal once. We show the results on this benchmark in Table~\ref{tab:TODO-RUNEXP}.
-    We compare the results against optimal planning methods which take the support of external map input.
-  \ditem{Evaluate on training maps with random goal location}
-    Solving this problem through Reinforcement learning is harder becuase the policy function needs to depend up on the goal location.
-    This problem is attempted by \cite{MiPaViICLR2017} with limited success.
-    As their experiments and confirmed by our experiments, the navigation strategy learnt by the agent is nowhere near optimal.
-    So instead of learning a static policy function the learning algorithm needs to learn a function that returns a different policy for different goal locations.
-    This can be evaluated into ways, (a) providing the goal location as an external input to the method or (b) let the agent explore the map randomly and ask the agent to return to goal location after first round of exploration.
-    We chose method (b) and show our results on this in Table~\ref{tab:TODO}.
-    We compare the method against random systematic explorers, where the agent always moves forward and takes right turns on all junctions.
-  \ditem{Evaluate on unseen maps}
+  \ditem{Evaluate on training map, static goal location, static spawn location}
+  \label{prob:sss}
+   This is the easiest variation of our experiments. To perform
+   optimally on this experiment, the agent needs to find and learn the
+   shortest path at train time and repeat that during evaluation time.
+  \ditem{Evaluate on training map, static goal location, random spawn location}
+  This is a textbook version of reinforcement learning problem, especially in gridworld \cite{SuBaBOOK1998}, except we have partially observable world in form of first person view only.
+  This problem is more difficult than Problem~\ref{prob:sss} because the agent
+  needs to find optimal policy from each possible starting point in the maze.
+  \ditem{Evaluate on training map, random goal location, static spawn location}
+  Since the goal position is unknown in every episode, the agent needs to explore the maze to find the goal for the first time. Recall that the agent is respawned every time it hits the goal.
+  In this case the respawning happens at a static location, and if the agent remembers the location of the map, it should be able to find the goal faster than
+  the first iteration.
+  Following \cite{MiPaViICLR2017}, we report the ratio
+  of time taken to hit the goal first time (exploration time) vs the average of the time taken to hit goal subsequently (exploitation time). The metric is henceforth called \LatencyOneGtOne
+  If this ratio is greater than 1, then we say that the agent is doing better than random path planning.
+  \ditem{Evaluate on training maps with random goal location, random spawn location}
+    This is the problem that is addressed by \cite{MiPaViICLR2017}
+    with limited success. They evaluate this case on two maps and report \LatencyOneGtOne to be greater than 1 in one of the two maps. We evaluate the same metric on their map and ten other maps.
+  \ditem{Evaluate on unseen maps, random goal, random spawn}
     Any proposed algorithms on navigation problems, should be evaluated on unseen maps.
-    Since this is a hard problem, we should compare it against random systematic explorers and should be analyzed to understand the kind of approach the learning algorithm is using.
     To our knowledge, this is the first paper to evaluate Deep reinforcement learning agents on unseen maps.
-    \begin{description}
-      \dditem{Remember and repeat (Wrench map)}
-        We propose a series of maps, goal and spawn locations where the optimal performance can be achieved by repeating the action sequence that lead to the goal for the first time.
-        Wrench map (Top right in Fig~\ref{fig:environments}) has one loop and a corridor.
-        The goal is placed asymmetrically in the loop and the agent is spawned in the corridor.
-        Because of asymmetrical placement of the goal, one of the path to the goal is shorter than the other and there are only two possible paths.
-        We record the path taken each time. If the agent has learned a greedy strategy, then it would repeat the path taken for the first time.
-        We evaluate the fraction of times, the agent repeats the first path. A higher number indicates a greedy strategy.
+\end{description}
 
-        In second evaluation, we let the agent explore randomly untill it hits the goal via the shorterst path.
-        At this point we evaluate the  fraction of times shortest path is taken. For this score 
+We also evaluate the algorithm on a few qualitative maps other than I-maze. These maps are specifically designed to query what percentage of times does the agent takes shortest path.
 
-      %\dditem{Frame to action mapping}
-
-      %\dditem{Full path planning}
-      %  We propose a series of maps, goal and spawn locations, where the optimal performance cannot be achieved unless full path planning is done.
-    \end{description}
+\setcounter{Benchmark}{0}
+\begin{description}
+    \ditem{Wrench map}
+    This map is shown on the top row, extreme right column in Fig~\ref{fig:environments}. It has one loop and a corridor.
+    The goal is placed asymmetrically in the loop and the agent is spawned in the corridor.
+    Because of asymmetrical placement of the goal, one of the path to the goal is shorter than the other and there are only two possible paths.
+    We record the path taken each time. If the agent has learned a greedy strategy, then it would repeat the path taken for the first time.
+    We evaluate the fraction of times, the agent repeats the first path. A higher number indicates a greedy strategy.
+    In second evaluation, we let the agent explore randomly untill it hits the goal via the shorterst path.
+    At this point we evaluate the  fraction of times shortest path is taken. For this score 
+    \ditem{Goal map}
+    This map is shown on the bottom row, extreme right column in Fig~\ref{fig:environments}.
+    We chose this map because this is the simplest map with a fork. Making the map any simpler will make the map homeomorphic to a straight line. 
+    We evaluate the number of times the agent takes the right descision at the fork after exploring the goal once.
 \end{description}
 
 \begin{figure}%

@@ -1,6 +1,8 @@
-% 0. Baseline models
-% 1. Blinding is easy enough to understand
-% 2. The doubling of the action space - that's the brilliance
+%% Experiments
+% 1. Describe the general setup of experiment. controled hyper-parameters
+% 1.1 Game engine
+% 1.2. How random mazes are generated
+% 2. the variable components of the network
 %
 
 \subsection{Replicating Learning to navigate}
@@ -10,28 +12,30 @@ Since \cite{MiPaViICLR2017} did not release their source code, so we implemented
 To make sure that we replicate \cite{MiPaViICLR2017} results, we setup the experiment as similar to what was described in the paper.
 But unlike, \cite{MiPaViICLR2017} instead of hand picking the maps to run experiments on, we chose to run the experiments on randomly generated maps.
 We create a set of randomly generated maps by a textbook depth first search based algorithm with randomly introduced loops.
+
 \hl{Based on results chose one}
 In our experiments, we found that we do not reach the latency scores of \cite{MiPaViICLR2017} but we reach close enough.
 \hl{OR}
+
 Results in Table~\ref{tab:TODO} establish conclusively that the NavA3C agents replicated by us do perform at least as well as the agents .
 %%%%%
 Note, that we report standard deviation over latency metric which indicates that the variation between maps and algorithm is not significant enough to overcome the variation within the maps.
 This shows that the experiments in \cite{MiPaViICLR2017} were not strong enough to support the hypothesis of learning to navigate.
 
 \begin{table}[h]
-    \label{sample-table}
-    \begin{center}
-        \begin{tabular}{llll}
-          \toprule
-          Training maps & Reward & Latency 1:$>1$ & Goals \\
-          \midrule
-          1 & 41.01 $\pm$  16.78 & 152.3:145.3 $\pm$ 118.88:83.95 & 3.48 $\pm$ 1.65 \\
-          10 & 30.89 $\pm$  20.87 & 154.05:156.86 $\pm$ 140.03:98.26 & 2.47 $\pm$ 1.72 \\
-          1000 & 40.27 $\pm$  20.47 & 148.20:148.12 $\pm$ 130.45:95.28 & 3.14 $\pm$ 1.89 \\
-          \bottomrule
-        \end{tabular}
-    \end{center}
-    \caption{We achieve comparable results when we test and train on the same experiments.}
+  \label{sample-table}
+  \begin{center}
+    \begin{tabular}{llll}
+      \toprule
+      Training maps & Reward & Latency 1:$>1$ & Goals \\
+      \midrule
+      1 & 41.01 $\pm$  16.78 & 152.3:145.3 $\pm$ 118.88:83.95 & 3.48 $\pm$ 1.65 \\
+      10 & 30.89 $\pm$  20.87 & 154.05:156.86 $\pm$ 140.03:98.26 & 2.47 $\pm$ 1.72 \\
+      1000 & 40.27 $\pm$  20.47 & 148.20:148.12 $\pm$ 130.45:95.28 & 3.14 $\pm$ 1.89 \\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \caption{We achieve comparable results when we test and train on the same experiments.}
 \end{table}
 
 \subsection{Training on multiple maps}
