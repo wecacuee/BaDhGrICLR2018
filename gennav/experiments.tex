@@ -40,7 +40,7 @@ sideways, or induce rotational acceleration while moving.''
 \item All our maps have ``thick'' walls which means that each wall thickness is same as thickness of the corridor, while maps in \cite{MiPaViICLR2017}
 \end{itemize}
 
-Next, we evaluate the algorithm on increasing order of difficulty as described in Section~\ref{sec:navtasks}. The results of our experiments are tabulated in Table~\ref{tab:latency-goal-reward}.
+Next, we evaluate the algorithm on increasing order of difficulty as described in Section~\ref{sec:navtasks}. The results of our experiments are shown in Fig~\ref{fig:latency-goal-reward}.
 We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on randomly chosen ten maps with increasing difficulty.
 We change the randomness of either the spawn point or the goal location.
 We note that the increasing randomness gradually reduce the maximum reward achived and the number of times the goal is reached. As expected, the variance in reward and number of times goals is reached also increases with randomless.
@@ -56,5 +56,12 @@ We note that the increasing randomness gradually reduce the maximum reward achiv
     Similarly ``Stat S'',``Rand S'', ``Stat M'', ``Stat S''  stands for static spawn, random spawn, static maze and random maze respectively.
     We change the randomness of either the spawn point or the goal location. We note that when the goal is static then rewards are consitently higher as compared to random goal while static spawn location and random spawn location are roughly close to each other within bounds of uncertainity. As expected, switching each variable from static to random increases the standard deviation on the results.
     The \LatencyOneGtOne metric is only worth analyzing when the goal is random because the metric captures how well the agent exploits the additional knowledge of goal location after exploring the maze for goal in the first attempt.}%
-\label{fig:latency-goal_reward}%
+\label{fig:latency-goal-reward}%
 \end{figure*}
+
+\begin{figure}%
+  \includegraphics[width=\linewidth]{images/plot_ntrain_summary.pdf}%
+  \vspace{-1em}%
+  \caption{Effect of number of training maps}
+  \label{fig:num-training-maps}
+\end{figure}

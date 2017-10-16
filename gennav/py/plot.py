@@ -278,17 +278,19 @@ def num_goals_summary(source, outfile, **kwargs):
         , xlim = [0, 24]
         , **kwargs)
 
+def latency_from_goal_data(hdata):
+    return np.hstack((hdata.data[:, :1]
+                      , hdata.data[:, 1:2] / np.where(hdata.data[:, 2:3] != 0
+                                                      , hdata.data[:, 2:3], 1)
+                      , np.maximum(hdata.data[:, 3:4], hdata.data[:, 4:5])
+                      / np.maximum(hdata.data[:, 1:2], hdata.data[:, 2:3])))
+
 def get_latency_summary_data(sourcedir, labels):
     hdata_per_exp = get_summary_bar_plot_data(
             sourcedir, labels
             , columns = "chosen_map goal_first_found goal_after_found goal_first_found_std goal_after_found_std".split())
     new_header = "chosen_map latency latency_std".split()
-    return [HData(new_header,
-                 np.hstack((hdata.data[:, :1]
-                      , hdata.data[:, 1:2] / np.where(hdata.data[:, 2:3] != 0
-                                                      , hdata.data[:, 2:3], 1)
-                      , np.maximum(hdata.data[:, 3:4], hdata.data[:, 4:5])
-                            / np.maximum(hdata.data[:, 1:2], hdata.data[:, 2:3]))))
+    return [HData(new_header, latency_from_goal_data(hdata))
             for hdata in hdata_per_exp]
     
 
@@ -307,13 +309,13 @@ def summary_bar_plots(source, outfile):
     ax2 = fig_add_subplot(fig, parent_box=(l + w*0.33, b, w*0.33, h)
                          , left_margin=0, bottom_margin=0
                          , right_margin=0, top_margin=0)
+    ax2.legend(legends, loc='upper right', framealpha=0.2
+               , bbox_to_anchor=(1.5, 1.15)
+               , fontsize=SMALLERFONTSIZE, ncol=3)
     legends = num_goals_summary(source, outfile, ax=ax2)
     ax3 = fig_add_subplot(fig, parent_box=(l + w*0.66, b, w*0.33, h)
                          , left_margin=0, bottom_margin=0
                          , right_margin=0, top_margin=0)
-    ax2.legend(legends, loc='upper right', framealpha=0.2
-               , bbox_to_anchor=(1.5, 1.15)
-               , fontsize=SMALLERFONTSIZE, ncol=3)
     latency_summary(source, outfile, ax=ax3)
     
 
@@ -327,7 +329,64 @@ def latency_summary(source, outfile, **kwargs):
         , **kwargs)
 
 
-keeplotting = summary_bar_plots
+def get_ntrain_summary_data(columns):
+    return lambda source, labels : [hdata_select_keys(
+        get_random_static_maze_spawn_goal_data(source)
+        , columns)]
+
+
+def get_ntrain_latency_summary(source, labels):
+    return [HData("num_maps latency latency_std".split()
+                  , latency_from_goal_data(
+        hdata_select_keys(
+            get_random_static_maze_spawn_goal_data(source)
+            , """num_maps goal_first_found goal_first_found_std
+            goal_after_found goal_first_found_std""".split())))]
+    
+
+def ntrain_summary(source, outfile, **kwargs):
+    fig = figure(figsize=(LINEWIDTH, COLWIDTH/GOLDENR))
+    width, height = fig.bbox_inches.width, fig.bbox_inches.height
+    plot_box = subplot_box(left_margin=4*FONTSIZEIN/width)
+    l, b, w, h = plot_box
+    ax1 = fig_add_subplot(fig, parent_box=(l, b, w*0.33, h)
+                         , left_margin=0, bottom_margin=0
+                         , right_margin=0, top_margin=0)
+    legends = summary_bar_plot(
+        source, outfile
+        , data_source = get_ntrain_summary_data(
+            "num_maps reward reward_std".split())
+        , ylabel = "Num training maps"
+        , xlim = [0, 130]
+        , ax=ax1)
+    ax2 = fig_add_subplot(fig, parent_box=(l + w*0.33, b, w*0.33, h)
+                         , left_margin=0, bottom_margin=0
+                         , right_margin=0, top_margin=0)
+    ax2.legend(legends, loc='upper right', framealpha=0.2
+               , bbox_to_anchor=(1.5, 1.15)
+               , fontsize=SMALLERFONTSIZE, ncol=3)
+
+    legends = summary_bar_plot(
+        source, outfile
+        , data_source = get_ntrain_summary_data(
+            "num_maps num_goal num_goals_std".split())
+        , ylabel = None
+        , xlabel = "Average goal hits"
+        , xlim = [0, 13]
+        , ax=ax2)
+    ax3 = fig_add_subplot(fig, parent_box=(l + w*0.66, b, w*0.33, h)
+                         , left_margin=0, bottom_margin=0
+                         , right_margin=0, top_margin=0)
+    legends = summary_bar_plot(
+        source, outfile
+        , data_source = get_ntrain_latency_summary
+        , ylabel = None
+        , xlabel = "Latency $1:>1$"
+        , xlim=[0, 2.5]
+        , ax=ax3)
+
+
+keeplotting = ntrain_summary
 
 
 if __name__ == '__main__':
