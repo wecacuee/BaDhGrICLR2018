@@ -10,6 +10,8 @@ from matplotlib.backends.backend_pdf import FigureCanvasPdf
 from matplotlib.backends.backend_pgf import FigureCanvasPgf
 #mplab.backend_bases.register_backend('pdf', FigureCanvasPgf)
 
+from .process import process, select_keys_where, hdata_from_dicts
+
 ########## Customizations
 
 COLWIDTH = 3.3249 # Size of letter paper divided by 2
@@ -172,11 +174,15 @@ def get_reward_data(D):
      assert len(steps) == len(mean_reward)
      return steps, mean_reward, std_reward
 
+ def get_random_static_maze_spawn_goal_data():
+     pass
 
 def figure(figsize=(COLWIDTH, COLWIDTH/GOLDENR)):
     return mplab.figure.Figure(figsize=figsize)
 
-if __name__ == '__main__':
+if __name__ == '__main__' and __package__ is None:
+    # for relative imports
+    __package__ = "plot"
     import sys
     func = sys.argv[1]
     source = sys.argv[2]

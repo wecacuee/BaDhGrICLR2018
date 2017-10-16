@@ -31,7 +31,7 @@ $(OO)/%.pdf: %.tex $(OO)/.mkdir
 	echo "$@: \\" > $(OO)/$*.mk
 	# If some file is missing add it to dependency list (e.g $*.bbl)
 	$(SED) -n 's/No file \([^ ]\+\.\w\{3,4\}\)\.\?/$(INDENT)$(OO)\/\1 \\/p' $(OO)/$*.log >> $(OO)/$*.mk
-	$(SED) -n "s/LaTeX Warning: File \`\([^']*\)' not found.*$/$(INDENT)$(OO)\/\1 \\\\/p" $(OO)/$*.log >> $(OO)/$*.mk
+	$(SED) -n "s/LaTeX Warning: File .\([^']*\). not found.*$/$(INDENT)$(OO)\/\1 \\\\/p" $(OO)/$*.log >> $(OO)/$*.mk
 	# -recorder flag will output the files that were opened by pdflatex to
 	# $*.fls
 	# Parse the input files into the makefile. Remove the aux file from

@@ -1,58 +1,84 @@
+We perform extensive experiments on randomly generated maps and analyze the results to evaluate the performance of Nav A3C on navigation.
 %% Experiments
-% 1. Describe the general setup of experiment. controled hyper-parameters
-% 1.1 Game engine
-% 1.2. How random mazes are generated
-% 2. the variable components of the network
-%
+% Introduce the Deep-RL method we use. Based on earlier work.
+% Describe the differing environments we are trying the method on. It is important that the reader understands how environment complexity increases over time. In order of increasing difficulty we have:
+% Static spawn, static goal, static maze 
+% - deterministic, easy, memorizable
+% 
+% 
+% Random spawn, static goal, static maze 
+% - Agent must recognize a path upon revisiting it
+% - Must memorize multiple paths to goal
+% 
+% 
+% Static spawn, random goal, static maze 
+% - Maze environment needs to be learned in some sense
+% - Agent needs to remember the maze to navigate to the goal repeatedly
+% 
+% 
+% Random spawn, random goal, static maze
+% - agent needs to dynamically remember the maze and goal location
+% - can it first find the goal and then repeatedly traverse to it in shorter amounts of time?
+% Random spawn, random goal, random maps
+% - can the agent learn a generalized navigation strategy that performs implicit mapping
+% - If it can’t what is it actually learning?
+% Effect of variations: An agent that was trained on planar environments will fail to generalize but does an agent trained on variations environment generalize to planar environments.
+% How do learned navigation strategies extend to unknown environments? Is there every any aspect of path planning? 
+
 
 \subsection{Replicating Learning to navigate}
+Since \cite{MiPaViICLR2017} did not release their source code, so we implemented their pipeline by starting a fork from \texttt{universe-start-agent}\cite{OpenAI2017UniverseStarterAgent}.
 
-Since \cite{MiPaViICLR2017} did not release their source code, so we implemented their pipeline starting from \texttt{universe-start-agent}\cite{OpenAI2017UniverseStarterAgent}.
+To make sure that we replicate \cite{MiPaViICLR2017} results, we setup the experiment as similar to what was described in the paper. We use the same game environment Deepmind Lab \cite{BeLeTeARXIV2016} as used by \cite{MiPaViICLR2017}. But there are few differences that are note worthy
+\begin{itemize}
+\item But unlike, \cite{MiPaViICLR2017} instead of hand picking the maps to run experiments on, we chose to run the experiments on randomly generated maps.
+We create a set of randomly generated maps by a textbook depth first search based algorithm with randomly introduced loops. The 
+\item We use a smaller action space than \cite{MiPaViICLR2017}. We use an action space of four actions move forward, move backward, rotate left and roate right, while \cite{MiPaViICLR2017} use an action space of 8 actions ``the agent can rotate in small increments, accelerate forward or backward or
+sideways, or induce rotational acceleration while moving.''
+\item We use randomly colored walls to aid the agent in uniquely identifying the locations.
+\item We use wall penality to make sure that the agent does not run into walls too often.
+\item All our maps have ``thick'' walls which means that each wall thickness is same as thickness of the corridor, while maps in \cite{MiPaViICLR2017}
+\end{itemize}
 
-To make sure that we replicate \cite{MiPaViICLR2017} results, we setup the experiment as similar to what was described in the paper.
-But unlike, \cite{MiPaViICLR2017} instead of hand picking the maps to run experiments on, we chose to run the experiments on randomly generated maps.
-We create a set of randomly generated maps by a textbook depth first search based algorithm with randomly introduced loops.
+Next, we evaluate the algorithm on increasing order of difficulty as described in Section~\ref{sec:navtasks}. The results of our experiments are tabulated in Table~\ref{tab:latency-goal-reward}.
+We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on randomly chosen ten maps with increasing difficulty.
+We change the randomness of either the spawn point or the goal location.
+We note that the increasing randomness gradually reduce the maximum reward achived and the number of times the goal is reached. As expected, the variance in reward and number of times goals is reached also increases with randomless.
 
-\hl{Based on results chose one}
-In our experiments, we found that we do not reach the latency scores of \cite{MiPaViICLR2017} but we reach close enough.
-\hl{OR}
-
-Results in Table~\ref{tab:TODO} establish conclusively that the NavA3C agents replicated by us do perform at least as well as the agents .
-%%%%%
-Note, that we report standard deviation over latency metric which indicates that the variation between maps and algorithm is not significant enough to overcome the variation within the maps.
-This shows that the experiments in \cite{MiPaViICLR2017} were not strong enough to support the hypothesis of learning to navigate.
-
-\begin{table}[h]
-  \label{sample-table}
-  \begin{center}
-    \begin{tabular}{llll}
-      \toprule
-      Training maps & Reward & Latency 1:$>1$ & Goals \\
-      \midrule
-      1 & 41.01 $\pm$  16.78 & 152.3:145.3 $\pm$ 118.88:83.95 & 3.48 $\pm$ 1.65 \\
-      10 & 30.89 $\pm$  20.87 & 154.05:156.86 $\pm$ 140.03:98.26 & 2.47 $\pm$ 1.72 \\
-      1000 & 40.27 $\pm$  20.47 & 148.20:148.12 $\pm$ 130.45:95.28 & 3.14 $\pm$ 1.89 \\
-      \bottomrule
-    \end{tabular}
-  \end{center}
-  \caption{We achieve comparable results when we test and train on the same experiments.}
+\begin{table}
+\begin{tabular}{lrrrrr}%
+  \toprule
+Map &  Reward & Reward std & Num. goals & Num. goals std & \LatencyOneGtOne
+\\ \midrule
+\multicolumn{4}{l}{Static maze Static goal Static spawn}
+\\ \midrule
+\csvreader[head to column names,respect sharp]%
+          {exp-results/Static_Goal_Static_Spawn_Static_Maze.csv}{}%
+          {\\ \csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv & \csvcolvi
+          :\csvcolvii}%
+\\ \midrule
+\multicolumn{4}{l}{Static maze Static goal Random spawn}
+\\ \midrule
+\csvreader[head to column names,respect sharp]%
+          {exp-results/Static_Goal_Random_Spawn_Static_Maze.csv}{}%
+          {\\ \csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv & \csvcolvi
+          :\csvcolvii}%
+\\ \midrule
+\multicolumn{4}{l}{Static maze Random goal Random spawn}
+\\ \midrule
+\csvreader[head to column names,respect sharp]%
+          {exp-results/Random_Goal_Random_Spawn_Static_Maze.csv}{}%
+          {\\ \csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv & \csvcolvi
+          :\csvcolvii}%
+\\ \midrule
+\multicolumn{4}{l}{Random maze Random goal Random spawn}
+\\ \midrule
+\csvreader[head to column names,respect sharp]%
+          {exp-results/Random_Goal_Random_Spawn_Random_Maze.csv}{}%
+          {\\ \csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv & \csvcolvi
+          :\csvcolvii}%
+\\ \bottomrule
+\end{tabular}
+\caption{We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on randomly chosen ten maps with increasing difficulty. We change the randomness of either the spawn point or the goal location. We note that the increasing randomness gradually reduce the maximum reward achived and the number of times the goal is reached. As expected, the variance in reward and number of times goals is reached also increases with randomless.}
+\label{tab:latency-goal-reward}
 \end{table}
-
-\subsection{Training on multiple maps}
-Can we generalize the performance of the agent by training on multiple maps? The answer turns out to be no.
-
-\subsection{Evaluation on unseen maps}
-What if we test on unseen maps, will the agents be able to tranfer their strategies onto unseen maps? The answer turns out to be no.
-
-\subsection{Do the agents learn a frame to action mapping and repeat it?}
-NO
-\hl{Show qualitative and quantitative results to address this hypothesis}
-
-\subsection{Do the agents memorize the path and repeat it?}
-NO
-\hl{Show qualitative and quantitative results to address this hypothesis}
-
-\subsection{Are these agent doing better path planning than random?}
-We evaluate the trained agents on 1000 random maps on very simple maps which have only two possible paths to reach the goal -- one shorter than the other. We evaluate the agent whether it does better than a random agent.
-It does not.
-
