@@ -84,7 +84,9 @@ def process(source="../exp-results/"
                 ,'Static_Goal_Random_Spawn_Static_Maze'
                 ,'Random_Goal_Random_Spawn_Static_Maze'
                 , 'Random_Goal_Random_Spawn_Random_Maze']
-            , keys = "chosen_map reward reward_std num_goal num_goals_std goal_first_found goal_after_found num_maps".split()):
+            , keys = """chosen_map reward reward_std num_goal
+            num_goals_std goal_first_found goal_after_found num_maps
+            goal_first_found_std goal_after_found_std""".split()):
     source = op.join(sourcedir(), source)
     outfile = op.join(sourcedir(), outfile)
     header = keys
@@ -115,7 +117,7 @@ def process(source="../exp-results/"
 
 if __name__ == '__main__':
     import sys
-    func = sys.argv[1]
+    func = sys.argv[1] if len(sys.argv) > 1 else "process"
     kwargs = dict()
     if len(sys.argv) > 2 and sys.argv[2]: kwargs["source"] = sys.argv[2]
     if len(sys.argv) > 3 and sys.argv[3]: kwargs["outfile"] = sys.argv[3]

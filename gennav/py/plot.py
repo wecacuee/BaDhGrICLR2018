@@ -7,14 +7,15 @@ import matplotlib as mplab
 import matplotlib.figure as mpfig
 #import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import FigureCanvasPdf
-from matplotlib.backends.backend_pgf import FigureCanvasPgf
-#mplab.backend_bases.register_backend('pdf', FigureCanvasPgf)
+#from matplotlib.backends.backend_pgf import FigureCanvasPgf
+#mplab.backend_bases.register_backend('pdf', FigureCanvasPdf)
 
-from .process import process, select_keys_where, hdata_from_dicts
+from process import process, select, hdata_from_dicts, HData
 
 ########## Customizations
 
-COLWIDTH = 3.3249 # Size of letter paper divided by 2
+LINEWIDTH = 6.5
+COLWIDTH = 6.5 / 2 # Size of letter paper divided by 2
 GOLDENR = 1.618
 COLHEIGHT = COLWIDTH / GOLDENR
 
@@ -48,6 +49,11 @@ FONTSIZEIN = PT2INCH(FONT['size'])
 # indistinguishable in print format
 LINE_STYLES = [m + l for m, l in itertools.product(LINES, MARKERS)]
 LINE_COLOR_PAIRS = [c + l for l, c in zip(LINE_STYLES[:len(COLORS)], COLORS)]
+
+def figure(figsize=(COLWIDTH, COLWIDTH/GOLDENR)):
+    fig = mplab.figure.Figure(figsize=figsize)
+    fig.set_canvas(FigureCanvasPdf(fig))
+    return fig
 
 def subplot_box(parent_box = (0, 0, 1, 1)
                 , left_margin = FONTSIZEIN*4 / COLWIDTH 
@@ -86,7 +92,6 @@ def reward(npzfile, outfile):
         legends.append('%d maps'% n)
     ax.legend(legends, ncol=2, loc='lower center', framealpha=0.2
               , fontsize=SMALLERFONTSIZE)
-    fig.set_canvas(FigureCanvasPgf(fig))
     fig.savefig(outfile)
 
 def probability(npzfile, outfile):
@@ -126,7 +131,6 @@ def probability(npzfile, outfile):
 
     ax.legend(legends, loc='lower right', framealpha=0.2,
               fontsize=SMALLERFONTSIZE)
-    fig.set_canvas(FigureCanvasPgf(fig))
     fig.savefig(outfile)
 
 def get_probability_data(D):
@@ -174,20 +178,165 @@ def get_reward_data(D):
      assert len(steps) == len(mean_reward)
      return steps, mean_reward, std_reward
 
- def get_random_static_maze_spawn_goal_data():
-     pass
+def try_int_float(s):
+    try:
+        return int(s)
+    except ValueError:
+        try:
+            return float(s)
+        except ValueError:
+            return s
 
-def figure(figsize=(COLWIDTH, COLWIDTH/GOLDENR)):
-    return mplab.figure.Figure(figsize=figsize)
+def csv_read(fname, sep):
+    with open(fname) as f:
+        header = f.readline().strip().split(sep)
+        yield header
+        line = f.readline()
+        while line:
+            yield map(try_int_float, line.strip().split(sep))
+            line = f.readline()
 
-if __name__ == '__main__' and __package__ is None:
+def get_random_static_maze_spawn_goal_data(fname, sep=","):
+    csv_reader_iter = csv_read(fname, sep)
+    header = next(csv_reader_iter)
+    data = np.array([row for row in csv_reader_iter])
+    return HData(header, data)
+
+def hdata_select_keys(hdata, keys):
+    indices = [hdata.header.index(k) for k in keys]
+    return HData(keys, hdata.data[:, indices])
+
+def get_summary_bar_plot_data(sourcedir, labels,
+                            columns = "chosen_map reward reward_std".split()):
+
+    return [
+        hdata_select_keys(
+            get_random_static_maze_spawn_goal_data(
+                op.join(sourcedir, label) + ".csv")
+            , columns)
+        for label in labels]
+
+def summary_bar_plot(source, outfile
+                   , labels=[
+                       'Static_Goal_Static_Spawn_Static_Maze'
+                       #,'Random_Goal_Static_Spawn_Static_Maze'
+                       , 'Static_Goal_Random_Spawn_Static_Maze'
+                       , 'Random_Goal_Random_Spawn_Static_Maze'
+                   ]
+                     , short_labels = [
+                         'Stat G, Stat S, Stat M'
+                         #, 'Rand G, Stat S, Stat M'
+                         , 'Stat G, Rand S, Stat M'
+                         , 'Rand G, Rand S, Stat M'
+                         ]
+                     , data_source = get_summary_bar_plot_data
+                     , xlabel="Reward"
+                     , ylabel="Map ID"
+                     , xlim = [0, 240]
+                     , ax = fig_add_subplot(
+                         figure(), top_margin=FONTSIZEIN/10.0/COLHEIGHT
+                         , right_margin=FONTSIZEIN/10.0/COLWIDTH)):
+    """ plot reward summary """
+    if ylabel:
+        ax.set_ylabel(ylabel)
+    if xlabel:
+        ax.set_xlabel(xlabel)
+    reward_per_exp = data_source(source, labels)
+    width = COLHEIGHT / (reward_per_exp[0].data.shape[0] * 0.8)
+    mapids = reward_per_exp[0].data[:, 0]
+    if ylabel:
+        ax.set_yticks(range(len(mapids)))
+        ax.set_yticklabels(map(str, map(int, list(mapids))))
+    else:
+        ax.set_yticks([])
+    if xlim:
+        ax.set_xlim(xlim)
+        
+    legends = []
+    for i, (label, reward) in enumerate(zip(short_labels, reward_per_exp)):
+        reward = np.abs(reward.data)
+        barc = ax.barh(np.arange(reward.shape[0])
+                      + i*width - (len(reward_per_exp)-1) * width/2.0
+                      , reward[:, 1], width
+                      , xerr=reward[:, 2])
+        legends.append(label)
+    #ax.legend(legends, loc='upper left', framealpha=0.2,
+    #          fontsize=SMALLERFONTSIZE)
+
+    print("saving to {}".format(outfile))
+    ax.figure.savefig(outfile)
+    return legends
+
+def num_goals_summary(source, outfile, **kwargs):
+    return summary_bar_plot(
+        source, outfile,
+        data_source = lambda src, labels: get_summary_bar_plot_data(
+            src, labels
+            , columns = "chosen_map num_goal num_goals_std".split())
+        , xlabel="Average goal hits"
+        , ylabel=None
+        , xlim = [0, 24]
+        , **kwargs)
+
+def get_latency_summary_data(sourcedir, labels):
+    hdata_per_exp = get_summary_bar_plot_data(
+            sourcedir, labels
+            , columns = "chosen_map goal_first_found goal_after_found goal_first_found_std goal_after_found_std".split())
+    new_header = "chosen_map latency latency_std".split()
+    return [HData(new_header,
+                 np.hstack((hdata.data[:, :1]
+                      , hdata.data[:, 1:2] / np.where(hdata.data[:, 2:3] != 0
+                                                      , hdata.data[:, 2:3], 1)
+                      , np.maximum(hdata.data[:, 3:4], hdata.data[:, 4:5])
+                            / np.maximum(hdata.data[:, 1:2], hdata.data[:, 2:3]))))
+            for hdata in hdata_per_exp]
+    
+
+reward_summary = summary_bar_plot
+
+def summary_bar_plots(source, outfile):
+    fig = figure(figsize=(LINEWIDTH, COLWIDTH/GOLDENR))
+    width, height = fig.bbox_inches.width, fig.bbox_inches.height
+    plot_box = subplot_box(left_margin=4*FONTSIZEIN/width
+                           , top_margin=2*FONTSIZEIN/height)
+    l, b, w, h = plot_box
+    ax1 = fig_add_subplot(fig, parent_box=(l, b, w*0.33, h)
+                         , left_margin=0, bottom_margin=0
+                         , right_margin=0, top_margin=0)
+    legends = reward_summary(source, outfile, ax=ax1)
+    ax2 = fig_add_subplot(fig, parent_box=(l + w*0.33, b, w*0.33, h)
+                         , left_margin=0, bottom_margin=0
+                         , right_margin=0, top_margin=0)
+    legends = num_goals_summary(source, outfile, ax=ax2)
+    ax3 = fig_add_subplot(fig, parent_box=(l + w*0.66, b, w*0.33, h)
+                         , left_margin=0, bottom_margin=0
+                         , right_margin=0, top_margin=0)
+    ax2.legend(legends, loc='upper right', framealpha=0.2
+               , bbox_to_anchor=(1.5, 1.15)
+               , fontsize=SMALLERFONTSIZE, ncol=3)
+    latency_summary(source, outfile, ax=ax3)
+    
+
+def latency_summary(source, outfile, **kwargs):
+    return summary_bar_plot(
+        source, outfile
+        , data_source = get_latency_summary_data
+        , xlabel="Latency $1:>1$"
+        , ylabel=None
+        , xlim = [0, 2.8]
+        , **kwargs)
+
+
+keeplotting = summary_bar_plots
+
+
+if __name__ == '__main__':
     # for relative imports
-    __package__ = "plot"
     import sys
     func = sys.argv[1]
     source = sys.argv[2]
     outfile = sys.argv[3]
-    print("TEXINPUTS {}".format(os.environ["TEXINPUTS"]))
+    #print("TEXINPUTS {}".format(os.environ["TEXINPUTS"]))
     globals()[func](source, outfile)
     
     

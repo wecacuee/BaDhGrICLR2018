@@ -45,40 +45,8 @@ We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on randomly chosen ten ma
 We change the randomness of either the spawn point or the goal location.
 We note that the increasing randomness gradually reduce the maximum reward achived and the number of times the goal is reached. As expected, the variance in reward and number of times goals is reached also increases with randomless.
 
-\begin{table}
-\begin{tabular}{lrrrrr}%
-  \toprule
-Map &  Reward & Reward std & Num. goals & Num. goals std & \LatencyOneGtOne
-\\ \midrule
-\multicolumn{4}{l}{Static maze Static goal Static spawn}
-\\ \midrule
-\csvreader[head to column names,respect sharp]%
-          {exp-results/Static_Goal_Static_Spawn_Static_Maze.csv}{}%
-          {\\ \csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv & \csvcolvi
-          :\csvcolvii}%
-\\ \midrule
-\multicolumn{4}{l}{Static maze Static goal Random spawn}
-\\ \midrule
-\csvreader[head to column names,respect sharp]%
-          {exp-results/Static_Goal_Random_Spawn_Static_Maze.csv}{}%
-          {\\ \csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv & \csvcolvi
-          :\csvcolvii}%
-\\ \midrule
-\multicolumn{4}{l}{Static maze Random goal Random spawn}
-\\ \midrule
-\csvreader[head to column names,respect sharp]%
-          {exp-results/Random_Goal_Random_Spawn_Static_Maze.csv}{}%
-          {\\ \csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv & \csvcolvi
-          :\csvcolvii}%
-\\ \midrule
-\multicolumn{4}{l}{Random maze Random goal Random spawn}
-\\ \midrule
-\csvreader[head to column names,respect sharp]%
-          {exp-results/Random_Goal_Random_Spawn_Random_Maze.csv}{}%
-          {\\ \csvcoli & \csvcolii & \csvcoliii & \csvcoliv & \csvcolv & \csvcolvi
-          :\csvcolvii}%
-\\ \bottomrule
-\end{tabular}
+\begin{figure*}%
+  \includegraphics[width=\linewidth]{images/plot_summary_bar_plots.pdf}%
 \caption{We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on randomly chosen ten maps with increasing difficulty. We change the randomness of either the spawn point or the goal location. We note that the increasing randomness gradually reduce the maximum reward achived and the number of times the goal is reached. As expected, the variance in reward and number of times goals is reached also increases with randomless.}
-\label{tab:latency-goal-reward}
-\end{table}
+\label{fig:latency-goal_reward}
+\end{figure*}

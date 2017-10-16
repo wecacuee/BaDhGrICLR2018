@@ -1,4 +1,5 @@
 ifndef INCLUDED_PDFLATEX_MK
+SHELL:=/bin/bash
 INCLUDED_PDFLATEX_MK=1
 OO?=out
 PDFLATEX?=pdflatex
@@ -6,7 +7,7 @@ PDFLATEX_CMD?=TEXINPUTS=$(TEXINPUTS) $(PDFLATEX) -shell-escape -interaction=nons
 PDFLATEX_R:=$(PDFLATEX_CMD) -recorder
 PWD:=$(shell pwd)
 BIBTEX?=BIBINPUTS=.:$(PWD):$(BIBINPUTS) BSTINPUTS=.:$(PWD):$(BSTINPUTS) bibtex
-SED:=sed # --posix
+SED:=sed --posix
 GREP:=grep
 
 define BIBTEXRECIPE =
@@ -26,12 +27,12 @@ INDENT:=$(e)    $(e)
 
 .PRECIOUS .ONESHELL:
 $(OO)/%.pdf: %.tex $(OO)/.mkdir
-	$(PDFLATEX_R) $<
+	-$(PDFLATEX_R) $<
 	### Create a dependency list in makefile format
 	echo "$@: \\" > $(OO)/$*.mk
 	# If some file is missing add it to dependency list (e.g $*.bbl)
 	$(SED) -n 's/No file \([^ ]\+\.\w\{3,4\}\)\.\?/$(INDENT)$(OO)\/\1 \\/p' $(OO)/$*.log >> $(OO)/$*.mk
-	$(SED) -n "s/LaTeX Warning: File .\([^']*\). not found.*$/$(INDENT)$(OO)\/\1 \\\\/p" $(OO)/$*.log >> $(OO)/$*.mk
+	$(SED) -n 's#LaTeX Warning: File \`\([^'\'']*\)'\'' not found.*$$#$(INDENT)\1 \\#p' $(OO)/$*.log >> $(OO)/$*.mk
 	# -recorder flag will output the files that were opened by pdflatex to
 	# $*.fls
 	# Parse the input files into the makefile. Remove the aux file from
