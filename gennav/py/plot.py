@@ -10,7 +10,7 @@ from matplotlib.backends.backend_pdf import FigureCanvasPdf
 #from matplotlib.backends.backend_pgf import FigureCanvasPgf
 #mplab.backend_bases.register_backend('pdf', FigureCanvasPdf)
 
-from process import process, select, hdata_from_dicts, HData
+from process import process, select, hdata_from_dicts, HData, default_keys_transform
 
 ########## Customizations
 
@@ -193,18 +193,20 @@ def csv_read(fname, sep):
         yield header
         line = f.readline()
         while line:
-            yield map(try_int_float, line.strip().split(sep))
+            yield dict(zip(header, map(try_int_float, line.strip().split(sep))))
             line = f.readline()
 
 def get_random_static_maze_spawn_goal_data(fname, sep=","):
-    csv_reader_iter = csv_read(fname, sep)
-    header = next(csv_reader_iter)
-    data = np.array([row for row in csv_reader_iter])
-    return HData(header, data)
+    return csv_read(fname, sep)
 
-def hdata_select_keys(hdata, keys):
-    indices = [hdata.header.index(k) for k in keys]
-    return HData(keys, hdata.data[:, indices])
+def dict_get(dict_, keys):
+    return [dict_[k] for k in keys]
+
+def hdata_select_keys(csv_lines, keys):
+    header = next(csv_lines)
+    datalines = [dict_get(d, keys)
+                 for d in select(default_keys_transform(keys), csv_lines)]
+    return HData(keys, np.array(datalines))
 
 def get_summary_bar_plot_data(sourcedir, labels,
                             columns = "chosen_map reward reward_std".split()):
@@ -260,11 +262,10 @@ def summary_bar_plot(source, outfile
                       , reward[:, 1], width
                       , xerr=reward[:, 2])
         legends.append(label)
-    #ax.legend(legends, loc='upper left', framealpha=0.2,
-    #          fontsize=SMALLERFONTSIZE)
 
-    print("saving to {}".format(outfile))
-    ax.figure.savefig(outfile)
+    if outfile:
+        print("saving to {}".format(outfile))
+        ax.figure.savefig(outfile)
     return legends
 
 def num_goals_summary(source, outfile, **kwargs):
@@ -305,19 +306,21 @@ def summary_bar_plots(source, outfile):
     ax1 = fig_add_subplot(fig, parent_box=(l, b, w*0.33, h)
                          , left_margin=0, bottom_margin=0
                          , right_margin=0, top_margin=0)
-    legends = reward_summary(source, outfile, ax=ax1)
+    legends = reward_summary(source, None, ax=ax1)
     ax2 = fig_add_subplot(fig, parent_box=(l + w*0.33, b, w*0.33, h)
                          , left_margin=0, bottom_margin=0
                          , right_margin=0, top_margin=0)
+    legends = num_goals_summary(source, None, ax=ax2)
     ax2.legend(legends, loc='upper right', framealpha=0.2
                , bbox_to_anchor=(1.5, 1.15)
                , fontsize=SMALLERFONTSIZE, ncol=3)
-    legends = num_goals_summary(source, outfile, ax=ax2)
+
     ax3 = fig_add_subplot(fig, parent_box=(l + w*0.66, b, w*0.33, h)
                          , left_margin=0, bottom_margin=0
                          , right_margin=0, top_margin=0)
-    latency_summary(source, outfile, ax=ax3)
-    
+    latency_summary(source, None, ax=ax3)
+    print("Saving to {}".format(outfile))
+    fig.savefig(outfile)
 
 def latency_summary(source, outfile, **kwargs):
     return summary_bar_plot(
@@ -353,7 +356,7 @@ def ntrain_summary(source, outfile, **kwargs):
                          , left_margin=0, bottom_margin=0
                          , right_margin=0, top_margin=0)
     legends = summary_bar_plot(
-        source, outfile
+        source, None
         , data_source = get_ntrain_summary_data(
             "num_maps reward reward_std".split())
         , ylabel = "Num training maps"
@@ -364,7 +367,7 @@ def ntrain_summary(source, outfile, **kwargs):
                          , right_margin=0, top_margin=0)
 
     legends = summary_bar_plot(
-        source, outfile
+        source, None
         , data_source = get_ntrain_summary_data(
             "num_maps num_goal num_goals_std".split())
         , ylabel = None
@@ -376,16 +379,19 @@ def ntrain_summary(source, outfile, **kwargs):
                          , left_margin=0, bottom_margin=0
                          , right_margin=0, top_margin=0)
     legends = summary_bar_plot(
-        source, outfile
+        source, None
         , data_source = get_ntrain_latency_summary
         , ylabel = None
         , xlabel = "Latency $1:>1$"
         , xlim=[0, 2.5]
         , ax=ax3)
 
+    print("Saving to {}".format(outfile))
+    fig.savefig(outfile)
 
-keeplotting = ntrain_summary
 
+def keeplotting(outfile):
+    summary_bar_plots("../exp-results", outfile)
 
 if __name__ == '__main__':
     # for relative imports

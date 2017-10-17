@@ -14,7 +14,7 @@ while True:
     try:
         reload(plot)
         from plot import *
-        plot.keeplotting("../exp-results/Random_Goal_Random_Spawn_Random_Maze.csv", "/tmp/plot.pdf")
+        plot.keeplotting("/tmp/plot.pdf")
         subprocess.Popen("evince /tmp/plot.pdf".split())
     except Exception as e:
         traceback.print_exc(e)

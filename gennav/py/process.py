@@ -5,14 +5,18 @@ import json
 from collections import namedtuple
 from functools import partial
 
-def merge_dicts(d1, d2):
-    d1.update(d2)
+def merge_dicts(*args):
+    dicts = args
+    d1 = dicts[0]
+    for d2 in dicts[1:]:
+        d1.update(d2)
     return d1
 
 def loadmodels(sourcedir):
     return (
         merge_dicts(
-            json.load(
+            dict(sourcedir=d)
+            , json.load(
                 open(op.join(sourcedir, d, 'model_details.json' )))
             , json.load(
                 open(op.join(sourcedir, d, 'gen_stats.json'))).values()[0])
@@ -63,14 +67,17 @@ def hdata_save(csvfname, hdata):
     np.savetxt(csvfname, hdata.data, fmt='%.02f', delimiter=",",
                header=",".join(hdata.header))
 
-def dicts_csv_writer(csvf, dicts, sep=",", linesep="\n", header=None):
-    first = next(dicts)
+def format_csv_writer(dicts, sep=",", linesep="\n", header=None):
+    try:
+        first = next(dicts)
+    except StopIteration:
+        raise ValueError("Empty dicts")
     header = header or sorted(first.keys())
-    csvf.write(sep.join(header) + linesep)
+    yield sep.join(header) + linesep
     row2str = lambda r : sep.join(map(str, (r[h] for h in header))) + linesep
-    csvf.write(row2str(first))
+    yield row2str(first)
     for row in dicts:
-        csvf.write(row2str(row))
+        yield row2str(row)
 
 def sourcedir():
     return op.dirname(__file__) or '.'
@@ -80,13 +87,13 @@ def process(source="../exp-results/"
             , outfile="../exp-results/{}.csv"
             , labels = [
                 'Static_Goal_Static_Spawn_Static_Maze'
-                #,'Random_Goal_Static_Spawn_Static_Maze'
+                ,'Random_Goal_Static_Spawn_Static_Maze'
                 ,'Static_Goal_Random_Spawn_Static_Maze'
                 ,'Random_Goal_Random_Spawn_Static_Maze'
                 , 'Random_Goal_Random_Spawn_Random_Maze']
             , keys = """chosen_map reward reward_std num_goal
             num_goals_std goal_first_found goal_after_found num_maps
-            goal_first_found_std goal_after_found_std""".split()):
+            goal_first_found_std goal_after_found_std sourcedir""".split()):
     source = op.join(sourcedir(), source)
     outfile = op.join(sourcedir(), outfile)
     header = keys
@@ -97,23 +104,28 @@ def process(source="../exp-results/"
     for label in labels[:-1]:
         dicts = select(keys
                        , loadmodels(source)
-                       , where_from_dict(label=label))
+                       , where_from_dict(label=label, train=False))
         dicts = iter(sorted(dicts, key=lambda d: d["chosen_map"]))
-        with open(outfile.format(label), "w") as csvf:
-            dicts_csv_writer(csvf, dicts, header=header)
-        #hdata = hdata_from_dicts(dicts)
-        #average = HData(hdata.header,
-        #                np.mean(hdata.data, axis=0, keepdims=True))
-        #hdata_save(outfile.format(label), average)
+        try:
+            lines = list(format_csv_writer(dicts, header=header))
+        except ValueError:
+            print("[WARNING]: No experiments match criteria {}"
+                  .format(dict(label=label, train=False)))
+            continue
 
+        with open(outfile.format(label), "w") as csvf:
+            for line in lines: csvf.write(line)
+
+    # Separate iteration for Random_Goal_Random_Spawn_Random_Maze
+    # because chosen_map needs to be replaced by num_maps
     label = labels[-1]
     dicts = select([keys[-1]] + keys[1:-1]
                     , loadmodels(source)
                     , where_from_dict(label=label))
     dicts = iter(sorted(dicts, key=lambda d: d["num_maps"]))
+    lines = format_csv_writer(dicts, header=[header[-1]] + header[1:-1])
     with open(outfile.format(label), "w") as csvf:
-        dicts_csv_writer(csvf, dicts, header=[header[-1]] + header[1:-1])
-
+        for line in lines: csvf.write(line)
 
 if __name__ == '__main__':
     import sys
