@@ -32,16 +32,17 @@ Ann Arbor, MI 48109, USA \\
 \maketitle
 
 \begin{abstract}
-In recent years, agents trained via Deep Reinforcement Learning based methods have shown a lot of promise in learning to navigate to goal locations in complicated three-dimensional worlds. Of paritcular interest has been the fact that these agents have to shown to reliably perform this navigation  without the need for any explicit SLAM or path-planning. In their current form, however, these agents are not well understood enough to serve as a viable replacement to traditional methods. Of particular concern has been the literature's standard approach of utilizing the same environments for training and testing in the evaluation of these agents. In this work we (a) Reimplement state-of-the-art DRL agents and quantify their performance across thousands of seen and unseen environments possessing large amounts of variety (b) We introduce simple modifications to standard architectures to improve the performance of these agents on previously unseen worlds. Our findings showcase that state-of-art methods are able to generlized learned behaviors but retain no memory of previously visited areas. Our modified agents are found to outperform them drastically via the explicit use of frame-action look up tables within these networks. 
+  Deep reinforcement learning (DRL) algorithms have demonstrated strong progress in learning to reach a goal in challenging environments.
+  One might conclude that state of the art DRL agents, such as \cite{MiPaViICLR2017}, learn to navigate by learning a some form of a map followed by path planning to goal.
+  Yet, from this earlier work, it is not clear whether or not these DRL agents are indeed doing any form of path planning.
+  In this paper, we pose and study this question: are DRL agents doing some form of path-planning?  Our experiments show that the agents are not memorizing the maps of mazes at the training stage but, rather, memorizing the maps of mazes at the testing stage, for each maze differently.
+  However, the DRL agents fall short of qualifying as mapping and path-planning agents.
+  We find evidence that the DRL agents are learning a correspondence to perform an action for each frame and there is no evidence of path-planning.
 \end{abstract}
 
 \section{Introduction}
 %\input{intro-drl-doesnt-generalize}
 \input{intro-drl-not-path-planning}
-\section{Navigational tasks with increasing difficulty}
-\label{sec:navtasks}
-\input{intro-drl-nav-challenge}
-
 \section{Related Work}
 \input{related-work}
 
@@ -51,6 +52,10 @@ In recent years, agents trained via Deep Reinforcement Learning based methods ha
 %\section{Approach}
 %\input{approach}
 \section{Experiments}
+\section{Navigational tasks with increasing difficulty}
+\label{sec:navtasks}
+\input{intro-drl-nav-challenge}
+
 \input{experiments}
 
 %\section{Analysis}

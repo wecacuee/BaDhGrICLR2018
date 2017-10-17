@@ -35,7 +35,7 @@ To make sure that we replicate \cite{MiPaViICLR2017} results, we setup the exper
 We create a set of randomly generated maps by a textbook depth first search based algorithm with randomly introduced loops. The 
 \item We use a smaller action space than \cite{MiPaViICLR2017}. We use an action space of four actions move forward, move backward, rotate left and roate right, while \cite{MiPaViICLR2017} use an action space of 8 actions ``the agent can rotate in small increments, accelerate forward or backward or
 sideways, or induce rotational acceleration while moving.''
-\item We use randomly colored walls to aid the agent in uniquely identifying the locations.
+\item We use randomly colored walls for robustness against textures.
 \item We use wall penality to make sure that the agent does not run into walls too often.
 \item All our maps have ``thick'' walls which means that each wall thickness is same as thickness of the corridor, while maps in \cite{MiPaViICLR2017}
 \end{itemize}
@@ -44,6 +44,15 @@ Next, we evaluate the algorithm on increasing order of difficulty as described i
 We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on randomly chosen ten maps with increasing difficulty.
 We change the randomness of either the spawn point or the goal location.
 We note that the increasing randomness gradually reduce the maximum reward achived and the number of times the goal is reached. As expected, the variance in reward and number of times goals is reached also increases with randomless.
+
+\subsection{Evaluation Metrics}
+We report three evaluation metrics in all our experiments, Reward, Average number of goal hits and \LatencyOneGtOne. We run evaluations on a map for 100 episodes and take the mean and standard deviation of the rewards per episode and number of goal hits per episode. Even though reward includes rewards due to apples and negative rewards due to wall penalities, the reward due to goal dominates dominates the reward metric making reward approximately ten times the average goal hits.
+
+The \LatencyOneGtOne is defined as the ratio of time take to find the goal first time to the average time take to find goal thereafter.
+Note that whenever the goal location is ``Random'' (different in each episode but same for the episode), untill the goal is found for the first time, the agent is just exploring the map.
+After the first goal hit, the agent should be able to exploit the location of the goal to find the goal in shorter times.
+Hence a \LatencyOneGtOne value greater than one indicates that the algorithm is able to successfully exploit information gathered during goal finding exploration.
+
 
 \begin{figure*}%
   \vspace{-4em}%

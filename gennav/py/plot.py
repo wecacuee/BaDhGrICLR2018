@@ -340,8 +340,8 @@ def get_ntrain_latency_summary(source, labels):
                   , latency_from_goal_data(
         hdata_select_keys(
             get_random_static_maze_spawn_goal_data(source)
-            , """num_maps goal_first_found goal_first_found_std
-            goal_after_found goal_first_found_std""".split())))]
+            , """num_maps goal_first_found goal_after_found
+            goal_first_found_std goal_after_found_std""".split())))]
     
 
 def ntrain_summary(source, outfile, **kwargs):
@@ -362,9 +362,6 @@ def ntrain_summary(source, outfile, **kwargs):
     ax2 = fig_add_subplot(fig, parent_box=(l + w*0.33, b, w*0.33, h)
                          , left_margin=0, bottom_margin=0
                          , right_margin=0, top_margin=0)
-    ax2.legend(legends, loc='upper right', framealpha=0.2
-               , bbox_to_anchor=(1.5, 1.15)
-               , fontsize=SMALLERFONTSIZE, ncol=3)
 
     legends = summary_bar_plot(
         source, outfile
@@ -374,6 +371,7 @@ def ntrain_summary(source, outfile, **kwargs):
         , xlabel = "Average goal hits"
         , xlim = [0, 13]
         , ax=ax2)
+
     ax3 = fig_add_subplot(fig, parent_box=(l + w*0.66, b, w*0.33, h)
                          , left_margin=0, bottom_margin=0
                          , right_margin=0, top_margin=0)

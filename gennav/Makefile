@@ -2,6 +2,7 @@ OO=out
 
 BaDhGrICLR2018.pdf: $(OO)/main.pdf
 	ln -fs $< $@
+	xdg-open $@ &
 
 $(OO)/main.pdf: iclr2018_conference.sty main_filtered.bib 
 
