@@ -6,6 +6,15 @@ import numpy as np
 import json
 from collections import namedtuple
 from functools import partial
+from itertools import product
+from argparse import Namespace
+
+conf = Namespace()
+conf.keys = """chosen_map reward reward_std num_goal
+            num_goals_std goal_first_found goal_after_found num_maps
+            goal_first_found_std goal_after_found_std sourcedir
+            loaded_model vars apple_prob train_test_same label train jsonfile
+            """.split()
 
 def merge_dicts(*args):
     dicts = args
@@ -111,13 +120,19 @@ def select(keys=None, from_=None, where=None):
     return select_k(keys, select_w(from_, where))
 
 HData = namedtuple('HData', ['header', 'data'])
-def hdata_from_dicts(dicts):
+def hdata_from_dicts(dicts, header=None):
     row_d = next(dicts)
-    header = sorted(row_d.keys())
+    header = header or sorted(row_d.keys())
     row_to_values = lambda r : [r[h] for h in header]
     arr_list = [row_to_values(row_d)]
     arr_list += [row_to_values(r) for r in dicts]
     return HData(header, np.array(arr_list))
+
+def hdata_from_csv(csv_lines):
+    header = next(csv_lines)
+    datalines = [[row_d[h] for h in header ]
+                 for row_d in csv_lines]
+    return HData(header, datalines)
 
 def hdata_save(csvfname, hdata):
     np.savetxt(csvfname, hdata.data, fmt='%.02f', delimiter=",",
@@ -147,11 +162,7 @@ def process(source="../exp-results/"
                 , 'Static_Goal_Random_Spawn_Static_Maze'
                 , 'Random_Goal_Random_Spawn_Static_Maze'
                 , 'Random_Goal_Random_Spawn_Random_Maze']
-            , keys = """chosen_map reward reward_std num_goal
-            num_goals_std goal_first_found goal_after_found num_maps
-            goal_first_found_std goal_after_found_std sourcedir
-            loaded_model vars apple_prob train_test_same label train jsonfile
-            """.split()
+            , keys = conf.keys
             , condition = dict(vars=True, apple_prob=0)):
     source = op.join(sourcedir(), source)
     outfile = op.join(sourcedir(), outfile)
@@ -188,6 +199,36 @@ def process(source="../exp-results/"
 
         with open(outfile.format(label), "w") as csvf:
             for line in lines: csvf.write(line)
+
+def ntrain_data(source="../exp-results/"
+                , outfile="../exp-results/ntrained.csv"
+                , ntrain = [1, 10, 100, 500, 1000]
+                , keys = conf.keys
+                , condition = {
+                    "label" : "Random_Goal_Random_Spawn_Random_Maze"}):
+    """
+    variables :
+    ntrain \in [1, 1000], vars \in {0, 1}, apple_prob \in {0, 25}
+    """
+    dicts = select(keys
+                , loadmodels(source)
+                , where_all(
+                    lambda r : r["chosen_map"] == r.get("loaded_model","")
+                    , where_str_contains(loaded_model="training-")
+                    , where_equals(**condition)))
+
+    dicts = iter(sorted(
+        dicts , key=lambda d: int(d["loaded_model"].split("-")[-1])))
+    try:
+        lines = list(format_csv_writer(dicts, header=keys))
+    except ValueError:
+        print("[WARNING]: No experiments match criteria {}"
+            .format(condition))
+        return
+
+    with open(outfile, "w") as csvf:
+        for line in lines:
+            csvf.write(line)
 
 if __name__ == '__main__':
     import sys

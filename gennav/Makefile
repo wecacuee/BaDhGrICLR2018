@@ -15,7 +15,7 @@ images/plot_probability_%.pdf: npz_files/%.npz #py/plot.py
 images/plot_summary_bar_plots.pdf: ./exp-results/Static_Goal_Random_Spawn_Static_Maze.csv
 	python py/plot.py summary_bar_plots $(<D) $@
 
-images/plot_ntrain_summary.pdf: ./exp-results/Random_Goal_Random_Spawn_Random_Maze.csv
+images/plot_ntrain_summary.pdf: ./exp-results/ntrained.csv
 	python py/plot.py ntrain_summary $< $@
 
 ./exp-results/Static_Goal_Random_Spawn_Static_Maze.csv:

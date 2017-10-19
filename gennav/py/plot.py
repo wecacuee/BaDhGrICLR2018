@@ -1,6 +1,7 @@
 import os
 import os.path as op
 import itertools
+import types
 
 import numpy as np
 import matplotlib as mplab
@@ -10,7 +11,8 @@ from matplotlib.backends.backend_pdf import FigureCanvasPdf
 #from matplotlib.backends.backend_pgf import FigureCanvasPgf
 #mplab.backend_bases.register_backend('pdf', FigureCanvasPdf)
 
-from process import process, select, hdata_from_dicts, HData, default_keys_transform
+from process import (process, try_types, select, where_equals, hdata_from_dicts,
+                     hdata_from_csv, HData, default_keys_transform)
 
 ########## Customizations
 
@@ -161,15 +163,16 @@ def get_latency_data(D):
                                     for latencies in goal_latency_data]
 
     return D['steps'], first_goal_latency, second_and_more_goal_latency
-        
     
 
 def plot_reward(ax, x, y, yerr, style):
     ax.errorbar(x, y, yerr, fmt=style, capsize=1.5, errorevery=3)
     return ax
 
+
 def loaddata(f):
     return np.load(f)
+
         
 def get_reward_data(D):
      mean_reward = [d['mean'] for d in D['rewards']]
@@ -178,22 +181,15 @@ def get_reward_data(D):
      assert len(steps) == len(mean_reward)
      return steps, mean_reward, std_reward
 
-def try_int_float(s):
-    try:
-        return int(s)
-    except ValueError:
-        try:
-            return float(s)
-        except ValueError:
-            return s
 
-def csv_read(fname, sep):
+def csv_read(fname, sep, return_header=True):
     with open(fname) as f:
         header = f.readline().strip().split(sep)
-        yield header
+        if return_header:
+            yield header
         line = f.readline()
         while line:
-            yield dict(zip(header, map(try_int_float, line.strip().split(sep))))
+            yield dict(zip(header, map(try_types, line.strip().split(sep))))
             line = f.readline()
 
 
@@ -205,11 +201,16 @@ def dict_get(dict_, keys):
     return [dict_[k] for k in keys]
 
 
-def hdata_select_keys(csv_lines, keys):
-    header = next(csv_lines)
-    datalines = [dict_get(d, keys)
-                 for d in select(default_keys_transform(keys), csv_lines)]
-    return HData(keys, np.array(datalines))
+def hdata_select_keys(hdata, keys):
+    if not isinstance(hdata, HData) and isinstance(hdata, types.GeneratorType):
+        hdata = hdata_from_csv(hdata)
+
+    bool_header = [h in keys for h in hdata.header]
+    return HData(keys, hdata.data[:, bool_header])
+
+
+def hdata_select_rows(hdata, where):
+    return HData(hdata.header, hdata.data[where(hdata), :])
 
 
 def get_summary_bar_plot_data(sourcedir, labels,
@@ -232,16 +233,18 @@ def summary_bar_plot(source, outfile
                        , 'Random_Goal_Random_Spawn_Random_Maze'
                      ]
                      , short_labels = [
-                         'Stat G, Stat S, Stat M'
-                         #, 'Rand G, Stat S, Stat M'
-                         , 'Stat G, Rand S, Stat M'
-                         , 'Rand G, Rand S, Stat M'
-                         , 'Rand G, Rand S, Rand M'
+                         'St G, St S, St M'
+                         #, 'Rnd G, St S, St M'
+                         , 'St G, Rnd S, St M'
+                         , 'Rnd G, Rnd S, St M'
+                         , 'Rnd G, Rnd S, Rnd M'
                      ]
                      , data_source = get_summary_bar_plot_data
                      , xlabel="Reward"
                      , ylabel="Map ID"
                      , xlim = [0, 240]
+                     , ylim = lambda nmaps : [-0.5, nmaps -0.5]
+                     , barwidth = lambda h, nmaps : h/(nmaps * 1.2)
                      , ax = fig_add_subplot(
                          figure(), top_margin=FONTSIZEIN/10.0/COLHEIGHT
                          , right_margin=FONTSIZEIN/10.0/COLWIDTH)):
@@ -251,13 +254,16 @@ def summary_bar_plot(source, outfile
     if xlabel:
         ax.set_xlabel(xlabel)
     reward_per_exp = data_source(source, labels)
-    width = COLHEIGHT / (reward_per_exp[0].data.shape[0])
+    width = barwidth(COLHEIGHT, reward_per_exp[0].data.shape[0])
     mapids = reward_per_exp[0].data[:, 0]
     if ylabel:
-        ax.set_yticks(range(len(mapids)))
+        ax.set_yticks(range(len(mapids)), minor=False)
         ax.set_yticklabels(map(str, map(int, list(mapids))))
+        for ti in ax.yaxis.get_major_ticks():
+            ti.tick1On = False
     else:
         ax.set_yticks([])
+
     if xlim:
         ax.set_xlim(xlim)
     ax.set_ylim([-0.5, reward_per_exp[0].data.shape[0]-0.5])
@@ -268,7 +274,8 @@ def summary_bar_plot(source, outfile
         barc = ax.barh(np.arange(reward.shape[0])
                       + i*width - (len(reward_per_exp)-1) * width/2.0
                       , reward[:, 1], width
-                      , xerr=reward[:, 2])
+                      , xerr=reward[:, 2]
+                       , error_kw = dict(elinewidth=0.5))
         legends.append(label)
 
     if outfile:
@@ -290,11 +297,22 @@ def num_goals_summary(source, outfile, **kwargs):
 
 
 def latency_from_goal_data(hdata):
-    return np.hstack((hdata.data[:, :1]
-                      , hdata.data[:, 1:2] / np.where(hdata.data[:, 2:3] != 0
-                                                      , hdata.data[:, 2:3], 1)
-                      , np.maximum(hdata.data[:, 3:4], hdata.data[:, 4:5])
-                      / np.maximum(hdata.data[:, 1:2], hdata.data[:, 2:3])))
+    time_to_goal_first_found = hdata.data[:, 1:2]
+    time_to_goal_thereafter_found = hdata.data[:, 2:3]
+    time_to_goal_first_found_std = hdata.data[:, 3:4]
+    time_to_goal_thereafter_found_std = hdata.data[:, 4:5]
+    min_num_val = np.maximum(
+        time_to_goal_first_found - time_to_goal_first_found_std, 0)
+    max_num_val = time_to_goal_first_found + time_to_goal_first_found_std
+    min_den_val = np.maximum(
+        time_to_goal_thereafter_found - time_to_goal_thereafter_found_std, 1)
+    max_den_val = time_to_goal_thereafter_found + time_to_goal_thereafter_found_std
+    latency = time_to_goal_first_found / time_to_goal_thereafter_found
+    min_latency = min_num_val / max_den_val
+    max_latency = max_num_val / min_den_val
+    latency_std = np.maximum((latency - min_latency)
+                             , (max_latency - min_latency))
+    return np.hstack((hdata.data[:, :1] , latency , latency_std))
 
 
 def get_latency_summary_data(sourcedir, labels):
@@ -321,7 +339,7 @@ def summary_bar_plots(source, outfile):
                          , right_margin=0, top_margin=0)
     legends = reward_summary(source, None, ax=ax1)
     ax2 = fig_add_subplot(fig, parent_box=(l + w*0.33, b, w*0.33, h)
-                         , left_margin=0, bottom_margin=0
+                         , left_margin=FONTSIZEIN/width, bottom_margin=0
                          , right_margin=0, top_margin=0)
     legends = num_goals_summary(source, None, ax=ax2)
     ax2.legend(legends, loc='upper right', framealpha=0.2
@@ -329,7 +347,7 @@ def summary_bar_plots(source, outfile):
                , fontsize=SMALLERFONTSIZE, ncol=4)
 
     ax3 = fig_add_subplot(fig, parent_box=(l + w*0.66, b, w*0.33, h)
-                         , left_margin=0, bottom_margin=0
+                         , left_margin=FONTSIZEIN/width, bottom_margin=0
                          , right_margin=0, top_margin=0)
     latency_summary(source, None, ax=ax3)
     print("Saving to {}".format(outfile))
@@ -347,57 +365,92 @@ def latency_summary(source, outfile, **kwargs):
 
 
 def get_ntrain_summary_data(columns):
-    return lambda source, labels : [hdata_select_keys(
-        get_random_static_maze_spawn_goal_data(source)
-        , columns)]
+    return lambda source, labels : [
+        hdata_from_dicts(
+                select(columns
+                       , csv_read(source, sep=",", return_header=False)
+                       , where_equals(vars=vars_, apple_prob=apple_prob))
+            , header=columns)
+        for vars_, apple_prob in labels ]
 
 
 def get_ntrain_latency_summary(source, labels):
-    return [HData("num_maps latency latency_std".split()
-                  , latency_from_goal_data(
-        hdata_select_keys(
-            get_random_static_maze_spawn_goal_data(source)
-            , """num_maps goal_first_found goal_after_found
-            goal_first_found_std goal_after_found_std""".split())))]
+    return [
+        HData(
+            "num_maps latency latency_std".split()
+            , latency_from_goal_data(
+                hdata_from_dicts(
+                    select("""num_maps goal_first_found goal_after_found
+                    goal_first_found_std goal_after_found_std""".split()
+                           , csv_read(source, ",", return_header=False)
+                           , where_equals(vars=vars_, apple_prob=apple_prob) ))))
+            for vars_, apple_prob in labels
+    ]
     
 
-def ntrain_summary(source, outfile, **kwargs):
+def ntrain_summary(source="../exp-results/ntrained.csv"
+                   , outfile=None
+                   , labels = [ (True, 0)
+                                , (True, 25)
+                                , (False, 0)
+                                , (False, 25)
+                   ]
+                   , short_labels = ["Rnd Texture, No apples"
+                                     , "Rnd Texture, With apples"
+                                     , "St Texture, No apples"
+                                     , "St Texture, With apples"
+                   ]
+                   , ):
     fig = figure(figsize=(LINEWIDTH, COLWIDTH/GOLDENR))
     width, height = fig.bbox_inches.width, fig.bbox_inches.height
-    plot_box = subplot_box(left_margin=4*FONTSIZEIN/width)
+    plot_box = subplot_box(left_margin=4*FONTSIZEIN/width,
+                           top_margin=2*FONTSIZEIN/height,
+                           bottom_margin=3*FONTSIZEIN/height)
     l, b, w, h = plot_box
     ax1 = fig_add_subplot(fig, parent_box=(l, b, w*0.33, h)
                          , left_margin=0, bottom_margin=0
                          , right_margin=0, top_margin=0)
     legends = summary_bar_plot(
         source, None
+        , labels = labels 
+        , short_labels = short_labels
         , data_source = get_ntrain_summary_data(
             "num_maps reward reward_std".split())
         , ylabel = "Num training maps"
-        , xlim = [0, 130]
+        , xlim = [0, 100]
+        , barwidth = lambda h, nmaps: h / (nmaps * 4)
         , ax=ax1)
     ax2 = fig_add_subplot(fig, parent_box=(l + w*0.33, b, w*0.33, h)
-                         , left_margin=0, bottom_margin=0
+                         , left_margin=FONTSIZEIN/width, bottom_margin=0
                          , right_margin=0, top_margin=0)
 
     legends = summary_bar_plot(
         source, None
+        , labels = labels 
+        , short_labels = short_labels
         , data_source = get_ntrain_summary_data(
             "num_maps num_goal num_goals_std".split())
         , ylabel = None
         , xlabel = "Average goal hits"
-        , xlim = [0, 13]
+        , barwidth = lambda h, nmaps: h / (nmaps * 4)
+        , xlim = [0, 10]
         , ax=ax2)
+    ax2.legend(legends, loc='upper right', framealpha=0.2
+               , bbox_to_anchor=(1.8, 1.14)
+               , fontsize=SMALLERFONTSIZE, ncol=4)
 
     ax3 = fig_add_subplot(fig, parent_box=(l + w*0.66, b, w*0.33, h)
-                         , left_margin=0, bottom_margin=0
+                         , left_margin=FONTSIZEIN/width, bottom_margin=0
                          , right_margin=0, top_margin=0)
     legends = summary_bar_plot(
         source, None
+        , labels = labels 
+        , short_labels = short_labels
         , data_source = get_ntrain_latency_summary
         , ylabel = None
         , xlabel = "Latency $1:>1$"
-        , xlim=[0, 2.5]
+        , barwidth = lambda h, nmaps: h / (nmaps * 4)
+        , xlim=[0, 1.25]
         , ax=ax3)
 
     print("Saving to {}".format(outfile))
@@ -405,7 +458,8 @@ def ntrain_summary(source, outfile, **kwargs):
 
 
 def keeplotting(outfile):
-    summary_bar_plots("../exp-results", outfile)
+    #summary_bar_plots("../exp-results", outfile)
+    ntrain_summary(op.join(thisdir, "../exp-results/ntrained.csv"), outfile)
 
 if __name__ == '__main__':
     # for relative imports
