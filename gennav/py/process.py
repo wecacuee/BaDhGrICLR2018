@@ -4,6 +4,9 @@ import operator
 import glob
 import numpy as np
 import json
+import tempfile
+import subprocess
+
 from collections import namedtuple
 from functools import partial
 from itertools import product
@@ -229,6 +232,40 @@ def ntrain_data(source="../exp-results/"
     with open(outfile, "w") as csvf:
         for line in lines:
             csvf.write(line)
+
+
+def get_img_from_video(videofile, timestamp):
+    import cv2
+    with tempfile.NamedTemporaryFile(suffix=".png") as tf:
+        subprocess.call("ffmpeg -y -i {} -ss {} -vframes 1 {}"
+                        .format(videofile, timestamp, tf.name).split())
+        return cv2.imread(tf.name)
+
+
+def video_to_snapshot(source
+                      , outfile
+                      , timestamps = [
+                          "00:00:00.03"
+                          , "00:00:00.57"
+                          , "00:00:01.60"
+                          , "00:00:06.30"
+                          , "00:00:09.40"
+                          , "00:00:11.40"
+                          , "00:00:15.60"
+                          , "00:00:19.20"
+                          , "00:00:20.12"
+                          , "00:00:20.70"
+                      ]):
+    import cv2
+    total_img = []
+    for ts in timestamps:
+        img = get_img_from_video(source, ts)
+        width = img.shape[1]
+        total_img.append(
+            np.vstack((img[:, :width/3],
+                       img[:, width/3:2*width/3], img[:, 2*width/3:])))
+    cv2.imwrite(outfile, np.hstack(total_img))
+
 
 if __name__ == '__main__':
     import sys
