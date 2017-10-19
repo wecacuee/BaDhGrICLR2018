@@ -1,0 +1,1 @@
+{"0": {"goal_first_found": 200.81, "goal_after_found_std": 42.240594116500006, "num_ep": 100, "reward_std": 38.779872620174515, "num_goal": 10.390000000000001, "num_goals_std": 3.8830271696190848, "goal_after_found": 111.18343990325928, "reward": 103.55634092330932, "goal_first_found_std": 157.48845640236621}}

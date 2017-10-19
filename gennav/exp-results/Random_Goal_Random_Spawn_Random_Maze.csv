@@ -1,5 +1,10 @@
-sourcedir,reward,reward_std,num_goal,num_goals_std,goal_first_found,goal_after_found,num_maps,goal_first_found_std,goal_after_found_std
-2017_10_06_20_02_33-train_3D_4actions_blind-none_0010,86.47,38.20,7.25,4.39,190.33,180.39,10,150.38,96.85
-2017_10_06_20_02_35-train_3D_4actions_blind-none_0100,75.06,31.44,5.74,3.05,209.49,199.69,100,174.23,109.28
-2017_10_06_20_02_37-train_3D_4actions_blind-none_0500,80.67,30.50,6.02,2.58,198.97,200.76,500,151.03,102.15
-2017_10_06_20_02_39-train_3D_4actions_blind-none_1000,81.48,28.01,6.16,2.71,192.70,200.75,1000,145.38,110.87
+chosen_map,reward,reward_std,num_goal,num_goals_std,goal_first_found,goal_after_found,num_maps,goal_first_found_std,goal_after_found_std,sourcedir,loaded_model,vars,apple_prob,train_test_same,label,train,jsonfile
+0127,63.25,26.33,6.35,2.64,173.41,176.51,1,115.84,74.01,2017_10_06_20_02_11-train_3D_4actions_blind-none_0001,training-1000,True,0,False,Random_Goal_Random_Spawn_Static_Maze,False,gen_stats_latest_training-1000_vars-True_apples-0.json
+0169,71.12,26.96,7.14,2.70,160.11,163.62,1,109.41,77.08,2017_10_06_20_02_14-train_3D_4actions_blind-none_0001,training-1000,True,0,False,Random_Goal_Random_Spawn_Static_Maze,False,gen_stats_latest_training-1000_vars-True_apples-0.json
+0246,69.29,25.64,6.96,2.57,171.09,170.71,1,150.63,73.29,2017_10_09_18_06_53-train_3D_4actions_blind-none_0001,training-1000,True,0,False,Random_Goal_Random_Spawn_Static_Maze,False,gen_stats_latest_training-1000_vars-True_apples-0.json
+0336,58.84,27.37,5.92,2.74,230.46,220.62,1,161.67,126.96,2017_10_06_20_02_17-train_3D_4actions_blind-none_0001,training-1000,True,0,False,Random_Goal_Random_Spawn_Static_Maze,False,gen_stats_latest_training-1000_vars-True_apples-0.json
+0445,63.08,27.12,6.34,2.72,203.38,198.09,1,127.32,94.73,2017_10_06_20_02_19-train_3D_4actions_blind-none_0001,training-1000,True,0,False,Random_Goal_Random_Spawn_Static_Maze,False,gen_stats_latest_training-1000_vars-True_apples-0.json
+0589,74.71,36.11,7.50,3.62,166.13,175.38,1,136.35,95.65,2017_10_06_20_02_21-train_3D_4actions_blind-none_0001,training-1000,True,0,False,Random_Goal_Random_Spawn_Static_Maze,False,gen_stats_latest_training-1000_vars-True_apples-0.json
+0691,59.93,27.32,6.02,2.74,186.52,202.30,1,130.71,90.89,2017_10_06_20_02_23-train_3D_4actions_blind-none_0001,training-1000,True,0,False,Random_Goal_Random_Spawn_Static_Maze,False,gen_stats_latest_training-1000_vars-True_apples-0.json
+0828,69.83,32.72,7.01,3.28,178.46,171.46,1,150.40,91.09,2017_10_06_20_02_25-train_3D_4actions_blind-none_0001,training-1000,True,0,False,Random_Goal_Random_Spawn_Static_Maze,False,gen_stats_latest_training-1000_vars-True_apples-0.json
+0956,60.82,26.79,6.11,2.68,210.34,195.92,1,166.37,80.79,2017_10_06_20_02_28-train_3D_4actions_blind-none_0001,training-1000,True,0,False,Random_Goal_Random_Spawn_Static_Maze,False,gen_stats_latest_training-1000_vars-True_apples-0.json

@@ -224,12 +224,14 @@ def summary_bar_plot(source, outfile
                        #,'Random_Goal_Static_Spawn_Static_Maze'
                        , 'Static_Goal_Random_Spawn_Static_Maze'
                        , 'Random_Goal_Random_Spawn_Static_Maze'
+                       , 'Random_Goal_Random_Spawn_Random_Maze'
                    ]
                      , short_labels = [
                          'Stat G, Stat S, Stat M'
                          #, 'Rand G, Stat S, Stat M'
                          , 'Stat G, Rand S, Stat M'
                          , 'Rand G, Rand S, Stat M'
+                         , 'Rand G, Rand S, Rand M'
                          ]
                      , data_source = get_summary_bar_plot_data
                      , xlabel="Reward"
@@ -244,7 +246,7 @@ def summary_bar_plot(source, outfile
     if xlabel:
         ax.set_xlabel(xlabel)
     reward_per_exp = data_source(source, labels)
-    width = COLHEIGHT / (reward_per_exp[0].data.shape[0] * 0.8)
+    width = COLHEIGHT / (reward_per_exp[0].data.shape[0])
     mapids = reward_per_exp[0].data[:, 0]
     if ylabel:
         ax.set_yticks(range(len(mapids)))
@@ -253,6 +255,7 @@ def summary_bar_plot(source, outfile
         ax.set_yticks([])
     if xlim:
         ax.set_xlim(xlim)
+    ax.set_ylim([-0.5, reward_per_exp[0].data.shape[0]-0.5])
         
     legends = []
     for i, (label, reward) in enumerate(zip(short_labels, reward_per_exp)):
@@ -298,10 +301,11 @@ def get_latency_summary_data(sourcedir, labels):
 reward_summary = summary_bar_plot
 
 def summary_bar_plots(source, outfile):
-    fig = figure(figsize=(LINEWIDTH, COLWIDTH/GOLDENR))
+    fig = figure(figsize=(LINEWIDTH, 0.7 * LINEWIDTH / GOLDENR))
     width, height = fig.bbox_inches.width, fig.bbox_inches.height
-    plot_box = subplot_box(left_margin=4*FONTSIZEIN/width
-                           , top_margin=2*FONTSIZEIN/height)
+    plot_box = subplot_box(left_margin=4*FONTSIZEIN / width
+                           , bottom_margin=3*FONTSIZEIN / height
+                           , top_margin=2*FONTSIZEIN / height)
     l, b, w, h = plot_box
     ax1 = fig_add_subplot(fig, parent_box=(l, b, w*0.33, h)
                          , left_margin=0, bottom_margin=0
@@ -312,8 +316,8 @@ def summary_bar_plots(source, outfile):
                          , right_margin=0, top_margin=0)
     legends = num_goals_summary(source, None, ax=ax2)
     ax2.legend(legends, loc='upper right', framealpha=0.2
-               , bbox_to_anchor=(1.5, 1.15)
-               , fontsize=SMALLERFONTSIZE, ncol=3)
+               , bbox_to_anchor=(1.8, 1.10)
+               , fontsize=SMALLERFONTSIZE, ncol=4)
 
     ax3 = fig_add_subplot(fig, parent_box=(l + w*0.66, b, w*0.33, h)
                          , left_margin=0, bottom_margin=0

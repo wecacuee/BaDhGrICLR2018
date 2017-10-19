@@ -1,5 +1,7 @@
 import os
 import os.path as op
+import operator
+import glob
 import numpy as np
 import json
 from collections import namedtuple
@@ -12,16 +14,50 @@ def merge_dicts(*args):
         d1.update(d2)
     return d1
 
+def str2bool(s):
+    if s in "True False".split():
+        return True if s == "True" else False if s == "False" else None
+    else:
+        raise ValueError("Bad bool {}".format(s))
+
+def try_types(str_, types=[str2bool, int, float]):
+    for t in types:
+        try:
+            return t(str_)
+        except ValueError:
+            continue
+    return str_
+
+def filename_to_model_details(genstatjson
+                              , translations = {"apples":"apple_prob"}):
+    """
+    >>> filename_to_model_details(
+    ... "gen_stats_latest_training-1000_vars-True_apples-25.json")
+    {'loaded_model': 'training-1000', 'apple_prob': True, 'training': True, 'vars': True, 'train_test_same' : False}
+    """
+    if genstatjson == "gen_stats.json":
+        return {"train_test_same" : True }
+
+    stem = op.splitext(genstatjson)[0]
+    ignorelen = len("gen_stats_latest_")
+    remaining = stem[ignorelen:]
+    loaded_model = remaining.split("_")[0]
+    key_values = remaining.split("_")[1:]
+    dict_ = {translations.get(k, k) : try_types(v)
+            for k, v in [s.split("-") for s in key_values]}
+    dict_.update( { "loaded_model" : loaded_model, "train_test_same" : False })
+    return dict_
+
 def loadmodels(sourcedir):
     return (
         merge_dicts(
-            dict(sourcedir=d)
+            {"sourcedir" : op.basename(op.dirname(genstat))
+             , "jsonfile" : op.basename(genstat) }
             , json.load(
-                open(op.join(sourcedir, d, 'model_details.json' )))
-            , json.load(
-                open(op.join(sourcedir, d, 'gen_stats.json'))).values()[0])
-        for d in os.listdir(sourcedir)
-        if op.isdir(op.join(sourcedir, d)))
+                open(op.join(op.dirname(genstat), 'model_details.json' )))
+            , filename_to_model_details(op.basename(genstat))
+            , json.load(open(genstat)).values()[0])
+        for genstat in glob.glob(op.join(sourcedir, '*/gen_stats*.json')))
 
 def select_keys(keys, from_):
     return ({k : transform(row.get(k, "")) for k, transform in keys}
@@ -31,11 +67,29 @@ def select_where(from_, where):
     return (row for row in from_
             if where(row))
 
-def where_from_dict(**equality_kw):
-    return lambda row : all(row[k] == v for k, v in equality_kw.items())
+def where_reduce(func, args):
+    return lambda row : func(a(row) for a in args)
+
+def where_all(*args):
+    return where_reduce(all, args)
+
+def where_any(*args):
+    return where_reduce(any, args)
+
+def where_op(opfunc, key_val):
+    return lambda row: all(opfunc(row.get(k, ""), v) for k, v in key_val.items())
+
+def where_str_contains(**key_val):
+    return where_op(operator.contains, key_val)
+
+def where_equals(**equality_kw):
+    return where_op(operator.eq, equality_kw)
 
 def default_keys_transform(keys, transform=lambda v: v):
     return [(k , transform)  for k in keys]
+
+def multigetitem(d, keys):
+    return [d[k] for k in keys]
 
 def select(keys=None, from_=None, where=None):
     """
@@ -50,6 +104,8 @@ def select(keys=None, from_=None, where=None):
     assert from_ is not None
     idfunc = lambda k, t : t
     select_k = idfunc if keys is None  else select_keys
+    if isinstance(keys, list) and isinstance(keys[0], (str, unicode)):
+        keys = default_keys_transform(keys, lambda v : v)
     idfunc = lambda t, w : t
     select_w = idfunc if where is None else select_where
     return select_k(keys, select_w(from_, where))
@@ -87,45 +143,51 @@ def process(source="../exp-results/"
             , outfile="../exp-results/{}.csv"
             , labels = [
                 'Static_Goal_Static_Spawn_Static_Maze'
-                ,'Random_Goal_Static_Spawn_Static_Maze'
-                ,'Static_Goal_Random_Spawn_Static_Maze'
-                ,'Random_Goal_Random_Spawn_Static_Maze'
+                , 'Random_Goal_Static_Spawn_Static_Maze'
+                , 'Static_Goal_Random_Spawn_Static_Maze'
+                , 'Random_Goal_Random_Spawn_Static_Maze'
                 , 'Random_Goal_Random_Spawn_Random_Maze']
             , keys = """chosen_map reward reward_std num_goal
             num_goals_std goal_first_found goal_after_found num_maps
-            goal_first_found_std goal_after_found_std sourcedir""".split()):
+            goal_first_found_std goal_after_found_std sourcedir
+            loaded_model vars apple_prob train_test_same label train jsonfile
+            """.split()
+            , condition = dict(vars=True, apple_prob=0)):
     source = op.join(sourcedir(), source)
     outfile = op.join(sourcedir(), outfile)
     header = keys
     keys = default_keys_transform(
         keys,
         lambda v : "{:.02f}".format(v) if isinstance(v, float) else v)
-    keys[0] = ("chosen_map", lambda cm: cm[-4:])
-    for label in labels[:-1]:
+    keys[0] = ("chosen_map", lambda cm: cm.split("-")[-1])
+    for label in labels:
+        loaded_model_part = ("training-09x09-"
+                             if "Static_Maze" in label
+                             else "training-1000")
+        condition_label = condition.copy()
+        if label == "Random_Goal_Random_Spawn_Random_Maze":
+            condition_label["label"] = "Random_Goal_Random_Spawn_Static_Maze"
+        else:
+            condition_label["label"] = label
+
         dicts = select(keys
                        , loadmodels(source)
-                       , where_from_dict(label=label, train=False))
-        dicts = iter(sorted(dicts, key=lambda d: d["chosen_map"]))
+                       , where_all(
+                           where_str_contains(
+                               chosen_map="training-09x09-",
+                               loaded_model=loaded_model_part),
+                           where_equals(**condition_label)))
+
+        dicts = iter(sorted(dicts, key=lambda d: int(d["chosen_map"])))
         try:
             lines = list(format_csv_writer(dicts, header=header))
         except ValueError:
             print("[WARNING]: No experiments match criteria {}"
-                  .format(dict(label=label, train=False)))
+                  .format(merge_dicts({ "label" : label}, condition)))
             continue
 
         with open(outfile.format(label), "w") as csvf:
             for line in lines: csvf.write(line)
-
-    # Separate iteration for Random_Goal_Random_Spawn_Random_Maze
-    # because chosen_map needs to be replaced by num_maps
-    label = labels[-1]
-    dicts = select([keys[-1]] + keys[1:-1]
-                    , loadmodels(source)
-                    , where_from_dict(label=label))
-    dicts = iter(sorted(dicts, key=lambda d: d["num_maps"]))
-    lines = format_csv_writer(dicts, header=[header[-1]] + header[1:-1])
-    with open(outfile.format(label), "w") as csvf:
-        for line in lines: csvf.write(line)
 
 if __name__ == '__main__':
     import sys

@@ -1,1 +1,6 @@
-for f in /z/home/shurjo/implicit-mapping/a3c-random-mazes/*/gen_stats.json; do lf=2017_10_06_20_02_39-train_3D_4actions_blind-none_1000/gen_stats.json; mkdir 2017_10_06_20_02_39-train_3D_4actions_blind-none_1000 ; cp /z/home/shurjo/implicit-mapping/a3c-random-mazes/2017_10_06_20_02_39-train_3D_4actions_blind-none_1000/*.json 2017_10_06_20_02_39-train_3D_4actions_blind-none_1000; done
+for f in /z/home/shurjo/implicit-mapping/a3c-random-mazes/*/gen_stats*.json; 
+do
+    lf=${f#/z/home/shurjo/implicit-mapping/a3c-random-mazes/};
+    mkdir -p $(dirname $lf) ; 
+    cp $(dirname $f)/*.json $(dirname $lf);
+done
