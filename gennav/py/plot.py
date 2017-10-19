@@ -196,17 +196,21 @@ def csv_read(fname, sep):
             yield dict(zip(header, map(try_int_float, line.strip().split(sep))))
             line = f.readline()
 
+
 def get_random_static_maze_spawn_goal_data(fname, sep=","):
     return csv_read(fname, sep)
 
+
 def dict_get(dict_, keys):
     return [dict_[k] for k in keys]
+
 
 def hdata_select_keys(csv_lines, keys):
     header = next(csv_lines)
     datalines = [dict_get(d, keys)
                  for d in select(default_keys_transform(keys), csv_lines)]
     return HData(keys, np.array(datalines))
+
 
 def get_summary_bar_plot_data(sourcedir, labels,
                             columns = "chosen_map reward reward_std".split()):
@@ -218,21 +222,22 @@ def get_summary_bar_plot_data(sourcedir, labels,
             , columns)
         for label in labels]
 
+
 def summary_bar_plot(source, outfile
-                   , labels=[
+                     , labels=[
                        'Static_Goal_Static_Spawn_Static_Maze'
-                       #,'Random_Goal_Static_Spawn_Static_Maze'
+                       #, 'Random_Goal_Static_Spawn_Static_Maze'
                        , 'Static_Goal_Random_Spawn_Static_Maze'
                        , 'Random_Goal_Random_Spawn_Static_Maze'
                        , 'Random_Goal_Random_Spawn_Random_Maze'
-                   ]
+                     ]
                      , short_labels = [
                          'Stat G, Stat S, Stat M'
                          #, 'Rand G, Stat S, Stat M'
                          , 'Stat G, Rand S, Stat M'
                          , 'Rand G, Rand S, Stat M'
                          , 'Rand G, Rand S, Rand M'
-                         ]
+                     ]
                      , data_source = get_summary_bar_plot_data
                      , xlabel="Reward"
                      , ylabel="Map ID"
@@ -271,6 +276,7 @@ def summary_bar_plot(source, outfile
         ax.figure.savefig(outfile)
     return legends
 
+
 def num_goals_summary(source, outfile, **kwargs):
     return summary_bar_plot(
         source, outfile,
@@ -282,12 +288,14 @@ def num_goals_summary(source, outfile, **kwargs):
         , xlim = [0, 24]
         , **kwargs)
 
+
 def latency_from_goal_data(hdata):
     return np.hstack((hdata.data[:, :1]
                       , hdata.data[:, 1:2] / np.where(hdata.data[:, 2:3] != 0
                                                       , hdata.data[:, 2:3], 1)
                       , np.maximum(hdata.data[:, 3:4], hdata.data[:, 4:5])
                       / np.maximum(hdata.data[:, 1:2], hdata.data[:, 2:3])))
+
 
 def get_latency_summary_data(sourcedir, labels):
     hdata_per_exp = get_summary_bar_plot_data(
@@ -299,6 +307,7 @@ def get_latency_summary_data(sourcedir, labels):
     
 
 reward_summary = summary_bar_plot
+
 
 def summary_bar_plots(source, outfile):
     fig = figure(figsize=(LINEWIDTH, 0.7 * LINEWIDTH / GOLDENR))
@@ -325,6 +334,7 @@ def summary_bar_plots(source, outfile):
     latency_summary(source, None, ax=ax3)
     print("Saving to {}".format(outfile))
     fig.savefig(outfile)
+
 
 def latency_summary(source, outfile, **kwargs):
     return summary_bar_plot(
