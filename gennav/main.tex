@@ -26,11 +26,21 @@ Ann Arbor, MI 48109, USA \\
 
 %\iclrfinalcopy % Uncomment for camera-ready version, but NOT for submission.
 
+% Document Outline
+% - Summary and marketing
+% - Short tutorial on Deep reinforcement learning upto Nav-A3C
+% - Describe the setup:
+%    + What is the game
+%       * What are the constants
+%       * What are the variables that will be varied
+%    + Reward design
+% - How the setup is varied for various arguments
+% - What are the questions that we want to answer?
+% - Why do we do the experiments that we do?
+% - What do the experiments tell us?
+% - Summary
 \begin{document}
-
-
 \maketitle
-
 \begin{abstract}
   Deep reinforcement learning (DRL) algorithms have demonstrated strong progress in learning to reach a goal in challenging environments.
   As the title of the paper by \cite{MiPaViICLR2017} suggests, it seems that Deep reinforcement learning is able to learn to navigate and is thus ready to replace traditional mapping and path planning algorithms.
@@ -43,6 +53,7 @@ Ann Arbor, MI 48109, USA \\
 \section{Introduction}
 %\input{intro-drl-doesnt-generalize}
 \input{intro-drl-not-path-planning}
+
 \section{Related Work}
 \input{related-work}
 
@@ -52,9 +63,6 @@ Ann Arbor, MI 48109, USA \\
 %\section{Approach}
 %\input{approach}
 \section{Experiments}
-\section{Navigational tasks with increasing difficulty}
-\label{sec:navtasks}
-\input{intro-drl-nav-challenge}
 
 \input{experiments}
 
