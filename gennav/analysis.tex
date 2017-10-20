@@ -1,1 +1,8 @@
+Are we close to replacing the classic mapping and path-planning algorithms with DRL algorithms?
 
+As shown by the results in Fig~\ref{fig:latency-goal-reward}, the state of art DRL algorithm works well if trained and tested on the same map (static map), but performance reaches to the level of simple bug exploration like algorithms if training and testing are on different maps.
+
+\subsection{Effect of apples and texture}
+We evaluate the effect of apples and texture during evaluation time in Fig~\ref{fig:num-training-maps}.
+We train the algorithm on randomly chosen training maps with random texture and evaluate them no maps with and without random texture and also on maps with and without apples. When the apples are present, we place the apples with probability 0.25 in each block of the map.
+We find that the algorithm, being trained on random textures and random placement of apples, is robust to presence or absence of textures and apples.

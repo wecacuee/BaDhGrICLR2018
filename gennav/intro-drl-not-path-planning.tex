@@ -23,7 +23,14 @@ With the recent success of Deep Reinforcement Learning (DRL) \cite{MnKaSiNATURE2
 The potential for simpler yet capable methods is rich; for example, one can optimize to store only the minimal amount of map information that is required to optimally perform the end task of navigation.
 One such method \cite{MiPaViICLR2017} has recently shown promise of navigation using only first person monocular view in randomly generated mazes. Not only their algorithm shows evidence of localization, but they also show some of evidence of better than random path planning when the goal location is randomly chosen during evaluation time. 
 
-\input{grid-2d-dmlab-figure}
+\begin{figure}
+%\rotatebox{90}{\hspace{3em}Trained on 1 map }
+\includegraphics[width=\textwidth]{./exp-results/training-09x09-0127-on-0127.png}
+%\rotatebox{90}{\hspace{2em}Trained on 1000 maps }
+%\includegraphics[width=\textwidth]{./exp-results/training-1000-on-0127.png}
+\caption{Qualitative results of evaluating algorithm on map id 127. The top three rows show selected frames for the algorithm trained on the same map 127, while the bottom three rows show the result of evaluting the algorithm trained on 1000 maps evaluated on 127. The top row shows the top view of the robot moving through the maze, second row shows the first person which is the only input available to the agent (except reward). The third row shows the attention masked view of the algorithm. We observe that the algorithm focuses attention at the horizon in long corridors, on the goal object (it looks like stacked rings) and on interesting decals.}
+\label{fig:training-qualitative}
+\end{figure}
 
 % 3. We do not know how these algorithms work. There has been work in computer vision that shows the learning on neural network based methods can be learning totally different kind of patterns from what we would expect.
 Despite this potential and recent successes, 
@@ -39,15 +46,15 @@ We setup a maze where the goal is randomly placed and the agent is randomly spaw
 The objective of the agent is to hit the goal as many times as possible within a fixed episode time.
 Every time the agent hits the goal, it respawns at a random location.
 With this setup \cite{MiPaViICLR2017} found that the agent finds the goal faster the second time onwards as compared to the first time.
-One of the possible explnations is that agent is able to remember the position of the goal and the path of the goal.
-However, \cite{MiPaViICLR2017} do not rule out random chance because they only show the successful result on random goal case with only one map.
-We expand on their analysis and evaluate the same metric on multiple types of maps including randomly generated maps.
+This implies that agent is somehow able to exploit the new information about position of the goal to reach the goal faster.
+However, \cite{MiPaViICLR2017} do not rule out random chance because they only show the successful result on random goal case with only one map, do not report standard deviation on their metrics and do not evaluate the algorithm on unseen maps.
 Even though separting training and testing sets is the obvious thing to do in machine learning, we are the first work to evaluate any DRL based navigation method on unseen maps.
+We expand on their analysis and evaluate the same metric on multiple types of maps including randomly generated maps.
 
 We find no evidence of DRL agents being able to perform shortest path-planning in unseen mazes even in simple mazes.
 We observe that the agent prefers to take a particular path just as an artifact of initialization.
 We hypothesize that the agents are learning a correspondence between local sequence of frames and actions.
-These findings are the results on testing and training on multiple maps that were randomly chosen from set of one thousand randomly generated maps.
+These findings are the results on testing and training on multiple maps that were randomly chosen from set of 1100 randomly generated maps.
 We provide thorough and clear summary data to substantiate these findings as well as individual maps and results to explain them carefully.
 A secondary finding is that even if the agent is trained on a single maze it is able to navigate better than random in unseen mazes.
 

@@ -1,73 +1,61 @@
-Since Deep reinforcement learning algorithms need millions of iterations, in the absence of thousands of robotic replicas like \cite{LePaKrISER2017}, we are left with evaluations on simulated platforms.
+Since Deep reinforcement learning algorithms need millions of iterations, in the absence of thousands of robotic replicas like \cite{LePaKrISER2017}, we evaluate the algorithms on a simulated environment.
 We use the same game engine as used by \cite{MiPaViICLR2017}, called Deepmind's Lab \cite{BeLeTeARXIV2016}.
 The game is setup such that an agent is placed in a 9 by 9 maze which also contains \emph{goal} at a particular location.
 On reaching the goal, the agent \emph{respawns} and is free to find the goal again.
 The aim of the goal is to find the goal as many times as posible in a fixed amount of time.
 
 % Reward formulation
-The choice of game is such that it enables evaluating the algorithm for optimal path planning as well as enable dividing experiments into exploration and exploitation stages.
+The setup of game is such that it enables evaluating the algorithm for optimal path planning as well as enable dividing experiments into exploration and exploitation stages.
 We introduce a metric that evaluates how well the agent exploits the information gained during exploration before finding the goal for the first time.
 % The optimal way of finding the goal in fastest way is to collect
 % enough information for creating a map and use the map to find the shortest path from start to end location.
 % However, an end-to-end navigation algorithm might find other ways of finding optimal strategies to find the goal.
 
 Following \cite{MiPaViICLR2017} we also scatter the maze with \emph{apple} reward (+1) and assign goal with +10 reward.
-The apples encourage exploration and are crucial during the traing but removing apples during evaluation does not hurt the performance in any significant way (Exp~\ref{exp:apples-no-apple}).
+The apples encourage exploration and are crucial during the traing but removing apples during evaluation does not hurt the performance in any significant way (Fig~\ref{fig:num-training-maps}).
 
 Unlike \cite{MiPaViICLR2017}, we find small wall penality (-0.2) that pushes the agent away from the wall in very small quantities is useful to make the agent move away from moving backward and sliding along the wall as an exploration strategy discarding vision all together.
 Also, we use a simple 4-action space (move forward/backward, rotate left/right) rather than an 8-action space used by \cite{MiPaViICLR2017}.
+We generate 1100 random maps using depth first search followed by random connections for loop closure.
+Of the 1100 maps, 1000 maps are used for training while remaining 100 are used for testing.
+Also unlike \cite{MiPaViICLR2017}, we use randomly textured walls instead of fixed texture so that the policy learnt is independent of texture.
+Finally, all our walls are equalantly thick to a corridor which is an artifact of how Deepmind's Lab allows the maps to be automatically generated.
 
-%We perform extensive experiments on randomly generated maps and analyze the results to evaluate the performance of Nav A3C on navigation.
+Througout the experiments we will refer the goal or spawn location to random or static.
+By random goal we mean that the goal position is chosen randomly for each training and testing episode, but the goal location stays constant for the episode even after the agent finds the goal and respawns.
+If the goal location stays constant across training and testing episodes, we call it a static goal.
+Similarly, if the spawn location stays constant through training and testing episodes, we call it a static spawn while random spawn means a different location everytime the agent respawns, either due to finding a goal or due to a new episode.
 
-\section{Navigational tasks with increasing difficulty}
-\label{sec:navtasks}
+\input{grid-2d-dmlab-figure}
+
 \input{intro-drl-nav-challenge}
 
-\subsection{Replicating Learning to navigate}
-Since \cite{MiPaViICLR2017} did not release their source code, so we implemented their pipeline by starting a fork from \texttt{universe-start-agent}\cite{OpenAI2017UniverseStarterAgent}.
-
-To make sure that we replicate \cite{MiPaViICLR2017} results, we setup the experiment as similar to what was described in the paper. We use the same game environment Deepmind Lab \cite{BeLeTeARXIV2016} as used by \cite{MiPaViICLR2017}. But there are few differences that are note worthy
-\begin{itemize}
-\item But unlike, \cite{MiPaViICLR2017} instead of hand picking the maps to run experiments on, we chose to run the experiments on randomly generated maps.
-We create a set of randomly generated maps by a textbook depth first search based algorithm with randomly introduced loops. The 
-\item We use a smaller action space than \cite{MiPaViICLR2017}. We use an action space of four actions move forward, move backward, rotate left and roate right, while \cite{MiPaViICLR2017} use an action space of 8 actions ``the agent can rotate in small increments, accelerate forward or backward or
-sideways, or induce rotational acceleration while moving.''
-\item We use randomly colored walls for robustness against textures.
-\item We use wall penality to make sure that the agent does not run into walls too often.
-\item All our maps have ``thick'' walls which means that each wall thickness is same as thickness of the corridor, while maps in \cite{MiPaViICLR2017}
-\end{itemize}
-
-Next, we evaluate the algorithm on increasing order of difficulty as described in Section~\ref{sec:navtasks}. The results of our experiments are shown in Fig~\ref{fig:latency-goal-reward}.
 We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on randomly chosen ten maps with increasing difficulty.
+The results of our experiments are shown in Fig~\ref{fig:latency-goal-reward}.
 We change the randomness of either the spawn point or the goal location.
 We note that the increasing randomness gradually reduce the maximum reward achived and the number of times the goal is reached. As expected, the variance in reward and number of times goals is reached also increases with randomless.
 
-\subsection{Evaluation Metrics}
-We report three evaluation metrics in all our experiments, Reward, Average number of goal hits and \LatencyOneGtOne. We run evaluations on a map for 100 episodes and take the mean and standard deviation of the rewards per episode and number of goal hits per episode. Even though reward includes rewards due to apples and negative rewards due to wall penalities, the reward due to goal dominates dominates the reward metric making reward approximately ten times the average goal hits.
-
-The \LatencyOneGtOne is defined as the ratio of time take to find the goal first time to the average time take to find goal thereafter.
-Note that whenever the goal location is ``Random'' (different in each episode but same for the episode), untill the goal is found for the first time, the agent is just exploring the map.
-After the first goal hit, the agent should be able to exploit the location of the goal to find the goal in shorter times.
-Hence a \LatencyOneGtOne value greater than one indicates that the algorithm is able to successfully exploit information gathered during goal finding exploration.
-
-
-\begin{figure*}%
-  \vspace{-4em}%
+\begin{figure}%
   \includegraphics[width=\linewidth]{images/plot_summary_bar_plots.pdf}%
   \vspace{-1em}%
-  \caption{We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on randomly chosen ten maps with increasing difficulty. Vertical axes is one of the ten maps on which the agent was trained and evaluated. Horizontal axes are different evaluation metrics.
-    The abbreviations in legend are as follows: ``Stat G'' stands for
-    static goal location throughout the training and testing cycle.
-    While ``Rand G'' stands for random goal for each episode.
-    Similarly ``Stat S'',``Rand S'', ``Stat M'', ``Stat S''  stands for static spawn, random spawn, static maze and random maze respectively.
-    We change the randomness of either the spawn point or the goal location. We note that when the goal is static then rewards are consitently higher as compared to random goal while static spawn location and random spawn location are roughly close to each other within bounds of uncertainity. As expected, switching each variable from static to random increases the standard deviation on the results.
-    The \LatencyOneGtOne metric is only worth analyzing when the goal is random because the metric captures how well the agent exploits the additional knowledge of goal location after exploring the maze for goal in the first attempt.}%
+  \caption{We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on randomly chosen ten maps with increasing difficulty as described in Sec~\ref{sec:navtasks}.
+  Vertical axes is one of the ten maps on which the agent was trained and evaluated.
+  Horizontal axes are different evaluation metrics.
+  The abbreviations in legend are as follows: ``St'' stands for
+  static value throughout the training and testing cycle, while ``Rnd'' means random value. ``G'', ``S'' and ``M'' stand for goal, spawn location and map respectively.
+  We note that when the goal is static then rewards are consitently higher as compared to random goal while static spawn location and random spawn location are roughly close to each other within bounds of uncertainity. As expected, switching each variable from static to random increases the standard deviation on the results.
+  From the \LatencyOneGtOne{} results we note that the current state of art algorithms do well when trained and tested on the same map but fail to generalize to new maps when evaluated on ability to exploit the information about goal location.}%
 \label{fig:latency-goal-reward}%
-\end{figure*}
-
-\begin{figure}%
-  \includegraphics[width=\linewidth]{images/plot_ntrain_summary.pdf}%
-  \vspace{-1em}%
-  \caption{Effect of number of training maps}
-  \label{fig:num-training-maps}
 \end{figure}
+
+
+\subsection{Evaluation Metrics}
+We report three evaluation metrics in all our experiments: reward, average number of goal hits and \LatencyOneGtOne{}. We run evaluations on a map for 100 episodes and take the mean and standard deviation of the rewards per episode and number of goal hits per episode. Even though reward includes rewards due to apples and negative rewards due to wall penalities, the reward due to goal dominates dominates the reward metric making reward approximately ten times the average goal hits.
+
+The \LatencyOneGtOne{} is defined as the ratio of time take to find the goal first time to the average time take to find goal thereafter.
+Note that whenever the goal location is ``Random'' (different in each episode but same for the episode), untill the goal is found for the first time, the agent is just exploring the map.
+After the first goal hit, the agent should be able to exploit the location of the goal to find the goal in shorter times.
+Hence a \LatencyOneGtOne{} value greater than one indicates that the algorithm is able to successfully exploit information gathered during goal finding exploration.
+
+
+

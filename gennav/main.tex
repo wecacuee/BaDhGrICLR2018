@@ -43,7 +43,7 @@ Ann Arbor, MI 48109, USA \\
 \maketitle
 \begin{abstract}
   Deep reinforcement learning (DRL) algorithms have demonstrated strong progress in learning to reach a goal in challenging environments.
-  As the title of the paper by \cite{MiPaViICLR2017} suggests, it seems that Deep reinforcement learning is able to learn to navigate and is thus ready to replace traditional mapping and path planning algorithms.
+  As the title of the paper by \cite{MiPaViICLR2017} suggests, one might assume that Deep reinforcement learning is able to learn to navigate and is thus ready to replace traditional mapping and path planning algorithms.
   Yet, from experiments and analysis in this earlier work, it is not clear whether or not these DRL agents are indeed doing any form of mapping and path planning.
   In this paper, we pose and study this question: are DRL agents doing some form of mapping or path-planning?  Our experiments show that the agents are not memorizing the maps of mazes at the testing stage but, rather, at the training stage.
   Hence, the DRL agents fall short of qualifying as mapping and path-planning agents.
@@ -63,22 +63,20 @@ Ann Arbor, MI 48109, USA \\
 %\section{Approach}
 %\input{approach}
 \section{Experiments}
-
 \input{experiments}
 
-%\section{Analysis}
-%\input{analysis}
+\section{Analysis}
+\input{analysis}
 
 \section{Conclusion}
 \input{conclusion}
 
-\begin{figure}
-\rotatebox{90}{\hspace{3em}Trained agent }
-\includegraphics[width=\textwidth]{./exp-results/training-09x09-0127-on-0127.png}\\
-\rotatebox{90}{\hspace{2em}1000 Trained agent }
-\includegraphics[width=\textwidth]{./exp-results/training-1000-on-0127.png}
-\caption{Visualizations}
-\label{fig:training-qualitative}
+\begin{figure}%
+  \includegraphics[width=\linewidth]{images/plot_ntrain_summary.pdf}%
+  \vspace{-1em}%
+  \caption{Plots showing the effect of number of training maps with random texture (Rnd Texture) and presence of apples (With apples), when evaluated on unseen maps. We note that although the difference between mean metrics is negligible as compared to standard deviation of the metrics. Hence we say that the effect of apples or textures can be ignored.
+  The only clear trend is apparrent \LatencyOneGtOne{} metric which suggest that random texture along without apples is advantageous in exploiting goal location while finding the goal second time onwards.}
+  \label{fig:num-training-maps}
 \end{figure}
 
 \subsubsection*{Acknowledgments}
