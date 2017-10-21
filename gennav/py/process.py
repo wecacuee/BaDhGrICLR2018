@@ -1,5 +1,6 @@
 import os
 import os.path as op
+import re
 import operator
 import glob
 import numpy as np
@@ -45,7 +46,7 @@ def filename_to_model_details(genstatjson
     """
     >>> filename_to_model_details(
     ... "gen_stats_latest_training-1000_vars-True_apples-25.json")
-    {'loaded_model': 'training-1000', 'apple_prob': True, 'training': True, 'vars': True, 'train_test_same' : False}
+    {'apple_prob': 25, 'train_test_same': False, 'loaded_model': 'training-1000', 'vars': True}
     """
     if genstatjson == "gen_stats.json":
         return {"train_test_same" : True }
@@ -60,6 +61,19 @@ def filename_to_model_details(genstatjson
     dict_.update( { "loaded_model" : loaded_model, "train_test_same" : False })
     return dict_
 
+def filename_to_model_details_v2(
+        genstatjson
+        , patt=r"gen_stats_latest_loaded-from-(?P<loaded_model>[^_]+)_acting-on-(?P<chosen_map>[^_]+)_vars-(?P<vars>False|True)_apples-(?P<apple_prob>\d+).json"
+):
+    """
+    >>> filename_to_model_details_v2(
+    ...         "gen_stats_latest_loaded-from-training-09x09-0127_acting-on-planning-09x09-0010_vars-False_apples-25.json")
+    {'apple_prob': 25, 'loaded_model': 'training-09x09-0127', 'vars': False, 'chosen_map': 'planning-09x09-0010'}
+    """
+    match = re.match(patt, genstatjson)
+    return {k : try_types(v) for k, v in match.groupdict().items()
+    } if match is not None else None
+
 def loadmodels(sourcedir):
     return (
         merge_dicts(
@@ -67,7 +81,8 @@ def loadmodels(sourcedir):
              , "jsonfile" : op.basename(genstat) }
             , json.load(
                 open(op.join(op.dirname(genstat), 'model_details.json' )))
-            , filename_to_model_details(op.basename(genstat))
+            , filename_to_model_details_v2(op.basename(genstat)) or {}
+            #or filename_to_model_details(op.basename(genstat))
             , json.load(open(genstat)).values()[0])
         for genstat in glob.glob(op.join(sourcedir, '*/gen_stats*.json')))
 
@@ -78,6 +93,9 @@ def select_keys(keys, from_):
 def select_where(from_, where):
     return (row for row in from_
             if where(row))
+
+def group_by():
+    pass
 
 def where_reduce(func, args):
     return lambda row : func(a(row) for a in args)
