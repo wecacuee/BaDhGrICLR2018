@@ -7,9 +7,10 @@ import numpy as np
 import json
 import tempfile
 import subprocess
+import datetime
 
 from collections import namedtuple
-from functools import partial
+from functools import partial, wraps
 from itertools import product
 from argparse import Namespace
 
@@ -39,7 +40,7 @@ def try_types(str_, types=[str2bool, int, float]):
             return t(str_)
         except ValueError:
             continue
-    return str_
+    return str_.encode('utf-8')
 
 def filename_to_model_details(genstatjson
                               , translations = {"apples":"apple_prob"}):
@@ -71,31 +72,47 @@ def filename_to_model_details_v2(
     {'apple_prob': 25, 'loaded_model': 'training-09x09-0127', 'vars': False, 'chosen_map': 'planning-09x09-0010'}
     """
     match = re.match(patt, genstatjson)
-    return {k : try_types(v) for k, v in match.groupdict().items()
-    } if match is not None else None
+    if match:
+        m_details = {k : try_types(v) for k, v in match.groupdict().items()}
+        m_details.update( { "train_test_same"  : False } )
+    else:
+        m_details = None
+    return m_details
 
+def ensure_loaded_model(func):
+    @wraps(func)
+    def wrapped(sourcedir):
+        for row_d in func(sourcedir):
+            row_d["loaded_model"] = (row_d["loaded_model"]
+                                    if "loaded_model" in row_d
+                                    else row_d["chosen_map"])
+            yield row_d
+    return wrapped
+
+@ensure_loaded_model
 def loadmodels(sourcedir):
+    """
+    Loads all the json files from sourcedir
+    """
     return (
         merge_dicts(
             {"sourcedir" : op.basename(op.dirname(genstat))
-             , "jsonfile" : op.basename(genstat) }
+             , "jsonfile" : op.basename(genstat)
+             , "vars" : True }
             , json.load(
                 open(op.join(op.dirname(genstat), 'model_details.json' )))
-            , filename_to_model_details_v2(op.basename(genstat)) or {}
-            #or filename_to_model_details(op.basename(genstat))
+            , filename_to_model_details_v2(op.basename(genstat))
+            or filename_to_model_details(op.basename(genstat))
             , json.load(open(genstat)).values()[0])
         for genstat in glob.glob(op.join(sourcedir, '*/gen_stats*.json')))
 
 def select_keys(keys, from_):
-    return ({k : transform(row.get(k, "")) for k, transform in keys}
+    return ({k : transform(row[k]) for k, transform in keys}
             for row in from_)
 
 def select_where(from_, where):
     return (row for row in from_
             if where(row))
-
-def group_by():
-    pass
 
 def where_reduce(func, args):
     return lambda row : func(a(row) for a in args)
@@ -107,7 +124,7 @@ def where_any(*args):
     return where_reduce(any, args)
 
 def where_op(opfunc, key_val):
-    return lambda row: all(opfunc(row.get(k, ""), v) for k, v in key_val.items())
+    return lambda row: all(opfunc(row[k], v) for k, v in key_val.items())
 
 def where_str_contains(**key_val):
     return where_op(operator.contains, key_val)
@@ -116,10 +133,36 @@ def where_equals(**equality_kw):
     return where_op(operator.eq, equality_kw)
 
 def default_keys_transform(keys, transform=lambda v: v):
-    return [(k , transform)  for k in keys]
+    return [((k , transform) if isinstance(k, (str, unicode)) else k)
+            for k in keys]
 
 def multigetitem(d, keys):
     return [d[k] for k in keys]
+
+def append_to_dict_val(acc, row, keys):
+    acc_keys = tuple(multigetitem(row, keys))
+    acc[acc_keys] = acc.setdefault(acc_keys, []) + [row]
+    return acc
+
+def dict_diff(dicts):
+    common_dict = dicts[0]
+    for d in dicts[1:]:
+        common_dict = {k : v for k, v in common_dict.items()
+                       if k in d and d[k] == v}
+        yield { k : v for k, v in d.items()
+                if k not in common_dict or common_dict[k] != v}
+
+        
+def iso_strptime(datetimestr):
+    return datetime.datetime.strptime(datetimestr, '%Y-%m-%dT%H:%M:%S.%f')
+
+
+def latest_row(dicts):
+    return max(dicts, key=lambda e: iso_strptime(e["end_time"]))
+
+def group_by(from_, keys):
+    return reduce(lambda acc, row: append_to_dict_val(acc, row, keys)
+                  , from_ , dict())
 
 def select(keys=None, from_=None, where=None):
     """
@@ -134,7 +177,7 @@ def select(keys=None, from_=None, where=None):
     assert from_ is not None
     idfunc = lambda k, t : t
     select_k = idfunc if keys is None  else select_keys
-    if isinstance(keys, list) and isinstance(keys[0], (str, unicode)):
+    if isinstance(keys, list):
         keys = default_keys_transform(keys, lambda v : v)
     idfunc = lambda t, w : t
     select_w = idfunc if where is None else select_where
@@ -153,7 +196,7 @@ def hdata_from_csv(csv_lines):
     header = next(csv_lines)
     datalines = [[row_d[h] for h in header ]
                  for row_d in csv_lines]
-    return HData(header, datalines)
+    return HData(header, np.asarray(datalines))
 
 def hdata_save(csvfname, hdata):
     np.savetxt(csvfname, hdata.data, fmt='%.02f', delimiter=",",
@@ -192,6 +235,14 @@ def process(source="../exp-results/"
         keys,
         lambda v : "{:.02f}".format(v) if isinstance(v, float) else v)
     keys[0] = ("chosen_map", lambda cm: cm.split("-")[-1])
+
+    # Pickup the latest results when the results are grouped by keys
+    results_latest = [latest_row(values)
+                        for _, values in group_by(
+                                loadmodels(source),
+                                "chosen_map loaded_model vars apple_prob label".split())
+                      .items()
+    ]
     for label in labels:
         loaded_model_part = ("training-09x09-"
                              if "Static_Maze" in label
@@ -202,8 +253,9 @@ def process(source="../exp-results/"
         else:
             condition_label["label"] = label
 
+                                                    
         dicts = select(keys
-                       , loadmodels(source)
+                       , iter(results_latest)
                        , where_all(
                            where_str_contains(
                                chosen_map="training-09x09-",
@@ -214,6 +266,7 @@ def process(source="../exp-results/"
         try:
             lines = list(format_csv_writer(dicts, header=header))
         except ValueError:
+            print("[WARNING]: {}".format(len(list(dicts))))
             print("[WARNING]: No experiments match criteria {}"
                   .format(merge_dicts({ "label" : label}, condition)))
             continue
@@ -226,16 +279,21 @@ def ntrain_data(source="../exp-results/"
                 , ntrain = [1, 10, 100, 500, 1000]
                 , keys = conf.keys
                 , condition = {
-                    "label" : "Random_Goal_Random_Spawn_Random_Maze"}):
+                    "label" : "Random_Goal_Random_Spawn_Random_Maze"
+                    , "chosen_map" : "testing-100" }):
     """
     variables :
     ntrain \in [1, 1000], vars \in {0, 1}, apple_prob \in {0, 25}
     """
+    results_latest = (latest_row(values)
+                        for _, values in group_by(
+                                loadmodels(source),
+                                "chosen_map loaded_model vars apple_prob label".split())
+                      .items())
     dicts = select(keys
-                , loadmodels(source)
+                , results_latest
                 , where_all(
-                    lambda r : r["chosen_map"] == r.get("loaded_model","")
-                    , where_str_contains(loaded_model="training-")
+                    where_str_contains(loaded_model="training-")
                     , where_equals(**condition)))
 
     dicts = iter(sorted(

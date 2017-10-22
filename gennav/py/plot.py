@@ -202,7 +202,7 @@ def dict_get(dict_, keys):
 
 
 def hdata_select_keys(hdata, keys):
-    if not isinstance(hdata, HData) and isinstance(hdata, types.GeneratorType):
+    if not isinstance(hdata, HData) and isinstance(hdata, (types.GeneratorType, list)):
         hdata = hdata_from_csv(hdata)
 
     bool_header = [h in keys for h in hdata.header]
@@ -214,30 +214,30 @@ def hdata_select_rows(hdata, where):
 
 
 def get_summary_bar_plot_data(sourcedir, labels,
-                            columns = "chosen_map reward reward_std".split()):
+                              columns = "chosen_map reward reward_std".split()):
 
-    return [
-        hdata_select_keys(
-            get_random_static_maze_spawn_goal_data(
-                op.join(sourcedir, label) + ".csv")
-            , columns)
-        for label in labels]
+    return [hdata_from_dicts(
+        select(columns
+               , csv_read(op.join(sourcedir, label) + ".csv"
+                          , sep=",", return_header=False))
+        , header=columns)
+        for label in labels ]
 
 
 def summary_bar_plot(source, outfile
                      , labels=[
                        'Static_Goal_Static_Spawn_Static_Maze'
-                       #, 'Random_Goal_Static_Spawn_Static_Maze'
+                       , 'Random_Goal_Static_Spawn_Static_Maze'
                        , 'Static_Goal_Random_Spawn_Static_Maze'
                        , 'Random_Goal_Random_Spawn_Static_Maze'
                        , 'Random_Goal_Random_Spawn_Random_Maze'
                      ]
                      , short_labels = [
-                         'St G, St S, St M'
-                         #, 'Rnd G, St S, St M'
-                         , 'St G, Rnd S, St M'
-                         , 'Rnd G, Rnd S, St M'
-                         , 'Rnd G, Rnd S, Rnd M'
+                         'Stat. Goal, Stat. Spawn, Stat. Maze'
+                         , 'Rnd. Goal, Stat. Spawn, Stat. Maze'
+                         , 'Stat. Goal, Rnd. Spawn, Stat. Maze'
+                         , 'Rnd. Goal, Rnd. Spawn, Stat. Maze'
+                         , 'Rnd. Goal, Rnd. Spawn, Rnd. Maze'
                      ]
                      , data_source = get_summary_bar_plot_data
                      , xlabel="Reward"
@@ -275,7 +275,7 @@ def summary_bar_plot(source, outfile
                       + i*width - (len(reward_per_exp)-1) * width/2.0
                       , reward[:, 1], width
                       , xerr=reward[:, 2]
-                       , error_kw = dict(elinewidth=0.5))
+                       , error_kw = dict(elinewidth=0.2))
         legends.append(label)
 
     if outfile:
@@ -332,24 +332,27 @@ def summary_bar_plots(source, outfile):
     width, height = fig.bbox_inches.width, fig.bbox_inches.height
     plot_box = subplot_box(left_margin=4*FONTSIZEIN / width
                            , bottom_margin=3*FONTSIZEIN / height
-                           , top_margin=2*FONTSIZEIN / height)
+                           , top_margin=3*FONTSIZEIN / height)
     l, b, w, h = plot_box
     ax1 = fig_add_subplot(fig, parent_box=(l, b, w*0.33, h)
                          , left_margin=0, bottom_margin=0
                          , right_margin=0, top_margin=0)
-    legends = reward_summary(source, None, ax=ax1)
+    legends = reward_summary(source, None, ax=ax1
+                     , barwidth = lambda h, nmaps : h/(nmaps * 1.5))
     ax2 = fig_add_subplot(fig, parent_box=(l + w*0.33, b, w*0.33, h)
                          , left_margin=FONTSIZEIN/width, bottom_margin=0
                          , right_margin=0, top_margin=0)
-    legends = num_goals_summary(source, None, ax=ax2)
+    legends = num_goals_summary(source, None, ax=ax2
+                     , barwidth = lambda h, nmaps : h/(nmaps * 1.5))
     ax2.legend(legends, loc='upper right', framealpha=0.2
-               , bbox_to_anchor=(1.8, 1.10)
-               , fontsize=SMALLERFONTSIZE, ncol=4)
+               , bbox_to_anchor=(1.8, 1.15)
+               , fontsize=SMALLERFONTSIZE, ncol=3)
 
     ax3 = fig_add_subplot(fig, parent_box=(l + w*0.66, b, w*0.33, h)
                          , left_margin=FONTSIZEIN/width, bottom_margin=0
                          , right_margin=0, top_margin=0)
-    latency_summary(source, None, ax=ax3)
+    latency_summary(source, None, ax=ax3
+                     , barwidth = lambda h, nmaps : h/(nmaps * 1.5))
     print("Saving to {}".format(outfile))
     fig.savefig(outfile)
 
