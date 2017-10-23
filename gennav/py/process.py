@@ -309,6 +309,40 @@ def ntrain_data(source="../exp-results/"
         for line in lines:
             csvf.write(line)
 
+def planning_maps_data(source="../exp-results/"
+                       , outfile="../exp-results/planning_maps.csv"
+                       , planning_maps = range(1, 11)
+                       , keys = conf.keys
+                       , constraints = {
+                           "loaded_model" : "training-1000"
+                           , "vars" : True
+                           , "apple_prob" : 0
+                           }):
+    results_latest = (latest_row(values)
+                        for _, values in group_by(
+                                loadmodels(source),
+                                "chosen_map loaded_model vars apple_prob label".split())
+                      .items())
+    dicts = select(keys
+                , results_latest
+                , where_all(
+                    where_str_contains(chosen_map="planning-09x09-")
+                    , where_equals(**constraints)))
+
+    dicts = iter(sorted(
+        dicts , key=lambda d: int(d["chosen_map"].split("-")[-1])))
+    try:
+        lines = list(format_csv_writer(dicts, header=keys))
+    except ValueError:
+        print("[WARNING]: No experiments match criteria {}"
+            .format(constraints))
+        return
+
+    with open(outfile, "w") as csvf:
+        for line in lines:
+            csvf.write(line)
+    
+
 
 def get_img_from_video(videofile, timestamp):
     import cv2

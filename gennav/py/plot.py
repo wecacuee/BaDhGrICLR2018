@@ -459,10 +459,84 @@ def ntrain_summary(source="../exp-results/ntrained.csv"
     print("Saving to {}".format(outfile))
     fig.savefig(outfile)
 
+def get_planning_maps_summary_data(columns):
+    keys = default_keys_transform(columns)
+    keys[0] = ("chosen_map", lambda cm : int(cm[-4:]))
+    return lambda source, labels:[
+        hdata_from_dicts(
+                select(keys
+                       , csv_read(source, sep=",", return_header=False))
+            , header=columns)
+        for label in labels ]
+
+def get_planning_maps_latency_data(source, labels):
+    keys = default_keys_transform("""chosen_map goal_first_found goal_after_found
+                goal_first_found_std goal_after_found_std""".split())
+    keys[0] = ("chosen_map", lambda cm: int(cm[-4:]))
+    return [HData(
+        "num_maps latency latency_std".split()
+        , latency_from_goal_data(
+            hdata_from_dicts(
+                select(keys
+                       , csv_read(source, ",", return_header=False)))))
+    ]
+
+def planning_maps_summary(source="../exp-results/planning_maps.csv"
+                          , outfile=None
+                          , labels = ["Random_Goal_Random_Spawn_Random_Maze"]
+                          , short_labels = ["xyz"]
+                          , ylabel = "Planning map ID"):
+    fig = figure(figsize=(LINEWIDTH, COLWIDTH/GOLDENR))
+    width, height = fig.bbox_inches.width, fig.bbox_inches.height
+    plot_box = subplot_box(left_margin=4*FONTSIZEIN/width,
+                           top_margin=2*FONTSIZEIN/height,
+                           bottom_margin=3*FONTSIZEIN/height)
+    l, b, w, h = plot_box
+    ax1 = fig_add_subplot(fig, parent_box=(l, b, w*0.33, h)
+                         , left_margin=0, bottom_margin=0
+                         , right_margin=0, top_margin=0)
+    summary_bar_plot(source, outfile
+                     , labels= labels
+                     , short_labels = short_labels
+                     , ylabel = ylabel
+                     , xlabel = "Reward"
+                     , barwidth = lambda h, nmaps: h / (nmaps*0.5)
+                     , xlim=[0, 110]
+                     , data_source = get_planning_maps_summary_data(
+                         "chosen_map reward reward_std".split())
+                     , ax=ax1)
+    ax2 = fig_add_subplot(fig, parent_box=(l+w*0.33, b, w*0.33, h)
+                         , left_margin=FONTSIZEIN/width, bottom_margin=0
+                         , right_margin=0, top_margin=0)
+    summary_bar_plot(source, outfile
+                     , labels= labels
+                     , short_labels = short_labels
+                     , ylabel = None
+                     , xlabel = "Average goal hits"
+                     , barwidth = lambda h, nmaps: h / (nmaps*0.5)
+                     , xlim=[0, 11]
+                     , data_source = get_planning_maps_summary_data(
+                         "chosen_map num_goal num_goals_std".split())
+                     , ax=ax2)
+    ax3 = fig_add_subplot(fig, parent_box=(l+w*0.66, b, w*0.33, h)
+                         , left_margin=FONTSIZEIN/width, bottom_margin=0
+                         , right_margin=0, top_margin=0)
+    summary_bar_plot(source, outfile
+                     , labels= labels
+                     , short_labels = short_labels
+                     , ylabel = None
+                     , xlabel = "Latency $1: > 1$"
+                     , barwidth = lambda h, nmaps: h / (nmaps*0.5)
+                     , xlim=[0, 35]
+                     , data_source = get_planning_maps_latency_data
+                     , ax=ax3)
+    fig.savefig(outfile)
+
 
 def keeplotting(outfile):
     #summary_bar_plots("../exp-results", outfile)
-    ntrain_summary(op.join(thisdir, "../exp-results/ntrained.csv"), outfile)
+    #ntrain_summary(op.join(thisdir, "../exp-results/ntrained.csv"), outfile)
+    planning_maps_summary(op.join(thisdir, "../exp-results/planning_maps.csv"), outfile)
 
 if __name__ == '__main__':
     # for relative imports
