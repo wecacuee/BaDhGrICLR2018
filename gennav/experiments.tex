@@ -58,4 +58,41 @@ After the first goal hit, the agent should be able to exploit the location of th
 Hence a \LatencyOneGtOne{} value greater than one indicates that the algorithm is able to successfully exploit information gathered during goal finding exploration.
 
 
+\subsection{Effect of apples and texture}
+We evaluate the effect of apples and texture during evaluation time in Fig~\ref{fig:num-training-maps}.
+We train the algorithm on randomly chosen training maps with random texture and evaluate them no maps with and without random texture and also on maps with and without apples. When the apples are present, we place the apples with probability 0.25 in each block of the map.
+We find that the algorithm, being trained on random textures and random placement of apples, is robust to presence or absence of textures and apples.
 
+
+\subsection{Qualitative evaluation on simple maps}
+% 1. We test the trained algorithms on simple maps.
+To evaluate what strategies that algorithm is employing to reach the
+goal we evaluate the algorithm on very simple maps where there are only two
+paths to reach the goal. The qualitative results for the evaluation are shown
+in Fig~\ref{fig:planning-qualitative}.
+
+\subsubsection{Square map}
+A square map is the simplest possible map with two paths to the goal.
+% 2. We start with a simple square map. The map is shown in Fig .
+% 3. In the square map, we find that the path taken is in the
+%    direction of pose initialization. the visualization of path taken is
+%    shown in Fig. . the correlation with of path taken with initial pose
+%    is shown in Fig. . The correlation with shortest path is shown in
+%    Fig. . Hence, the algorithm instead of shortest path planning takes the
+%    the direction in which it is initialized.
+% 
+\subsubsection{Wrench map}
+
+% 2.2 To eliminate the correlation with initial orientation, we start
+%     with wrench map. The spawn point is guaranteed to be initialized in
+%     the handle of the wrench. Hence, the decision point is the only
+%     junction in the map where the algorithm either decides to take a
+%     left or a right.
+%     We find no correlation between shortest path and the direction taken. 
+
+\subsubsection{Goal map}
+
+% Goal map provides a similar independence from starting orientation
+% but the penalty for choosing the wrong path is much higher than the
+% wrench map. 
+% 
