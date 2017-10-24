@@ -11,7 +11,7 @@
 % 1. Navigation is important problem
 % 1.5 Traditionally addressed by mapping during exploration and path
 %      planning during exploitation.
-Navigation remains a fundamental problems in mobile robotics and artificial intelligence~\cite{SmChIJRR1986,ElCOMPUTER1980}.
+Navigation remains a fundamental problem in mobile robotics and artificial intelligence~\cite{SmChIJRR1986,ElCOMPUTER1980}.
 The problem is classically addressed by separating the eventual task of navigation into exploration and exploitation. 
 In exploration the environment is represented in some sort of \emph{map} data-structure. 
 In exploitation, the map is used for localization and path-planning to find a path to a desired destination based on given optimality criterion. 
@@ -24,11 +24,8 @@ solve the navigation problem without breaking it down into separate parts of loc
 % 2. End to end learning algorithms have shown promise to take over
 %      mapping and path-planning
 With the recent advances of Deep Reinforcement Learning (DRL) \cite{MnKaSiNATURE2015}, these end-to-end navigation methods \cite{MnBaMiICML2016,SiHuMaNATURE2016,LePaKrISER2017,MiPaViICLR2017,OhChSiICML2016} forego decisions about the details that are required in the intermediate step of mapping.
-The potential for simpler yet capable methods is rich; for example, one can optimize to store only the minimal amount of map information that is required perform the end objective of a navigation task.
-One such work, \cite{MiPaViICLR2017}, has demonstrated advances in this task of navigation creating agents that are able to explore and find goals in complicated, three-dimensional worlds without the provision of any externally-supplied map like concept or memory strcutures. 
-
-using only the first-person monocular view in randomly generated mazes. Not only their algorithm shows evidence of localization, but they also show some of evidence of better than random path planning when the goal location is randomly chosen during evaluation time. 
-:q
+The potential for simpler yet capable methods is rich; for example, agents thus trained would be expected to optimize to store only the minimal amount of map information that is required to perform the end objective of a navigation task.
+One such work, \cite{MiPaViICLR2017}, has demonstrated algorithms that are able to explore and find goals in complicated three-dimensional worlds utilizing only the monocular front-facing view of these agents. Of signficance is the fact these agent upon finding the goal within a previously seen environment, are able to navigate to it faster in subsquent explorations implying that agents are able to learn to exploit map structures in the execution of learned navigational tasks. 
 
 \begin{figure}
 %\rotatebox{90}{\hspace{3em}Trained on 1 map }
@@ -40,28 +37,22 @@ using only the first-person monocular view in randomly generated mazes. Not only
 \end{figure}
 
 % 3. We do not know how these algorithms work. There has been work in computer vision that shows the learning on neural network based methods can be learning totally different kind of patterns from what we would expect.
-Despite this potential and recent successes, 
-state-of-the-art DRL based methods have been confronted with their own set of problems, such as difficulty to understand the method limitations or the kind of patterns the algorithm is understanding.  The black-box nature of these methods make them hard to study.
-On similar lines, \cite{NgYoClCVPR2015} show that neural-network-based object detection methods can be easily fooled by introducing noise that is imperceptible to humans. Hence, it is important to analyze the DRL methods to understand if they are truly ``learning to navigate'' \cite{MiPaViICLR2017}.
+Despite such potential advances, DRL based navigation remains a relatively unexplored field with its own set of limitations. 
+The black-box nature of these methods make them hard to study and the underlying patterns captured by the agents are not understood. 
+Their exists no comprehensive set of experiments that answer how and when these algorithms perform well and how their performance differs based on variations in the training and testing conditions. 
+It is also unknown whether such algorithms are able to extend learned abilities to previously unseen worlds to complete the navigation task.
+With earlier work such as \cite{NgYoClCVPR2015} already establishing that  neural-network-based object detection methods can be easily fooled by introducing noise that is imperceptible to humans, it is important to analyze these DRL methods across wide variety of experiments to understand the extent of their navigational abilities \cite{MiPaViICLR2017}.
 
 % 4.1 We find that it is not remembering the map it is being trained on
 % 4.2 We find that no path planning is  happening only, memorizing and regeneration of the sequence of steps. However, it is not 
 
-In this work, we focus on the work of \cite{MiPaViICLR2017} and analyze the method using multiple random maps with different degrees of randomness. As a generalization, we propose a 4-stage benchmark for end-to-end navigation methods.
-Our experimental setup is similar to \cite{MiPaViICLR2017} and uses the same open source library Deepmind's Lab \cite{BeLeTeARXIV2016}.
-We setup a maze where the goal is randomly placed and the agent is randomly spawned.
-The objective of the agent is to hit the goal as many times as possible within a fixed episode time.
-Every time the agent hits the goal, it respawns at a random location.
-With this setup \cite{MiPaViICLR2017} found that the agent finds the goal faster the second time onwards as compared to the first time.
-This implies that agent is somehow able to exploit the new information about position of the goal to reach the goal faster.
-However, \cite{MiPaViICLR2017} do not rule out random chance because they only show the successful result on random goal case with only one map, do not report standard deviation on their metrics and do not evaluate the algorithm on unseen maps.
-Even though separting training and testing sets is the obvious thing to do in machine learning, we are the first work to evaluate any DRL based navigation method on unseen maps.
-We expand on their analysis and evaluate the same metric on multiple types of maps including randomly generated maps.
+In this work, we build of the efforts of \cite{MiPaViICLR2017} and analyze their methods across hundreds of maps with differing degrees of randomness. 
+Our setup is similar to theirs utilizing the same open-source library, Deepmind Lab \cite{BeLeTeARXIV2016}, for experimentation. In our mazes, the agent and goal are both statically and randomly placed within the environments. Small reward based apples are also randomly distributed within the environments to encourage initial explorations. The agent is tasked with learning to explore the maze, thereby picking up rewards and learning the optimal policy of findiing and revisiting the goal as often as possible to maximize the amount of reward gained over an episode of fixed time length.
 
-We find no evidence of DRL agents being able to perform shortest path-planning in unseen mazes even in simple mazes.
-We observe that the agent prefers to take a particular path just as an artifact of initialization.
-We hypothesize that the agents are learning a correspondence between local sequence of frames and actions.
-These findings are the results on testing and training on multiple maps that were randomly chosen from set of 1100 randomly generated maps.
-We provide thorough and clear summary data to substantiate these findings as well as individual maps and results to explain them carefully.
-A secondary finding is that even if the agent is trained on a single maze it is able to navigate better than random in unseen mazes.
+In the case where the goal is randomly initialized within environments that have been previously been trained on, \cite{MiPaViICLR2017} showcase that their agents are able to exploit map structures to maximize reward. However, their experiments are not comprehensive enough to rule out random chance as they show this successful result on only one map while not reporting the standard deviations across their metrics. It is also unclear whether this observed exploitation extends to previously unseen environments as their agents are trained and tested on the same maps. Even though separating training and testing sets is standard practice in machine learning, to the best of our knowledge, we are the first work to evaluate any DRL based navigation method on unseen maps. 
 
+To address this lacks of information about these agent's navigational abilities, we expand on \cite{MiPaViICLR2017}'s analysis and evaluate their agents and  metrics on a comprehensive set of randomly generated maps with differing training and testing conditions of increasing complexity. In particular, we move systematically from the deterministic environment wherein the agents are trained on on fixed spawn points, goal locations and individual maps to the case much complex case of random gspawns, random goals and training and multiple numbers of maps simulatenously. We quantitavely evaluate our trained models on multiple environments and showcase that this map-exploitation ability does not transfer to the unseen worlds. Instead we observe that the agent's preferred path is just as an artifact of initialization and rotation and that the agents are learning a correspondence between local sequences of frames and actions that lead to the goal.
+
+We also compute attention-maps for these agents in a bid to understand the kind of features used in the context of this navigation. We find that the agents discard most of the information provided to them instead focusing attention on a small band in the middle of the monocular view provided to them. We provide qualitative results and quantitative numbers backing up this claim.
+
+These findings are the results on testing and training on multiple maps that were randomly chosen from set of 1100 randomly generated maps. We provide thorough and clear summary data to substantiate these findings as well as individual maps and results to explain them carefully. 
