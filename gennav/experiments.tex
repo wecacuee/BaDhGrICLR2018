@@ -72,27 +72,39 @@ paths to reach the goal. The qualitative results for the evaluation are shown
 in Fig~\ref{fig:planning-qualitative}.
 
 \subsubsection{Square map}
-A square map is the simplest possible map with two paths to the goal.
-% 2. We start with a simple square map. The map is shown in Fig .
 % 3. In the square map, we find that the path taken is in the
 %    direction of pose initialization. the visualization of path taken is
 %    shown in Fig. . the correlation with of path taken with initial pose
 %    is shown in Fig. . The correlation with shortest path is shown in
 %    Fig. . Hence, the algorithm instead of shortest path planning takes the
 %    the direction in which it is initialized.
-% 
-\subsubsection{Wrench map}
-
+A square map is the simplest possible map with two paths to the goal.
+We evaluate the algorithm trained on 1000 random maps on square map.
+We observe that the agent greedily moves in the direction of
+initialization.
+This may be because of the initial learning which is
+motivated by small rewards of getting apples.
+We compute the percentage of times the agent takes the shortest path over a trial of 100 episodes.
+We find the agent takes the shortest path only $50.4$\% ($\pm 12.8$\%) of the times which is not better than random.
+% Quantitative result taken from:
+% exp-results/planning-09x09-0002/gen_stats_latest_loaded-from-training-1000_acting-on-planning-09x09-0002_vars-True_apples-0.json
+\subsubsection{Wrench map and Goal map}
 % 2.2 To eliminate the correlation with initial orientation, we start
 %     with wrench map. The spawn point is guaranteed to be initialized in
 %     the handle of the wrench. Hence, the decision point is the only
 %     junction in the map where the algorithm either decides to take a
 %     left or a right.
 %     We find no correlation between shortest path and the direction taken. 
-
-\subsubsection{Goal map}
+To eliminate the dependence with initial orientation, we evaluate the algorithm on wrench map as shown in Fig~\ref{fig:planning-qualitative}. We fix in the spawn point at the bottom of the tail so that shortest path is independent of the spawn orientation.
+The decision about the shortest path is made at the junction where the agent can either chose to go left or right.
+We find that the agent is taking shortest path only $32.9$\% ($\pm 25.1$\%) of the times which is again to better than random.
+% Quantitative result taken from:
+% exp-results/planning-09x09-0004/gen_stats_latest_loaded-from-training-1000_acting-on-planning-09x09-0004_vars-True_apples-0.json
 
 % Goal map provides a similar independence from starting orientation
 % but the penalty for choosing the wrong path is much higher than the
 % wrench map. 
+Similarly, goal map (Fig~\ref{fig:planning-qualitative}) provides decision point indpendent of the initial orientation, but it penalizes wrong path more than the wrench map $42.6$\% ($\pm 35.1$\%) of the times which is again no better than random.
+% Quantitative result taken from:
+% exp-results/planning-09x09-0006/gen_stats_latest_loaded-from-training-1000_acting-on-planning-09x09-0006_vars-True_apples-0.json
 % 

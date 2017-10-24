@@ -27,7 +27,7 @@ main_filtered.bib: main.bib #/z/home/dhiman/wrk/group-bib/shared.bib
 
 $(OO)/grid-2d-dmlab-figure-standalone.pdf:
 
-./exp-results/training-09x09-0127-on-0127.png: #./exp-results/2017_10_19_14_28_16-test_3D_4actions_blind-none_0001_local/videos/99988800.mp4
+./exp-results/training-09x09-0127-on-0127.png: ./exp-results/2017_10_19_14_28_16-test_3D_4actions_blind-none_0001_local/videos/99988800.mp4 py/process.py
 	echo python py/process.py video_to_snapshot $< $@
 
 ./exp-results/training-1000-on-0127.png: #./exp-results/2017_10_19_17_34_49-test_3D_4actions_blind-none_0001_local/videos/99968400.mp4

@@ -365,12 +365,16 @@ def video_to_snapshot(source
                           , "00:00:19.20"
                           , "00:00:20.12"
                           , "00:00:20.70"
-                      ]):
+                      ]
+                      , text_header_height = 40
+                      , blue = [255, 0, 0]):
     import cv2
     total_img = []
     for ts in timestamps:
         img = get_img_from_video(source, ts)
         width = img.shape[1]
+        # override first 40 rows with blue color
+        img[:text_header_height, :width/3] = blue
         total_img.append(
             np.vstack((img[:, :width/3],
                        img[:, width/3:2*width/3], img[:, 2*width/3:])))
