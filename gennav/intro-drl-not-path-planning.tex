@@ -12,16 +12,23 @@
 % 1.5 Traditionally addressed by mapping during exploration and path
 %      planning during exploitation.
 Navigation remains a fundamental problems in mobile robotics and artificial intelligence~\cite{SmChIJRR1986,ElCOMPUTER1980}.
-The problem is classically addressed by separating the eventual task of navigation into exploration, where the environment is represented in some sort of \emph{map} data-structure, and exploitation, where the map is used for localization and path-planning to find an optimal path to a given destination based on a given optimality criterion.  Although there have been many advances in this classical approach \cite{RaMoTaTROB2015,EnScCrECCV2014}, it remains a difficult challenge: for example, mapping errors propagate to localization and path-planning tasks; monocular navigation remains a challenge in textureless \cite{YaSoKaIROS2016} or repeated texture environments 
+The problem is classically addressed by separating the eventual task of navigation into exploration and exploitation. 
+In exploration the environment is represented in some sort of \emph{map} data-structure. 
+In exploitation, the map is used for localization and path-planning to find a path to a desired destination based on given optimality criterion. 
+This classical approach, traditionally called SLAM (Simulataneous Localization and Mapping), constitutes an entire subfield of robotics whose successes include the birthing of the autonomous driving industry. 
+SLAM however, possesses its own limitations. Algorithms, especially those centered in vision, lack performance invariance often failing to extend results to environments that are subtly different from the ones they were trained on. As a simple example, state-of-the-art monucular SLAM methods fail when confronted with textureless environments.
 
 More recently, end-to-end navigation methods---methods that attempt to  
 solve the navigation problem without breaking it down into separate parts of localization, mapping and path-planning---have gained traction.
 %
 % 2. End to end learning algorithms have shown promise to take over
 %      mapping and path-planning
-With the recent success of Deep Reinforcement Learning (DRL) \cite{MnKaSiNATURE2015}, these end-to-end navigation methods \cite{MnBaMiICML2016,SiHuMaNATURE2016,LePaKrISER2017,MiPaViICLR2017,OhChSiICML2016} forego decisions about the details that are required in the intermediate step of mapping.
-The potential for simpler yet capable methods is rich; for example, one can optimize to store only the minimal amount of map information that is required to optimally perform the end task of navigation.
-One such method \cite{MiPaViICLR2017} has recently shown promise of navigation using only first person monocular view in randomly generated mazes. Not only their algorithm shows evidence of localization, but they also show some of evidence of better than random path planning when the goal location is randomly chosen during evaluation time. 
+With the recent advances of Deep Reinforcement Learning (DRL) \cite{MnKaSiNATURE2015}, these end-to-end navigation methods \cite{MnBaMiICML2016,SiHuMaNATURE2016,LePaKrISER2017,MiPaViICLR2017,OhChSiICML2016} forego decisions about the details that are required in the intermediate step of mapping.
+The potential for simpler yet capable methods is rich; for example, one can optimize to store only the minimal amount of map information that is required perform the end objective of a navigation task.
+One such work, \cite{MiPaViICLR2017}, has demonstrated advances in this task of navigation creating agents that are able to explore and find goals in complicated, three-dimensional worlds without the provision of any externally-supplied map like concept or memory strcutures. 
+
+using only the first-person monocular view in randomly generated mazes. Not only their algorithm shows evidence of localization, but they also show some of evidence of better than random path planning when the goal location is randomly chosen during evaluation time. 
+:q
 
 \begin{figure}
 %\rotatebox{90}{\hspace{3em}Trained on 1 map }
