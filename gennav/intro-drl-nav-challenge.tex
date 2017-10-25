@@ -22,11 +22,11 @@ Thus we need to either integrate existing path planning and mapping methods with
   In this case the respawning happens at a static location, and if the agent remembers the location of the map, it should be able to find the goal faster than
   the first iteration.
   Following \cite{MiPaViICLR2017}, we report the ratio
-  of time taken to hit the goal first time (exploration time) vs the average of the time taken to hit goal subsequently (exploitation time). The metric is henceforth called \LatencyOneGtOne
+  of time taken to hit the goal first time (exploration time) vs the average of the time taken to hit goal subsequently (exploitation time). The metric is henceforth called \LatencyOneGtOne{}
   If this ratio is greater than 1, then we say that the agent is doing better than random path planning.
   %\ditem{Random goal, random spawn and static map}
     This is the problem that is addressed by \cite{MiPaViICLR2017}
-    with limited success. They evaluate this case on two maps and report \LatencyOneGtOne to be greater than 1 in one of the two maps. We evaluate the same metric on their map and ten other maps.
+    with limited success. They evaluate this case on two maps and report \LatencyOneGtOne{} to be greater than 1 in one of the two maps. We evaluate the same metric on their map and ten other maps.
   \ditem{Random goal, random spawn and random map}
     We believe that any proposed algorithms on end-to-end navigation problems, should be evaluated on unseen maps.
     To our knowledge, this is the first paper to evaluate Deep reinforcement learning agents on unseen maps.
