@@ -36,7 +36,7 @@ $(eval $(call make_snapshot_png,0445,2017_10_06_20_02_19-train_3D_4actions_blind
 $(eval $(call make_snapshot_png,0589,2017_10_06_20_02_21-train_3D_4actions_blind-none_0001))
 $(eval $(call make_snapshot_png,0691,2017_10_06_20_02_23-train_3D_4actions_blind-none_0001))
 $(eval $(call make_snapshot_png,0828,2017_10_06_20_02_25-train_3D_4actions_blind-none_0001))
-$(eval $(call make_snapshot_png,0844,2017_10_09_18_06_53-train_3D_4actions_blind-none_0001))
+$(eval $(call make_snapshot_png,0844,2017_10_06_20_02_26-train_3D_4actions_blind-none_0001))
 $(eval $(call make_snapshot_png,0956,2017_10_06_20_02_28-train_3D_4actions_blind-none_0001))
 
 
