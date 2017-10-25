@@ -380,6 +380,55 @@ def video_to_snapshot(source
                        img[:, width/3:2*width/3], img[:, 2*width/3:])))
     cv2.imwrite(outfile, np.hstack(total_img))
 
+def square_map_video_to_snapshot(source = "../exp-results/planning-09x09-0002/videos/gen_stats_latest_loaded-from-training-1000_acting-on-planning-09x09-0002_vars-True_apples-0.mp4"
+                                 , outfile = None
+                                 , timestamps = [
+                                     "00:00:04.81"
+                                     , "00:00:08.37"
+                                     , "00:00:11.10"
+                                     , "00:00:16.50"
+                                     , "00:00:19.50"
+                                     , "00:00:24.90"
+                                     , "00:00:27.90"
+                                     , "00:00:30.92"
+                                     , "00:00:34.30"
+                                     , "00:00:39.10"
+                                 ]):
+    video_to_snapshot(source, outfile, timestamps)
+
+
+def wrench_map_video_to_snapshot(source = "../exp-results/planning-09x09-0004/videos/gen_stats_latest_loaded-from-training-1000_acting-on-planning-09x09-0004_vars-True_apples-0.mp4"
+                                 , outfile = None
+                                 , timestamps = [
+                                     "00:00:03.21"
+                                     , "00:00:06.77"
+                                     , "00:00:11.70"
+                                     , "00:00:15.70"
+                                     , "00:00:18.90"
+                                     , "00:00:22.50"
+                                     , "00:00:25.99"
+                                     , "00:00:29.52"
+                                     , "00:00:34.70"
+                                 ]):
+
+    video_to_snapshot(source, outfile, timestamps)
+
+def goal_map_video_to_snapshot(source = "../exp-results/planning-09x09-0006/videos/gen_stats_latest_loaded-from-training-1000_acting-on-planning-09x09-0006_vars-True_apples-0.mp4"
+                                 , outfile = None
+                                 , timestamps = [
+                                     "00:00:06.99"
+                                     , "00:00:14.27"
+                                     , "00:00:16.50"
+                                     , "00:00:22.30"
+                                     , "00:00:23.70"
+                                     , "00:00:25.70"
+                                     , "00:00:27.00"
+                                     , "00:00:32.30"
+                                     , "00:00:39.50"
+                                 ]):
+
+    video_to_snapshot(source, outfile, timestamps)
+
 
 if __name__ == '__main__':
     import sys
