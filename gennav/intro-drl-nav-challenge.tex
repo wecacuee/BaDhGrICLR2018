@@ -1,32 +1,34 @@
 \subsection{Experiments}
 \label{sec:navtasks}
-We evaluate the Nav-A3C algorithm on maps with 4 stages of difficulty. While the Nav-A3C algorithm works smoothly on the first four stages, it does not perform better than bug-exploration methods on the 5th stage.
-We propose these experiments as a 4-stage benchmark for all end-to-end navigation algorithms.
-While there already exists optimal algorithms to find shortest path between two points and perform optimal navigation between given set of points in a given map, the advantage of Deep reinforcement learning comes from its ability to extract required features from the input images and its promise
-optimize mapping and path planning in end-to-end fashion. 
-Thus we need to either integrate existing path planning and mapping methods with deep learning methods to perform end-to-end training or extend deep learning methods to learn path planning and mapping.
+We evaluate the Nav-A3C algorithm on maps with 5 stages of difficulty. While the Nav-A3C algorithm works smoothly on the first four stages, it does not perform better than bug-exploration methods on the 5th stage.
+We propose these experiments as a 5-stage benchmark for all end-to-end navigation algorithms.
+
+%While there already exists optimal algorithms to find shortest path between two points and perform optimal navigation between given set of points in a given map, the advantage of Deep reinforcement learning comes from its ability to extract required features from the input images and its promise
+%optimize mapping and path planning in end-to-end fashion. 
+%Thus we need to either integrate existing path planning and mapping methods with deep learning methods to perform end-to-end training or extend deep learning methods to learn path planning and mapping.
 
 \begin{description}
   \ditem{Static goal, static spawn and static map}
   \label{prob:sss}
-   This is the easiest variation of our experiments. To perform
-   optimally on this experiment, the agent needs to find and learn the
-   shortest path at train time and repeat that during evaluation time. By static map we mean that the same map is used throughout training and testing.
-  \ditem{Static goal random spawn and static map}
+   This is the easiest variation of our experiments with the environment
+   being completely deterministic. 
+   To perform optimally on this experiment, the agent needs to find and learn the
+   shortest path at trainng time and repeat it during testing. 
+  \ditem{Static goal, random spawn and static map}
   This is a textbook version of reinforcement learning problem, especially in gridworld \cite{SuBaBOOK1998}, except we have partially observable world in form of first person view only.
   This problem is more difficult than Problem~\ref{prob:sss} because the agent
-  needs to find optimal policy from each possible starting point in the maze.
-  %\ditem{Random goal, static spawn and static map}
-  \ditem{Random goal, random spawn and static map}
-  Since the goal position is unknown in every episode, the agent needs to explore the maze to find the goal for the first time. Recall that the agent is respawned every time it hits the goal.
-  In this case the respawning happens at a static location, and if the agent remembers the location of the map, it should be able to find the goal faster than
-  the first iteration.
+  must find an optimal policy to the goal from each possible starting point in the maze.
+  \ditem{Random goal, static spawn and static map}
+  This experiments highlights the map-exploitation agent of the ability. To perform well, the agent must remember a goal location after it is discovered so that it may continue to revisit it.  
+  
   Following \cite{MiPaViICLR2017}, we report the ratio
-  of time taken to hit the goal first time (exploration time) vs the average of the time taken to hit goal subsequently (exploitation time). The metric is henceforth called \LatencyOneGtOne{}
-  If this ratio is greater than 1, then we say that the agent is doing better than random path planning.
-  %\ditem{Random goal, random spawn and static map}
-    This is the problem that is addressed by \cite{MiPaViICLR2017}
-    with limited success. They evaluate this case on two maps and report \LatencyOneGtOne{} to be greater than 1 in one of the two maps. We evaluate the same metric on their map and ten other maps.
+  of time taken to hit the goal first time (exploration time) vs the average of the time taken to hit goal subsequently (exploitation time). The metric, called \LatencyOneGtOne{}, highlights the map-exploitation ability of the agent. 
+  If this ratio is greater than 1, then we say that the agent is doing better than random exploration.
+  \ditem{Random goal, random spawn and static map}
+  In this version of the experiment both the spawn point and the goal location is randomized. To perform optimally, the agent must thus localize itself within the map in addition to being able to exploit map-information.
+
+  This is the problem that is addressed by \cite{MiPaViICLR2017} with limited success. 
+  They evaluate this case on two maps and report \LatencyOneGtOne{} to be greater than 1 in one of the two maps. We evaluate the same metric on their map and ten other maps.
   \ditem{Random goal, random spawn and random map}
     We believe that any proposed algorithms on end-to-end navigation problems, should be evaluated on unseen maps.
     To our knowledge, this is the first paper to evaluate Deep reinforcement learning agents on unseen maps.

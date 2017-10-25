@@ -21,10 +21,10 @@ We generate 1100 random maps using standard depth first search based maze genera
 Of these 1100 maps, 1000 maps are used for training while the remaining 100 are used for testing.
 Unlike \cite{MiPaViICLR2017} and similar to \cite{ChLaSaNIPS2016}, we use randomly textured walls in our mazes so that the policies learned are texture-independent.
 
-Througout the experiments we will refer the goal or spawn location to random or static.
-By random goal we mean that the goal position is chosen randomly for each training and testing episode, but the goal location stays constant for the episode even after the agent finds the goal and respawns.
-If the goal location stays constant across training and testing episodes, we call it a static goal.
-Similarly, if the spawn location stays constant through training and testing episodes, we call it a static spawn while random spawn means a different location everytime the agent respawns, either due to finding a goal or due to a new episode.
+Througout our experiments we refer to goal locations, spawn locations and maps as static or random.
+When static is used, spawn and goal locations thus described remain fixed through all episodes for both the training and the testing.
+When random is used, the spawn location changes randomly throughout the duration of the episode for both training and testing. When used for the goal, random means that its locations changes between episodes for training and testing. During the course of an episode, however, a random goal remains in the same position allowing for agents that exploit map information to find it repeatedly and thus maximize reward.
+In the context of maps, statics maps imply that the same map is used for training and testing. Random means that agents are simulataneously trained on multiple maps and tested on previously unseen ones.
 
 \input{grid-2d-dmlab-figure}
 
