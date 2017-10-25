@@ -1,15 +1,18 @@
 \def\figw{0.16\columnwidth}%
-\newcommand{\includesnapshot}[1]{%
-  \includegraphics[width=\figw,trim=336pt 0 0 0,clip]{#1}}%
-\includesnapshot{images/snapshot/00063000-snapshot.png}%
-\includesnapshot{images/snapshot/00087000-snapshot.png}%
-\includesnapshot{images/snapshot/00156165-snapshot.png}%
-\includesnapshot{images/snapshot/00159840-snapshot.png}%
-\includesnapshot{images/snapshot/00166605-snapshot.png}%
-\includegraphics[width=\figw]{images/dhiman_0002_entityLayer.pdf}\\
-\includesnapshot{images/snapshot/00193065-snapshot.png}%
-\includesnapshot{images/snapshot/00338220-snapshot.png}%
-\includesnapshot{images/snapshot/00344985-snapshot.png}%
-\includesnapshot{images/snapshot/00948930-snapshot.png}%
-\includesnapshot{images/snapshot/00956325-snapshot.png}%
-\includegraphics[width=\figw]{images/dhiman_0003_entityLayer.pdf}\\
+\newcommand{\formatcaption}[1]{%
+\tiny\begin{center}{#1}\end{center}}%
+\newcommand{\includesnapshot}[2]{%
+  \parbox{\figw}{\includegraphics[width=\figw]{#1}\\\vspace{-2.5ex}\formatcaption{#2}}}%
+\includesnapshot{./exp-results/training-09x09-0127.png}{Map ID 0127} 
+\includesnapshot{./exp-results/training-09x09-0169.png}{Map ID 0169} 
+\includesnapshot{./exp-results/training-09x09-0246.png}{Map ID 0246} 
+\includesnapshot{./exp-results/training-09x09-0336.png}{Map ID 0336} 
+\includesnapshot{./exp-results/training-09x09-0445.png}{Map ID 0445}
+\includesnapshot{./exp-results/planning-09x09-0004.png}{Wrench map}\\
+\vspace{1ex}
+\includesnapshot{./exp-results/training-09x09-0589.png}{Map ID 0589} 
+\includesnapshot{./exp-results/training-09x09-0691.png}{Map ID 0691} 
+\includesnapshot{./exp-results/training-09x09-0828.png}{Map ID 0828} 
+\includesnapshot{./exp-results/training-09x09-0844.png}{Map ID 0844} 
+\includesnapshot{./exp-results/training-09x09-0956.png}{Map ID 0956}
+\includesnapshot{./exp-results/planning-09x09-0006.png}{Goal map}

@@ -25,24 +25,11 @@ images/plot_ntrain_summary.pdf: ./exp-results/ntrained.csv py/plot.py
 	pushd $(@D) && ./copy-files.sh ; popd
 	pushd py && python process.py ; popd
 
-main_filtered.bib: main.bib $(OO)/main.aux #/z/home/dhiman/wrk/group-bib/shared.bib
+main_filtered.bib: main.bib #/z/home/dhiman/wrk/group-bib/shared.bib
 	aux2bib $(OO)/main.aux > $@
 
 $(OO)/grid-2d-dmlab-figure-standalone.pdf:
 
-./exp-results/training-09x09-0127-on-0127.png: ./exp-results/2017_10_19_14_28_16-test_3D_4actions_blind-none_0001_local/videos/99988800.mp4 #py/process.py
-	python py/process.py video_to_snapshot $< $@
-
-./exp-results/training-1000-on-0127.png: ./exp-results/2017_10_19_17_34_49-test_3D_4actions_blind-none_0001_local/videos/99968400.mp4 #py/process.py
-	python py/process.py video_to_snapshot $< $@
-
-./exp-results/training-1000_on_square_map.png: ./exp-results/planning-09x09-0002/videos/gen_stats_latest_loaded-from-training-1000_acting-on-planning-09x09-0002_vars-True_apples-0.mp4 #py/process.py
-	python py/process.py square_map_video_to_snapshot $< $@
-
-./exp-results/training-1000_on_wrench_map.png: ./exp-results/planning-09x09-0004/videos/gen_stats_latest_loaded-from-training-1000_acting-on-planning-09x09-0004_vars-True_apples-0.mp4 #py/process.py
-	python py/process.py wrench_map_video_to_snapshot $< $@
-
-./exp-results/training-1000_on_goal_map.png: ./exp-results/planning-09x09-0006/videos/gen_stats_latest_loaded-from-training-1000_acting-on-planning-09x09-0006_vars-True_apples-0.mp4 py/process.py
-	python py/process.py goal_map_video_to_snapshot $< $@
+include snapshots.mk
 
 include pdflatex.mk
