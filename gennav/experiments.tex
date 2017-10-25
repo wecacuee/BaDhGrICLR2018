@@ -1,25 +1,25 @@
-Since Deep reinforcement learning algorithms need millions of iterations, in the absence of thousands of robotic replicas like \cite{LePaKrISER2017}, we evaluate the algorithms on a simulated environment.
-We use the same game engine as used by \cite{MiPaViICLR2017}, called Deepmind's Lab \cite{BeLeTeARXIV2016}.
-The game is setup such that an agent is placed in a 9 by 9 maze which also contains \emph{goal} at a particular location.
-On reaching the goal, the agent \emph{respawns} and is free to find the goal again.
-The aim of the goal is to find the goal as many times as posible in a fixed amount of time.
+\subsection{Setup}
+Since deep reinforcement learning algorithms need millions of iterations to train, in the absence of thousands of robotic replicas like \cite{LePaKrISER2017}, we evaluate the algorithms on a simulated environment.
+We use the same game engine as used by \cite{MiPaViICLR2017}, called Deepmind Lab \cite{BeLeTeARXIV2016}.
+The game is setup such that an agent is placed within a randomly generated maze containing a \emph{goal} at a particular location.
+On reaching the goal, the agent \emph{respawns} within the same maze while the goal location remains unchanged. 
+Following standard conventions we scatter the maze with smaller apple rewards (+1) to encourage initial explorations and assign the goal a +10 reward.
+The agents are tasked with maximizing possible reward over the course of episodes of fixed time lengths and thus must learn to repeatedly find the goal within the maze as often as possible to achieve this objective.
+
+Unlike \cite{MiPaViICLR2017}, we include a small wall penalty (-0.2) that pushes the agent away from the wall. We find that this penalty is useful to prevent agents from picking up scattered rewards while moving backwards that in turn lead to local-optima based backward-moving agents that discard vision all together in their explorations.
 
 % Reward formulation
-The setup of game is such that it enables evaluating the algorithm for optimal path planning as well as enable dividing experiments into exploration and exploitation stages.
-We introduce a metric that evaluates how well the agent exploits the information gained during exploration before finding the goal for the first time.
+%The setup of game is such that it enables evaluating the algorithm for optimal path planning as well as enable dividing experiments into exploration and exploitation stages.
+%We introduce a metric that evaluates how well the agent exploits the information gained during exploration before finding the goal for the first time.
 % The optimal way of finding the goal in fastest way is to collect
 % enough information for creating a map and use the map to find the shortest path from start to end location.
 % However, an end-to-end navigation algorithm might find other ways of finding optimal strategies to find the goal.
 
-Following \cite{MiPaViICLR2017} we also scatter the maze with \emph{apple} reward (+1) and assign goal with +10 reward.
-The apples encourage exploration and are crucial during the traing but removing apples during evaluation does not hurt the performance in any significant way (Fig~\ref{fig:num-training-maps}).
+Instead of the 8-action continous motion model utilised by \cite{MiPaViICLR2017} we use a discrete 4-action space (move forward/backward, rotate left/right). We do this to speed up training times and disable strafing. The agent's picking up of rewards is thus explicitly ground in vision as the agent must rotate in the direction of motion during exploration.
 
-Unlike \cite{MiPaViICLR2017}, we find small wall penality (-0.2) that pushes the agent away from the wall in very small quantities is useful to make the agent move away from moving backward and sliding along the wall as an exploration strategy discarding vision all together.
-Also, we use a simple 4-action space (move forward/backward, rotate left/right) rather than an 8-action space used by \cite{MiPaViICLR2017}.
-We generate 1100 random maps using depth first search followed by random connections for loop closure.
-Of the 1100 maps, 1000 maps are used for training while remaining 100 are used for testing.
-Also unlike \cite{MiPaViICLR2017}, we use randomly textured walls instead of fixed texture so that the policy learnt is independent of texture.
-Finally, all our walls are equalantly thick to a corridor which is an artifact of how Deepmind's Lab allows the maps to be automatically generated.
+We generate 1100 random maps using standard depth first search based maze generation methods. More information on maze generation can be found in the appendix. 
+Of these 1100 maps, 1000 maps are used for training while the remaining 100 are used for testing.
+Unlike \cite{MiPaViICLR2017} and similar to \cite{ChLaSaNIPS2016}, we use randomly textured walls in our mazes so that the policies learned are texture-independent.
 
 Througout the experiments we will refer the goal or spawn location to random or static.
 By random goal we mean that the goal position is chosen randomly for each training and testing episode, but the goal location stays constant for the episode even after the agent finds the goal and respawns.
