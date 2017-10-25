@@ -15,14 +15,14 @@ Unlike \cite{MiPaViICLR2017}, we include a small wall penalty (-0.2) that pushes
 % enough information for creating a map and use the map to find the shortest path from start to end location.
 % However, an end-to-end navigation algorithm might find other ways of finding optimal strategies to find the goal.
 
-Instead of the 8-action continous motion model utilised by \cite{MiPaViICLR2017} we use a discrete 4-action space (move forward/backward, rotate left/right). We do this to speed up training times and disable strafing. The agent's picking up of rewards is thus explicitly ground in vision as the agent must rotate in the direction of motion during exploration.
+Instead of the 8-action continous motion model utilised by \cite{MiPaViICLR2017} we use a discrete 4-action space (move forward/backward, rotate left/right). We do this to speed up training times and disable strafing. The agent's picking up of rewards is thus explicitly grounded in its vision as the agent must rotate in the direction of motion during exploration.
 
 We generate 1100 random maps using standard depth first search based maze generation methods. More information on maze generation can be found in the appendix. 
 Of these 1100 maps, 1000 maps are used for training while the remaining 100 are used for testing.
 Unlike \cite{MiPaViICLR2017} and similar to \cite{ChLaSaNIPS2016}, we use randomly textured walls in our mazes so that the policies learned are texture-independent.
 
 Througout our experiments we refer to goal locations, spawn locations and maps as static or random.
-When static is used, spawn and goal locations thus described remain fixed through all episodes for both the training and the testing.
+When static is used for spawn and goal location, they described positions that remain fixed through all episodes during both the training and the testing.
 When random is used, the spawn location changes randomly throughout the duration of the episode for both training and testing. When used for the goal, random means that its locations changes between episodes for training and testing. During the course of an episode, however, a random goal remains in the same position allowing for agents that exploit map information to find it repeatedly and thus maximize reward.
 In the context of maps, statics maps imply that the same map is used for training and testing. Random means that agents are simulataneously trained on multiple maps and tested on previously unseen ones.
 

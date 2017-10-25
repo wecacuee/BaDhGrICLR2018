@@ -1,4 +1,4 @@
-\subsection{Experiments}
+\subsection{Training Maps}
 \label{sec:navtasks}
 We evaluate the Nav-A3C algorithm on maps with 5 stages of difficulty. While the Nav-A3C algorithm works smoothly on the first four stages, it does not perform better than bug-exploration methods on the 5th stage.
 We propose these experiments as a 5-stage benchmark for all end-to-end navigation algorithms.
@@ -15,28 +15,29 @@ We propose these experiments as a 5-stage benchmark for all end-to-end navigatio
    To perform optimally on this experiment, the agent needs to find and learn the
    shortest path at trainng time and repeat it during testing. 
   \ditem{Static goal, random spawn and static map}
-  This is a textbook version of reinforcement learning problem, especially in gridworld \cite{SuBaBOOK1998}, except we have partially observable world in form of first person view only.
+  This is a textbook version of the reinforcement learning problem, especially in gridworld \cite{SuBaBOOK1998}, with the only different being that the environment partially instead of fully observable.
   This problem is more difficult than Problem~\ref{prob:sss} because the agent
   must find an optimal policy to the goal from each possible starting point in the maze.
   \ditem{Random goal, static spawn and static map}
-  This experiments highlights the map-exploitation agent of the ability. To perform well, the agent must remember a goal location after it is discovered so that it may continue to revisit it.  
+  This experiments highlights the map-exploitation ability of the agent. To perform well, the agent must remember and exploit a goal location after it has been discovered so that it may continue to revisit it.  
   
   Following \cite{MiPaViICLR2017}, we report the ratio
-  of time taken to hit the goal first time (exploration time) vs the average of the time taken to hit goal subsequently (exploitation time). The metric, called \LatencyOneGtOne{}, highlights the map-exploitation ability of the agent. 
+  of time taken to hit the goal for the first time (exploration time) vs the average amount of time taken to hit goal subsequently (exploitation time). The metric, called \LatencyOneGtOne{}, is a measure of the map-exploitation ability of the agent. 
   If this ratio is greater than 1, then we say that the agent is doing better than random exploration.
   \ditem{Random goal, random spawn and static map}
-  In this version of the experiment both the spawn point and the goal location is randomized. To perform optimally, the agent must thus localize itself within the map in addition to being able to exploit map-information.
-
+  In this version of the experiment both the spawn point and the goal location is randomized. To perform optimally, the agent must localize itself within the map in addition to being able to exploit map-information.
+  
   This is the problem that is addressed by \cite{MiPaViICLR2017} with limited success. 
-  They evaluate this case on two maps and report \LatencyOneGtOne{} to be greater than 1 in one of the two maps. We evaluate the same metric on their map and ten other maps.
+  They evaluate this case on two maps and report \LatencyOneGtOne{} to be greater than 1 in one of the two maps. We evaluate the same metric on ten other maps and provide the tools for application to several more.
   \ditem{Random goal, random spawn and random map}
     We believe that any proposed algorithms on end-to-end navigation problems, should be evaluated on unseen maps.
-    To our knowledge, this is the first paper to evaluate Deep reinforcement learning agents on unseen maps.
-    We show the training curves for training the maps on 1, 10, 100 and 1000 maps in Fig~\ref{fig:plot_reward_on_testing}. We also show the probabilty of hitting more than one or two goals. 
+    To our knowledge, this is the first paper to do so in the case of deep reinforcement learning based navigation methods.
+    We train agents to simultaneously learn to explore 1, 10, 100, 500 and 1000 maps and test them on the same 100 unseen maps. The relevant reward curves showing performance over training and testing can be found in Fig~\ref{fig:plot_reward_on_testing}. 
 \end{description}
 
-The comparitive evaluation of the stages of the benchmark is shown in Fig~\ref{fig:latency-goal-reward}.
+The comparitive evaluation of different the stages of this benchmark are shown in Fig~\ref{fig:latency-goal-reward}.
 
+\subsection{Evaluation Maps}
 We also evaluate the algorithm on a few qualitative maps other than I-maze. These maps are specifically designed to query what percentage of times does the agent takes shortest path.
 
 \setcounter{Benchmark}{0}
