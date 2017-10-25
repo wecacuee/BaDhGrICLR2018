@@ -30,11 +30,11 @@ In the context of maps, statics maps imply that the same map is used for trainin
 
 \input{intro-drl-nav-challenge}
 
-We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on randomly chosen ten maps with increasing difficulty.
-The results of our experiments are shown in Fig~\ref{fig:latency-goal-reward}.
-We change the randomness of either the spawn point or the goal location.
-We note that the increasing randomness gradually reduce the maximum reward achived and the number of times the goal is reached. As expected, the variance in reward and number of times goals is reached also increases with randomless.
-
+%We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on randomly chosen ten maps with increasing difficulty.
+%The results of our experiments are shown in Fig~\ref{fig:latency-goal-reward}.
+%We change the randomness of either the spawn point or the goal location.
+%We note that the increasing randomness gradually reduce the maximum reward achived and the number of times the goal is reached. As expected, the variance in reward and number of times goals is reached also increases with randomless.
+%
 \begin{figure}%
   \includegraphics[width=\linewidth]{images/plot_summary_bar_plots.pdf}%
   \vspace{-1em}%
@@ -49,16 +49,18 @@ We note that the increasing randomness gradually reduce the maximum reward achiv
 \end{figure}
 
 
-\subsection{Evaluation Metrics}
-We report three evaluation metrics in all our experiments: reward, average number of goal hits and \LatencyOneGtOne{}. We run evaluations on a map for 100 episodes and take the mean and standard deviation of the rewards per episode and number of goal hits per episode. Even though reward includes rewards due to apples and negative rewards due to wall penalities, the reward due to goal dominates dominates the reward metric making reward approximately ten times the average goal hits.
+%\subsection{Evaluation Metrics}
+%We report three evaluation metrics in all our experiments: reward, average number of goal hits and \LatencyOneGtOne{}. We run evaluations on a map for 100 episodes and take the mean and standard deviation of the rewards per episode and number of goal hits per episode. Even though reward includes rewards due to apples and negative rewards due to wall penalities, the reward due to goal dominates dominates the reward metric making reward approximately ten times the average goal hits.
+%
+%The \LatencyOneGtOne{} is defined as the ratio of time take to find the goal first time to the average time take to find goal thereafter.
+%Note that whenever the goal location is ``Random'' (different in each episode but same for the episode), untill the goal is found for the first time, the agent is just exploring the map.
+%After the first goal hit, the agent should be able to exploit the location of the goal to find the goal in shorter times.
+%Hence a \LatencyOneGtOne{} value greater than one indicates that the algorithm is able to successfully exploit information gathered during goal finding exploration.
+%
 
-The \LatencyOneGtOne{} is defined as the ratio of time take to find the goal first time to the average time take to find goal thereafter.
-Note that whenever the goal location is ``Random'' (different in each episode but same for the episode), untill the goal is found for the first time, the agent is just exploring the map.
-After the first goal hit, the agent should be able to exploit the location of the goal to find the goal in shorter times.
-Hence a \LatencyOneGtOne{} value greater than one indicates that the algorithm is able to successfully exploit information gathered during goal finding exploration.
+\section{Results}
 
-
-\subsection{Effect of apples and texture}
+\subsection{Effect of hyperparameter changes}
 We evaluate the effect of apples and texture during evaluation time in Fig~\ref{fig:num-training-maps}.
 We train the algorithm on randomly chosen training maps with random texture and evaluate them no maps with and without random texture and also on maps with and without apples. When the apples are present, we place the apples with probability 0.25 in each block of the map.
 We find that the algorithm, being trained on random textures and random placement of apples, is robust to presence or absence of textures and apples.
@@ -112,3 +114,5 @@ Similarly, goal map (Fig~\ref{fig:planning-qualitative}) provides decision point
 
 %\subsubsection{Qualitative results}
 \input{fig-planning-qualitative}
+
+\subsection{Computing Attention Maps}

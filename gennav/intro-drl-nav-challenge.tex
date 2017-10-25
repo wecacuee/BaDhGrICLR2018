@@ -1,4 +1,4 @@
-\subsection{Training Maps}
+\subsection{Experiments}
 \label{sec:navtasks}
 We evaluate the Nav-A3C algorithm on maps with 5 stages of difficulty. While the Nav-A3C algorithm works smoothly on the first four stages, it does not perform better than bug-exploration methods on the 5th stage.
 We propose these experiments as a 5-stage benchmark for all end-to-end navigation algorithms.
@@ -35,26 +35,30 @@ We propose these experiments as a 5-stage benchmark for all end-to-end navigatio
     We train agents to simultaneously learn to explore 1, 10, 100, 500 and 1000 maps and test them on the same 100 unseen maps. The relevant reward curves showing performance over training and testing can be found in Fig~\ref{fig:plot_reward_on_testing}. 
 \end{description}
 
-The comparitive evaluation of different the stages of this benchmark are shown in Fig~\ref{fig:latency-goal-reward}.
+The comparitive evaluation of different the stages of this benchmark are shown in Fig~\ref{fig:latency-goal-reward} and expanded upon in the next section.
 
-\subsection{Evaluation Maps}
-We also evaluate the algorithm on a few qualitative maps other than I-maze. These maps are specifically designed to query what percentage of times does the agent takes shortest path.
-
-\setcounter{Benchmark}{0}
-\begin{description}
-    \ditem{Wrench map}
-    This map is shown on the top row, extreme right column in Fig~\ref{fig:environments}. It has one loop and a corridor.
-    The goal is placed asymmetrically in the loop and the agent is spawned in the corridor.
-    Because of asymmetrical placement of the goal, one of the path to the goal is shorter than the other and there are only two possible paths.
-    We record the path taken each time. If the agent has learned a greedy strategy, then it would repeat the path taken for the first time.
-    We evaluate the fraction of times, the agent repeats the first path. A higher number indicates a greedy strategy.
-    In second evaluation, we let the agent explore randomly untill it hits the goal via the shorterst path.
-    At this point we evaluate the  fraction of times shortest path is taken. For this score 
-    \ditem{Goal map}
-    This map is shown on the bottom row, extreme right column in Fig~\ref{fig:environments}.
-    We chose this map because this is the simplest map with a fork. Making the map any simpler will make the map homeomorphic to a straight line. 
-    We evaluate the number of times the agent takes the right descision at the fork after exploring the goal once.
-\end{description}
+%\subsection{Evaluation Maps}
+%We evaluate our trained models on a few qualitative maps previously unseen during training time. Each of these maps have two paths to the goal. 
+%We evaluate the percentage of times the agent travels to the goal along the shortest path after discovering it in the exploitation phase. 
+%The purpose of these maps is to quantitavely evaluate whether these trained models can translate map-exploitative abilities to new, unseen maps. 
+%
+%\setcounter{Benchmark}{0}
+%\begin{description}
+%    \ditem{Square Map}
+%        
+%    \ditem{Wrench map}
+%    This map is shown on the top row, extreme right column in Fig~\ref{fig:environments}. It has one loop and a corridor.
+%    The goal is placed asymmetrically in the loop and the agent is spawned in the corridor.
+%    Because of asymmetrical placement of the goal, one of the path to the goal is shorter than the other and there are only two possible paths.
+%    We record the path taken each time. If the agent has learned a greedy strategy, then it would repeat the path taken for the first time.
+%    We evaluate the fraction of times, the agent repeats the first path. A higher number indicates a greedy strategy.
+%    In second evaluation, we let the agent explore randomly untill it hits the goal via the shorterst path.
+%    At this point we evaluate the  fraction of times shortest path is taken. For this score 
+%    \ditem{Goal map}
+%    This map is shown on the bottom row, extreme right column in Fig~\ref{fig:environments}.
+%    We chose this map because this is the simplest map with a fork. Making the map any simpler will make the map homeomorphic to a straight line. 
+%    We evaluate the number of times the agent takes the right descision at the fork after exploring the goal once.
+%\end{description}
 
 \begin{figure}%
 \includegraphics[width=0.5\columnwidth]{images/plot_reward_3D-1000.pdf}%
