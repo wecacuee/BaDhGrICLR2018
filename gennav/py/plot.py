@@ -328,7 +328,7 @@ reward_summary = summary_bar_plot
 
 
 def summary_bar_plots(source, outfile):
-    fig = figure(figsize=(LINEWIDTH, 0.7 * LINEWIDTH / GOLDENR))
+    fig = figure(figsize=(LINEWIDTH, 0.85 * LINEWIDTH / GOLDENR))
     width, height = fig.bbox_inches.width, fig.bbox_inches.height
     plot_box = subplot_box(left_margin=4*FONTSIZEIN / width
                            , bottom_margin=3*FONTSIZEIN / height
@@ -345,7 +345,7 @@ def summary_bar_plots(source, outfile):
     legends = num_goals_summary(source, None, ax=ax2
                      , barwidth = lambda h, nmaps : h/(nmaps * 1.5))
     ax2.legend(legends, loc='upper right', framealpha=0.2
-               , bbox_to_anchor=(1.8, 1.15)
+               , bbox_to_anchor=(1.8, 1.12)
                , fontsize=SMALLERFONTSIZE, ncol=3)
 
     ax3 = fig_add_subplot(fig, parent_box=(l + w*0.66, b, w*0.33, h)

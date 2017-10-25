@@ -38,11 +38,10 @@ One such work, \cite{MiPaViICLR2017}, has demonstrated algorithms that are able 
 %Of significance is the fact that these agents upon finding the goal within a previously seen environment, are able to navigate to it faster in subsquent explorations implying that agents are able to learn to exploit map structures in the execution of learned navigational tasks. 
 
 \begin{figure}
-%\rotatebox{90}{\hspace{3em}Trained on 1 map }
-\includegraphics[width=\textwidth]{./exp-results/training-09x09-0127-on-0127.png}%
-%\rotatebox{90}{\hspace{2em}Trained on 1000 maps }
-%\includegraphics[width=\textwidth]{./exp-results/training-1000-on-0127.png}
-\caption{Qualitative results of evaluating algorithm on map id 127. The top three rows show selected frames for the algorithm trained on the same map 127, while the bottom three rows show the result of evaluting the algorithm trained on 1000 maps evaluated on 127. The top row shows the top view of the robot moving through the maze, second row shows the first person which is the only input available to the agent (except reward). The third row shows the attention masked view of the algorithm. We observe that the algorithm focuses attention at the horizon in long corridors, on the goal object (it looks like stacked rings) and on interesting decals.}
+\includegraphics[width=\textwidth,trim=0 336pt 0 0,clip]{./exp-results/training-09x09-0127-on-0127.png}%
+\caption{
+Snapshots of the path taken by the agent while evaluating algorithm on map ID 127.
+The top row shows the top view of the robot moving through the maze along with goal location in orange, second row shows the first person which is the only input available to the agent (except reward).}
 \label{fig:training-qualitative}
 \end{figure}
 

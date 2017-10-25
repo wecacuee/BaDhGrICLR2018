@@ -17,7 +17,7 @@ map_snapshot_fname=./exp-results/training-09x09-$(1).png
 .PHONY:
 make_snapshot_png_all: $(foreach mapid,0127 0169 0246 0336 0445 0589 0691 0828 0844 0956, $(call map_snapshot_fname,$(mapid)))
 
-ffmpeg-vid-to-snapshot=ffmpeg -y -i $(1) -vf "color=color=blue:size=336x40[blue];[in]crop=w=336:x=0[cropped];[cropped][blue]overlay[out]" -ss 00:04:00 -vframes 1 $(2)
+ffmpeg-vid-to-snapshot=ffmpeg -y -i $(1) -vf "color=color=blue:size=336x40[blue];[in]crop=w=336:x=0[cropped];[cropped][blue]overlay[out]" -ss $(if $(3),$(3),00:04:00) -vframes 1 $(2)
 
 # A function recipe to crop a snapshot image from map video
 define make_snapshot_png
@@ -41,7 +41,7 @@ $(eval $(call make_snapshot_png,0956,2017_10_06_20_02_28-train_3D_4actions_blind
 
 
 ./exp-results/planning-09x09-0004.png: $(lastword $(wildcard ./exp-results/planning-09x09-0004/videos/*.mp4))
-	$(call ffmpeg-vid-to-snapshot,$<,$@)
+	$(call ffmpeg-vid-to-snapshot,$<,$@,00:00:00)
 
 ./exp-results/planning-09x09-0006.png: $(lastword $(wildcard ./exp-results/planning-09x09-0006/videos/*.mp4))
-	$(call ffmpeg-vid-to-snapshot,$<,$@)
+	$(call ffmpeg-vid-to-snapshot,$<,$@,00:00:00)

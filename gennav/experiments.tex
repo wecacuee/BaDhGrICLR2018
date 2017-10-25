@@ -38,13 +38,14 @@ In the context of maps, statics maps imply that the same map is used for trainin
 \begin{figure}%
   \includegraphics[width=\linewidth]{images/plot_summary_bar_plots.pdf}%
   \vspace{-1em}%
-  \caption{We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on randomly chosen ten maps with increasing difficulty as described in Sec~\ref{sec:navtasks}.
+  \caption{
+    We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on ten randomly chosen maps with increasing difficulty as described in Sec~\ref{sec:navtasks}.
   Vertical axes is one of the ten maps on which the agent was trained and evaluated.
   Horizontal axes are different evaluation metrics.
-  The abbreviations in legend are as follows: ``St'' stands for
-  static value throughout the training and testing cycle, while ``Rnd'' means random value. ``G'', ``S'' and ``M'' stand for goal, spawn location and map respectively.
   We note that when the goal is static then rewards are consitently higher as compared to random goal while static spawn location and random spawn location are roughly close to each other within bounds of uncertainity. As expected, switching each variable from static to random increases the standard deviation on the results.
-  From the \LatencyOneGtOne{} results we note that the current state of art algorithms do well when trained and tested on the same map but fail to generalize to new maps when evaluated on ability to exploit the information about goal location.}%
+  From the \LatencyOneGtOne{} results we note that the current state of art algorithms do well when trained and tested on the same map but fail to generalize to new maps when evaluated on ability to exploit the information about goal location.
+  Also note that \LatencyOneGtOne{} metric for cases of static goals is expected to be close to one because the location of goal is learned at train time.
+  }%
 \label{fig:latency-goal-reward}%
 \end{figure}
 
