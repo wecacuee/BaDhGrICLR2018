@@ -1,0 +1,38 @@
+%% Outline
+% 1. Navigation is important problem
+% 1.5 Traditionally addressed by mapping during exploration and path
+%      planning during exploitation.
+% 2. End to end learning algorithms have shown promise to take over
+%      mapping and path
+% 3. We do not know how these algorithms work. There has been work in computer vision that shows the learning on neural network based methods can be learning totally different kind of patterns from what we would expect.
+% 4 We introduce the concept of blinding to force the learning of of long term planning. We showcase improved scores over industry standard baselines.
+% 5 We showcase that blinding affords an understand of the implicit abilities of these DRL agents.
+
+% 1. Navigation is important problem
+% 1.5 Traditionally addressed by mapping during exploration and path
+%      planning during exploitation.
+Navigation remains a fundamental problems in mobile robotics and artificial intelligence~\cite{SmChIJRR1986,ElCOMPUTER1980}.
+The problem, traditionally called SLAM (Simulataneous Localization and Mapping), is classically addressed by separating the eventual task of navigation into \textit{exploration} and \textit{exploitation}. In the exploration phase, the environment is incrementally built and represented in some sort of \emph{map} data-structure. In exploitation, this data structure is used for localization and path-planning to find an optimal path to a given destination based on desired optimality criterion. These classical methods, have been explored in depth and  there have been many advances in this classical approach \cite{XXX}, it remains a difficult challenge. \textit{Either mention some examples or cite a paper that highlights the failiures of SLAM or both!} 
+
+%
+% 2. End to end learning algorithms have shown promise to take over
+%      mapping and path-planning
+More recently, end-to-end navigation methods---methods that attempt to  
+solve the navigation problem without breaking it down into the separate parts of localization, mapping and path-planning---have gained traction.
+With the recent success of Deep Reinforcement Learning (\textbf{DRL}) \cite{MnKaSiNATURE2015,MnKaSiNATURE2015}, these end-to-end navigation methods \cite{MnBaMiICML2016,SiHuMaNATURE2016,LePaKrISER2017,MiPaViICLR2017,OhChSiICML2016} forego decisions about the details that are required in the intermediate step of map building.  
+
+Work by Mirowski \etal{} showcased agents that learned to navigate textureless environments to find desired goal locations trained on pure monocular vision - a feat that is still quite difficult for state-of-the-art monocular SLAM systems \cite{XXX}. \textit{Talk about the memory structures used - no need for any explicit path planning, slam or all that nonsense} 
+The potential for simpler yet capable methods is rich on the surface.
+
+% 3. We do not know how these algorithms work. There has been work in computer vision that shows the learning on neural network based methods can be learning totally different kind of patterns from what we would expect.
+Despite this potential and recent successes, state-of-the-art DRL based methods have been confronted with their own set of problems. In line with other Deep-Learning fallacies (\textit{too negative?}), foremost among these is the difficulty in understanding the method limitations or the kind of patterns that these algorithms are understanding. The inherent black-box nature of these methods make them hard to study. 
+
+% 4.1 We find that it is not remembering the map it is being trained on
+% 4.2 We find that no path planning is  happening only, memorizing and regeneration of the sequence of steps. However, it is not 
+In this work, we introduce qualitative and quantitative metrics to better understand how these networks appear to be learning and performing these navigation tasks. Our contributions are three-fold:
+\begin{enumerate}
+\item In the course of their navigation, we ask the question of how much visual information is actually required by state-of-the-art drl agents in the course of navigating previously explored environments. To guage this, we incrementally blind agents at training time so as to quanititavely assess the point at which navigation failiure occurs.
+\item In a bid to more easily teach agents to perform long-term planning, we introduce BLINC. BLINC, is a conceptually simple modification applicable to all DRL methods wherein agents are incentivized to blind themselves during navigation as often as possible. Extra  incentives are provided when this blindness is contiguously performed over several frames.  We showcase how agents trained via BLINC acheive better performance then current state-of-the-art methods. 
+\item We showcase BLINCs great strength in affording the ability to easily query the hidden states of the networks used by these models. We use this method to gain an understanding of each agent's explicit understanding of its surroundings at given points of time.
+\end {enumerate}
+

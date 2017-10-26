@@ -1,0 +1,161 @@
+% 0. Baseline models
+% 1. Blinding is easy enough to understand
+% 2. The doubling of the action space - that's the brilliance
+%
+
+
+\section{Type of Experiments}
+Experiments that we have in mind:
+\begin{itemize}
+    \item \textbf{Multi-textured DRL} - Normal DRL where agents learn to navigate in complex environments. 
+          Environments possess different textures at different points to support easier navigation.
+      \item \textbf{Single-texture DRL} - Same experiment but in environments with the same texture. Harder navigation task. Possibly a harder experiment due to lack of environmental features/colors to guide navigation? Depends on results. 
+      \item \textbf{Blind-Curriculum} - Agents are trained with incremental blinding along with being expected to learn to navigate. Is this possible? Does it lead to agents that train faster due to noisiness in the observation? How do reward curves compare? 
+      \item \textbf{Blind-Finetuning} - Agents are fine-tuned with incremental blinding after being trained to navigate. Does the blinding lead to better long term planning? 
+      \item \textbf{BLINC} - Agents are allowed to choose their own blinding. Blinding is again introduced in an incremental fashion. When an agent chooses to blind itself for contiguous frames, it displays an understanding of the current position in the environment. A working model would allow for k-step querying at points.
+      \item \textbf{Better BLINC} - BLINC experiments thus far haven't shown a large number of contiguous blind frames. If results from BLINC are promising (i.e. comparable rewards to original agents), we should try doing the experiments with a smarter reward function. Will require discussion.
+\end{itemize}
+
+\section{Experiment Requirements}
+\begin{itemize}
+    \item Each job requires 16 cores. Current cluster has 344 cores on machines that can support our jobs (lgns and retina)
+    \item Each job takes 3 days. There are 24 days to the ICLR deadline. Running 10 jobs at a time (so as not to inundate cluster), that's a maximum of 80 jobs assuming the code remains static. Realistically, we're probably looking at 40-50 jobs.
+    \item All the possible jobs we can are listed on the last page. The table below specifies the minimum number of cores needed to achieve certain objectives.
+        \begin{table}[h]
+            \label{sample-table}
+            \begin{center}
+                \begin{tabular}{|lcc|}
+                 \toprule
+                    Type of Jobs  & Number of Jobs & Min. Num of Cores to be done in 15 days \\
+                 \midrule
+                    (1) Minimum gennav         & 56 & 180 \\
+                    (2) Minimum gennav + blinc & 110 & 352 \\
+                    (3) gennav + variations + blinc & 182 & 582 \\
+                    (4) gennav + vars  + blinc + better blinc & 206 & 660 \\
+                    (5) All possible experiments & 336 & 1080 \\
+                 \bottomrule
+              \end{tabular}
+            \end{center}                                 
+        \end{table}                                      
+    \item Based on the table, we would like to ideally hit objective (4). As such, a safe estimate would be to buy 800 cores worth of time. 200 jobs should be completable in about 12 days. The advantage of objective 5 lies in the fact that it will strengthen the BLINC paper. BLINC hasn't shown enough contiguous blinding to be a strong paper however, so maybe we can revisit it if intermediary experiments show promising results.
+\end{itemize}
+
+\section{Flux}
+\subsection{Advantages}
+\begin{itemize}
+    \item Scripts are similar to our own.
+    \item \$5.12 per core; 800 cores = \$4096.
+    \item In the process of setting up the system via the free allocation. 
+\end{itemize}
+\subsection{Disadvantages}
+\begin{itemize}
+    \item Unsure of how busy the system is - have emailed the sys admin.
+    \item Installing new software can be painful.
+    \item Unaware of system capabilities (slower/faster?) - getting a job to run via the free allocations. 
+\end{itemize}
+
+\section{Google Cloud}
+\subsection{Advantages}
+\begin{itemize}
+    \item Easier to get setup working. 
+    \item Better maintained - more reliable 
+\end{itemize}
+\subsection{Disadvantages}
+\begin{itemize}
+    \item Pricey: \$24 per core; 800 cores=\$19200.
+\end{itemize}
+
+\newpage
+\begin{table}[h]
+    \label{sample-table}
+    \begin{center}
+          \tiny
+          \resizebox{\textwidth}{!}{%
+        \begin{tabular}{lcccccc}
+          \midrule
+            & & =in progress  & =has to be done  &   = low priority  \\
+          \midrule
+            No Random  & Variations & No Variations & Blind-Curriculum & Blind-Finetuning & BLINC & Better-BLINC\\
+          \midrule
+            \textbf{Planning-I-Maze}    &  &   &  &  &  & \\
+            \textbf{Static 1}           &  &   &  &  &  & \\
+            \textbf{Static 2}           &  &   &  &  &  & \\
+            \textbf{Training-9x9-1}     &  &   &  &  &  & \\
+            -Training-9x9-0127           &  &   &  &  &  & \\
+            -Training-9x9-0169           &  &   &  &  &  & \\
+            -Training-9x9-0246           &  &   &  &  &  & \\
+            -Training-9x9-0336           &  &   &  &  &  & \\
+            -Training-9x9-0445           &  &   &  &  &  & \\
+            -Training-9x9-0589           &  &   &  &  &  & \\
+            -Training-9x9-0691           &  &   &  &  &  & \\
+            -Training-9x9-0828           &  &   &  &  &  & \\
+            -Training-9x9-0844           &  &   &  &  &  & \\
+            -Training-9x9-0956           &  &   &  &  &  & \\
+          \midrule
+            Random Spawn  & Variations & No Variations & Blind-Curriculum & Blind-Finetuning & BLINC & Better-BLINC\\
+          \midrule
+            \textbf{Planning-I-Maze}    &  &   &  &  &  & \\
+            \textbf{Static 1}           &  &   &  &  &  & \\
+            \textbf{Static 2}           &  &   &  &  &  & \\
+            \textbf{Training-9x9-1}     &  &   &  &  &  & \\
+            -Training-9x9-0127           &  &   &  &  &  & \\
+            -Training-9x9-0169           &  &   &  &  &  & \\
+            -Training-9x9-0246           &  &   &  &  &  & \\
+            -Training-9x9-0336           &  &   &  &  &  & \\
+            -Training-9x9-0445           &  &   &  &  &  & \\
+            -Training-9x9-0589           &  &   &  &  &  & \\
+            -Training-9x9-0691           &  &   &  &  &  & \\
+            -Training-9x9-0828           &  &   &  &  &  & \\
+            -Training-9x9-0844           &  &   &  &  &  & \\
+            -Training-9x9-0956           &  &   &  &  &  & \\
+          \midrule
+            Random Goal & Variations & No Variations & Blind-Curriculum & Blind-Finetuning & BLINC & Better-BLINC\\
+          \midrule
+            \textbf{Planning-I-Maze}    &  &   &  &  &  & \\
+            \textbf{Random 1}           &  &   &  &  &  & \\
+            \textbf{Random 2}           &  &   &  &  &  & \\
+            \textbf{Training-9x9-1}     &  &   &  &  &  & \\
+            -Training-9x9-0127           &  &   &  &  &  & \\
+            -Training-9x9-0169           &  &   &  &  &  & \\
+            -Training-9x9-0246           &  &   &  &  &  & \\
+            -Training-9x9-0336           &  &   &  &  &  & \\
+            -Training-9x9-0445           &  &   &  &  &  & \\
+            -Training-9x9-0589           &  &   &  &  &  & \\
+            -Training-9x9-0691           &  &   &  &  &  & \\
+            -Training-9x9-0828           &  &   &  &  &  & \\
+            -Training-9x9-0844           &  &   &  &  &  & \\
+            -Training-9x9-0956           &  &   &  &  &  & \\
+          \midrule
+            Random Spawn, Goal  & Variations & No Variations & Blind-Curriculum & Blind-Finetuning & BLINC & Better-BLINC\\
+          \midrule
+            \textbf{Planning-I-Maze}    &  &   &  &  &  & \\
+            \textbf{Random 1}           &  &   &  &  &  & \\
+            \textbf{Random 2}           &  &   &  &  &  & \\
+            \textbf{Training-9x9-1}     &  &   &  &  &  & \\
+            -Training-9x9-0127           &  &   &  &  &  & \\
+            -Training-9x9-0169           &  &   &  &  &  & \\
+            -Training-9x9-0246           &  &   &  &  &  & \\
+            -Training-9x9-0336           &  &   &  &  &  & \\
+            -Training-9x9-0445           &  &   &  &  &  & \\
+            -Training-9x9-0589           &  &   &  &  &  & \\
+            -Training-9x9-0691           &  &   &  &  &  & \\
+            -Training-9x9-0828           &  &   &  &  &  & \\
+            -Training-9x9-0844           &  &   &  &  &  & \\
+            -Training-9x9-0956           &  &   &  &  &  & \\
+          \midrule
+            Random All  & Variations & No Variations & Blind-Curriculum & Blind-Finetuning & BLINC & Better-BLINC\\
+          \midrule
+            \textbf{Training-9x9-10}    &  &   &  &  &  & \\
+            \textbf{Training-9x9-100}   &  &   &  &  &  & \\
+            \textbf{Training-9x9-500}   &  &   &  &  &  & \\
+            \textbf{Training-9x9-1000}  &  &   &  &  &  & \\
+          \midrule                               
+            \textbf{Total}  & 56 &  &  &  \\     
+          \midrule                               
+      \end{tabular}}                             
+    \end{center}                                 
+\end{table}                                      
+                                                 
+                                                 
+                                                 
+                                                 
