@@ -6,19 +6,19 @@ The game is setup such that an agent is placed within a randomly generated maze 
 On reaching the goal, the agent \emph{respawns} within the same maze while the goal location remains unchanged. 
 Following \cite{MiPaViICLR2017}, we scatter the maze with randomly placed smaller apple rewards (+1) to encourage initial explorations and assign the goal a reward of 10.
 % VD: Defining the objective in terms of reward is wrong because designing rewards is a part of reinforcement learning not the problem statement.
-The agent is tasked to find the goal as many times as possible over within a fixed amount of time, respawning at the spawn location each time it reaches the goal.
+The agent is tasked to find the goal as many times as possible within a fixed amount of time, respawning at the spawn location each time it reaches the goal.
 
 Unlike \cite{MiPaViICLR2017}, we include a small wall penalty (-0.2) that pushes the agent away from the wall.
 % VD: Do we need experiments to support that?
 % VD: It is not clear how wall penality will avoid backward motion. Let's avoid that argument.
-The wall penalty is useful to prevent agents from moving along the walls, thereby discarding vision intput for exploration.
+The wall penalty is useful to prevent agents from moving along the walls, thereby discarding vision input for exploration.
 % Reward formulation
 %The setup of game is such that it enables evaluating the algorithm for optimal path planning as well as enable dividing experiments into exploration and exploitation stages.
 %We introduce a metric that evaluates how well the agent exploits the information gained during exploration before finding the goal for the first time.
 % The optimal way of finding the goal in fastest way is to collect
 % enough information for creating a map and use the map to find the shortest path from start to end location.
 % However, an end-to-end navigation algorithm might find other ways of finding optimal strategies to find the goal.
-Also, we use a discrete 4-action space (move forward/backward, rotate left/right)which is different from the 8-action space one used by \cite{MiPaViICLR2017}.
+We also use a discrete 4-action space (move forward/backward, rotate left/right)which is different from the 8-action space one used by \cite{MiPaViICLR2017}.
 % VD: Do we need to show experiments for these claims?
 A smaller action space helps the algorithm train faster while achieving similar reward values.
 % VD: this will raise more questions like why grounding in vision is necesary

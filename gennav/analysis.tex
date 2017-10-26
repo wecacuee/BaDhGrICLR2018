@@ -47,7 +47,7 @@ We find the agent takes the shortest path only $50.4$\% ($\pm 12.8$\%) of the ti
 % Quantitative result taken from:
 % exp-results/planning-09x09-0002/gen_stats_latest_loaded-from-training-1000_acting-on-planning-09x09-0002_vars-True_apples-0.json
 
-\paragraph{Wrench map and Goal map}
+\paragraph{Wrench map}
 % 2.2 To eliminate the correlation with initial orientation, we start
 %     with wrench map. The spawn point is guaranteed to be initialized in
 %     the handle of the wrench. Hence, the decision point is the only
@@ -63,7 +63,8 @@ We find that the agent is taking shortest path only $32.9$\% ($\pm 25.1$\%) of t
 % Goal map provides a similar independence from starting orientation
 % but the penalty for choosing the wrong path is much higher than the
 % wrench map. 
-Similarly, goal map (Fig~\ref{fig:planning-qualitative}) provides decision point indpendent of the initial orientation, but it penalizes wrong path more than the wrench map $42.6$\% ($\pm 35.1$\%) of the times which is again no better than random.
+\paragraph{Goal map}
+Similarly to the wrench map, the goal map (Fig~\ref{fig:planning-qualitative}) provides decision point independent of the initial orientation, but it penalizes wrong path more than the wrench map $42.6$\% ($\pm 35.1$\%) of the times which is again no better than random.
 % Quantitative result taken from:
 % exp-results/planning-09x09-0006/gen_stats_latest_loaded-from-training-1000_acting-on-planning-09x09-0006_vars-True_apples-0.json
 % 
@@ -75,7 +76,7 @@ Similarly, goal map (Fig~\ref{fig:planning-qualitative}) provides decision point
 We use the normalized sum of absolute gradient of the loss with respect to the input image as a proxy for attention in the image.
 The gradients are normalized for each image so that the maximum gradient is one. The attention values are then used as a soft mask on the image to create the visualization as shown in Fig~\ref{fig:attention}
 
-We observe that the attention is uniformly distributed on the image when the agent spawns. The attention narrows down few pixels in the center when the agent is navigating through the corridor. It spreads to the entire image around turns and junctions. The attention also pays close attention to important objects like goal, apples and unique decals.
+We observe that the attention is uniformly distributed on the image when the agent spawns. The attention narrows down to a few pixels in the center when the agent is navigating through the corridor. It spreads to the entire image around turns and junctions. The attention also pays close attention to important objects like goal, apples and unique decals.
 
 \begin{figure}
 \includegraphics[width=\textwidth,trim=0 0 0 336pt,clip]{./exp-results/training-09x09-0127-on-0127.png}\vspace{1ex}\\

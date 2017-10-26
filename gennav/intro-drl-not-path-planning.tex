@@ -35,7 +35,7 @@ solve the navigation problem without breaking it down into separate parts of map
 %      mapping and path-planning
 With the recent advances of Deep Reinforcement Learning (DRL), these end-to-end navigation methods, like \cite{MnBaMiICML2016,SiHuMaNATURE2016,LePaKrISER2017,MiPaViICLR2017,OhChSiICML2016}, forego decisions about the details that are required in the intermediate step of mapping.
 The potential for simpler yet more capable methods is rich; for example, agents thus trained can potentially optimize the amount of map information that is required to perform the navigation task.
-One such work, \cite{MiPaViICLR2017}, has demonstrated algorithms that are able to explore and find goals in complex environments utilizing only the monocular first-person view.
+One such work, \cite{MiPaViICLR2017}, has demonstrated algorithms that are able to explore and find goals in complex environments utilizing only monocular first-person views.
 %Of significance is the fact that these agents upon finding the goal within a previously seen environment, are able to navigate to it faster in subsquent explorations implying that agents are able to learn to exploit map structures in the execution of learned navigational tasks. 
 
 \begin{figure}
@@ -70,23 +70,23 @@ The agent is provided only with the first-person view and is tasked to find the 
 We train and evaluate the algorithms with increasingly difficulty.
 In the easiest stage, we keep the goal location, spawn location and map constant over the training and the testing.
 We call this set up \emph{static goal, static spawn, and static map}.
-To increase the difficulty, we randomize either one of spawn location, goal location and map structure untill all three are random.
+To increase the difficulty, we incrementally randomize the spawn locations, goal locations and map structures untill all three are random.
 We discuss the design of experiments in Section~\ref{sec:navtasks} with more detail.
 %We randomly genereate our mazes wherein the agent and goal are both statically and randomly spawned across experiments. 
 
-\cite{MiPaViICLR2017} train and test their algorithms with random goal, random spawn but constant map and show that algorithm is able to exploit the knowledge goal location at evaluation time to maximize reward.
+\cite{MiPaViICLR2017} train and test their algorithms with randomized goals, randomized spawns but constant map structures and show that algorithm is able to exploit the knowledge of the goal location at evaluation time to maximize reward.
 However, this result is shown to be successful only on one map making the repeatability of the results questionable.
 It is also unclear whether these results generalize to unseen maps.
 
-Even though separating training and testing sets is standard practice in machine learning, to the best of our knowledge, we are the first work to evaluate any DRL based navigation method on maps with unseen structure.
+Even though separating training and testing sets is standard practice in machine learning, to the best of our knowledge, we are the first work to evaluate any DRL based navigation method on maps with unseen structures.
 We expand on \cite{MiPaViICLR2017} analysis to address its limitations and ask the question whether DRL based algorithms such as \NavAiiiCDiDiiL{} perform any mapping followed by shortest path planning.
-Our experiments do not show any evidence of mapping in the cases when algorithms are evaluated on unseen maps and no evidence of optimal path planning even in cases when the map is constant and only goal is randomized.
+Our experiments do not show any evidence of mapping in the cases when algorithms are evaluated on unseen maps and no evidence of optimal path planning even in cases when the map is constant and only the goal is randomized.
 
 We also compute attention-maps for the models to understand what part of image is being used for the navigation.
 We find that the models discard most of the image information, focusing attention on a small band in the middle of the image except around junctions where the attention is distributed evenly throughout the image.
 
 These findings are the results on training and testing on multiple maps that were randomly chosen from a set of 1100 randomly generated maps.
-We provide the results of our experiments on ten randomly chosen maps and as well as on a testing set of 100 unseen maps to make sure the results are indpendent of the choice of map.
+We provide the results of our experiments on ten randomly chosen maps and as well as on a testing set of 100 unseen maps to make sure the results are independent of the choice of map.
 We will make our code and data available after the blind review process is over.
 
 % Explained earlier

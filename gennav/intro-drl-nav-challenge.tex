@@ -18,7 +18,7 @@ We propose these experiments as a 5-stage benchmark for all end-to-end navigatio
   \ditem{Static goal, random spawn and static map}
   % VD: Probably clear from the name
   % In this setup, we keep the goal location and the map fixed during both training and testing but chose a random spawn point every time the agents re-spawns.
-  This is a textbook version of the reinforcement learning problem, especially in gridworld \cite{SuBaBOOK1998}, with the only difference being that the environment partially instead of fully observable.
+  This is a textbook version of the reinforcement learning problem, especially in gridworld \cite{SuBaBOOK1998}, with the only difference being that the environment is partially observable instead of fully observable.
   This problem is more difficult than Problem~\ref{prob:sss} because the agent
   must find an optimal policy to the goal from each possible starting point in the maze.
   \ditem{Random goal, static spawn, and static map}
@@ -30,7 +30,7 @@ We propose these experiments as a 5-stage benchmark for all end-to-end navigatio
   The agent can perform well on this experiment, by remembering the goal location after it has been discovered and exploiting the information to revisit goal faster.  
   
   Following \cite{MiPaViICLR2017}, we report the ratio
-  of time taken to hit the goal for the first time (exploration time) vs the average amount of time taken to hit goal subsequently (exploitation time). The metric, called \emph{\LatencyOneGtOne{}}, is a measure of how efficiently the agent exploits map information to find shorter path once goal location is known. 
+  of time taken to hit the goal for the first time (exploration time) vs the average amount of time taken to hit goal subsequently (exploitation time). The metric, called \emph{\LatencyOneGtOne{}}, is a measure of how efficiently the agent exploits map information to find shorter path once the goal location is known. 
   If this ratio is greater than 1, then we say that the agent is doing better than random exploration and higher values is better.
   \ditem{Random goal, random spawn, and static map}
   In this version of the experiment both the spawn point and the goal location is randomized. To perform optimally, the agent must localize itself within the map in addition to being able to exploit map-information.
@@ -43,7 +43,7 @@ We propose these experiments as a 5-stage benchmark for all end-to-end navigatio
     We train agents to simultaneously learn to explore 1, 10, 100, 500 and 1000 maps and test them on the same 100 unseen maps. The relevant results can be found in Fig~\ref{fig:num-training-maps} and discussed in Section~\ref{sec:analysis}.
 \end{description}
 
-The comparative evaluation of different the stages of this benchmark are shown in Fig~\ref{fig:latency-goal-reward} and expanded upon in the next section.
+The comparative evaluation of the different the stages of this benchmark are shown in Fig~\ref{fig:latency-goal-reward} and expanded upon in the next section.
 
 %\subsection{Evaluation Maps}
 %We evaluate our trained models on a few qualitative maps previously unseen during training time. Each of these maps have two paths to the goal. 
