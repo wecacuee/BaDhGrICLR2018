@@ -34,7 +34,10 @@ Our objective is to estimate unknown weights $\theta = \theta_T \cup \theta_\pi 
 \end{center}
 %\input{fig-cnn-enc}\hspace{-1ex}%
 %\input{fig-fc-enc}%
-\caption{\NavAiiiCDiDiiL{} architecture}
+\caption{Modified \NavAiiiCDiDiiL{} (\cite{MiPaViICLR2017}) architecture.
+The architecture is has three inputs the current image $I_t$ and previous action $\acttp$ and previous reward $\rewtp$.
+As shown by \cite{MiPaViICLR2017}, the architecture improves upon vanilla A3C architecture by using auxiliary outputs of loop closure signal $L$ and predicted depth $D_1$ and $D_2$.
+Since we use a smaller action space then \cite{MiPaViICLR2017} and our agent moves with constant velocity, we do not use velocity at previous time step as input signal.}
 \label{fig:architectures}
 \end{figure}
 
@@ -59,4 +62,7 @@ For more details of the A3C algorithm we refer the reader to \cite{MnBaMiICML201
 \paragraph{\NavAiiiCDiDiiL{}}
 In this work we use the \NavAiiiCDiDiiL{} architecture as proposed by \cite{MiPaViICLR2017} which builds modifying the network architecture to have two LSTMs and with auxiliary outputs of depth predictions along with loop closure predictions.
 The schematic of the architecture is shown in Fig~\ref{fig:architectures}.
+The architecture is has three inputs the current image $I_t$ and previous action $\acttp$ and previous reward $\rewtp$.
+As shown by \cite{MiPaViICLR2017}, the architecture improves upon vanilla A3C architecture by using auxiliary outputs of loop closure signal $L$ and predicted depth $D_1$ and $D_2$.
+Since we use a smaller action space then \cite{MiPaViICLR2017} and our agent moves with constant velocity, we do not use velocity at previous time step as input signal.
 
