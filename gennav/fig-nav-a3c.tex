@@ -1,27 +1,25 @@
 \usetikzlibrary{positioning}
 \begin{tikzpicture}
 %\draw [use as bounding box] (0,0) rectangle (1.8in, 3in);
-\node[networknode] at (7.5, 2.5) (lstm2) {\rotatebox{-90}{LSTM(64)}};
-\node[networknode, left=0.8 of lstm2] (lstm) {\rotatebox{-90}{LSTM(256)}};
-\node[networknode, left=0.8 of lstm]  (enc2) {\rotatebox{-90}
-{\parbox{0.3in}{CNN(32)\\4x4/2x2}}};
-\node[networknode, left=0.4 of enc2]  (enc) {\rotatebox{-90}
-{\parbox{0.3in}{CNN(16)\\8x8/4x4}}};
-\node[left=0.4 of enc] (It) {$I_t$};
-\node[above=0.1 of It] (at) {$\actt$};
-\node[below=0.1 of It]  (rt) {$\rewt$};
-\node [right=0.8 of lstm2] (V)  {$V$};
-\node [shift={(-0.4,0)},above=0.4 of V] (pi)  {$\pi$};
-\node [shift={(-0.4,0)},below=0.4 of V] (D)  {$D_2$};
+\node[networknode,fill=green!20] at (10.5, 2.5) (lstm2) {LSTM:64};
+\node[networknode,fill=green!20,left=0.6 of lstm2] (lstm) {LSTM:256};
+\node[networknode,fill=orange!20,left=0.8 of lstm]  (enc2) {\parbox{0.4in}{CNN:32\\4x4/2x2}};
+\node[networknode,,fill=orange!20,left=0.4 of enc2]  (enc) {\parbox{0.4in}{CNN:16\\8x8/4x4}};
+\node[left=0.4 of enc, inputvar] (It) {$I_t$:84x84x3};
+\node[above=0.1 of It,inputvar] (at) {$\acttp$};
+\node[below=0.1 of It,inputvar]  (rt) {$\rewtp$};
+\node [right=0.8 of lstm2,outvar] (V)  {$V$, $\pi$};
+\node [shift={(-0.4,0)},above=0.4 of V,auxvar] (pi)  {$L$};
+\node [shift={(-0.4,0)},below=0.4 of V,auxvar] (D)  {$D_2$};
 \draw [-stealth] (It) edge (enc);
-\draw [-stealth] (at) edge [out=60,in=110,looseness=0.5] (lstm2);
-\draw [-stealth] (enc) edge [bend left=70,looseness=0.6] (lstm2);
+\draw [-stealth] (at) edge [in=110,looseness=0.4] (lstm2);
+\draw [-stealth] (enc2) edge [bend left=70,looseness=0.4] (lstm2);
 \draw [-stealth] (enc) edge (enc2);
-\draw [-stealth] (enc2) edge node [shift={(0.2,0.1)},left]{$o_t$} (lstm);
-\draw [-stealth] (rt) edge  [bend right] (lstm);
-\draw [-stealth] (lstm) edge node[below=0.4] (D1) {$D_1$} (lstm2);
+\draw [-stealth] (enc2) edge node [shift={(0.225,0.1)},left]{$o_t$} (lstm);
+\draw [-stealth] (rt) edge  [bend right,looseness=0.3] (lstm);
+\draw [-stealth] (lstm) edge node[below=0.4,auxvar] (D1) {$D_1$} (lstm2);
 \draw [-stealth] (lstm) edge [bend left] (D1);
-\draw [-stealth] (lstm2) edge [bend right, looseness=0.5] (pi);
+\draw [-stealth] (lstm2) edge [bend right] (pi);
 \draw [-stealth] (lstm2) edge  (V);
 \draw [-stealth] (lstm2) edge [bend left] (D);
 \end{tikzpicture}
