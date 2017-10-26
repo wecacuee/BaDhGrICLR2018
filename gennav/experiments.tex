@@ -32,29 +32,17 @@ Unlike \cite{MiPaViICLR2017} and similar to \cite{ChLaSaNIPS2016}, we use random
 % When random is used, the spawn location changes randomly throughout the duration of the episode for both training and testing. When used for the goal, random means that its locations changes between episodes for training and testing. During the course of an episode, however, a random goal remains in the same position allowing for agents that exploit map information to find it repeatedly and thus maximize reward.
 % In the context of maps, statics maps imply that the same map is used for training and testing. Random means that agents are simulataneously trained on multiple maps and tested on previously unseen ones.
 
+\input{fig-latency-goal-reward}
 \input{grid-2d-dmlab-figure}
 
 \input{intro-drl-nav-challenge}
+
 
 %We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on randomly chosen ten maps with increasing difficulty.
 %The results of our experiments are shown in Fig~\ref{fig:latency-goal-reward}.
 %We change the randomness of either the spawn point or the goal location.
 %We note that the increasing randomness gradually reduce the maximum reward achived and the number of times the goal is reached. As expected, the variance in reward and number of times goals is reached also increases with randomless.
 %
-\begin{figure}%
-  \includegraphics[width=\linewidth]{images/plot_summary_bar_plots.pdf}%
-  \vspace{-1em}%
-  \caption{
-    We evaluate the \NavAiiiCDiDiiL{}~\cite{MiPaViICLR2017} algorithm on ten randomly chosen maps with increasing difficulty as described in Sec~\ref{sec:navtasks}.
-  Vertical axes is one of the ten maps on which the agent was trained and evaluated.
-  Horizontal axes are different evaluation metrics.
-  We note that when the goal is static then rewards are consistently higher as compared to random goal while static spawn location and random spawn location are roughly close to each other within bounds of uncertainity. As expected, switching each variable from static to random increases the standard deviation on the results.
-  From the \LatencyOneGtOne{} results we note that the current state of art algorithms do well when trained and tested on the same map but fail to generalize to new maps when evaluated on ability to exploit the information about goal location.
-  Also note that \LatencyOneGtOne{} metric for cases of static goals is expected to be close to one because the location of goal is learned at train time.
-  }%
-\label{fig:latency-goal-reward}%
-\end{figure}
-
 
 %\subsection{Evaluation Metrics}
 %We report three evaluation metrics in all our experiments: reward, average number of goal hits and \LatencyOneGtOne{}. We run evaluations on a map for 100 episodes and take the mean and standard deviation of the rewards per episode and number of goal hits per episode. Even though reward includes rewards due to apples and negative rewards due to wall penalities, the reward due to goal dominates dominates the reward metric making reward approximately ten times the average goal hits.
