@@ -1,5 +1,5 @@
 \usetikzlibrary{positioning}
-\begin{tikzpicture}[scale=1.5]
+\begin{tikzpicture}
 \node[networknode,fill=green!20] at (10.5, 2.5) (lstm2) {LSTM:64};
 \node[networknode,fill=green!20,left=0.6 of lstm2] (lstm) {LSTM:256};
 \node[networknode,fill=orange!20,left=0.8 of lstm]  (enc2) {\parbox{8ex}{CNN:32\\4x4/2x2}};
