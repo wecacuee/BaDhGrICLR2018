@@ -181,17 +181,14 @@ def get_reward_data(D):
      assert len(steps) == len(mean_reward)
      return steps, mean_reward, std_reward
 
-
-def csv_read(fname, sep, return_header=True):
+def csv_read(fname, sep, return_header=True, linesep="\n"):
     with open(fname) as f:
-        header = f.readline().strip().split(sep)
+        csvr = csv.reader(f, delimiter=sep, lineterminator=linesep)
+        header = next(csvr)
         if return_header:
             yield header
-        line = f.readline()
-        while line:
-            yield dict(zip(header, map(try_types, line.strip().split(sep))))
-            line = f.readline()
-
+        for row in csvr:
+            yield dict(zip(header, map(try_types, row)))
 
 def get_random_static_maze_spawn_goal_data(fname, sep=","):
     return csv_read(fname, sep)

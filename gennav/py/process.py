@@ -1,5 +1,6 @@
 import os
 import os.path as op
+import math
 import re
 import operator
 import glob
@@ -8,14 +9,18 @@ import json
 import tempfile
 import subprocess
 import datetime
+import csv
 
+from cStringIO import StringIO
 from collections import namedtuple
 from functools import partial, wraps
 from itertools import product
 from argparse import Namespace
 
 conf = Namespace()
-conf.full_keys = """ apple_characters apple_prob blind chosen_map cols
+conf.full_keys = u"""apple_characters apple_prob blind chosen_map cols
+        prob_shortest_per_episode prob_shortest_per_episode_std
+        dist_ratio_per_episode dist_ratio_per_episode_std
         double_action_space end_time episode_length_seconds gen_stats
         goal_after_found goal_after_found_std goal_characters goal_first_found
         goal_first_found_std hostname job_id job_name jsonfile label learning
@@ -24,12 +29,23 @@ conf.full_keys = """ apple_characters apple_prob blind chosen_map cols
         reward reward_std rows sourcedir spawn_characters
         start_time status test time_taken train train_test_same vars videos
         withvariations """.split()
-conf.keys = """chosen_map reward reward_std num_goal
+conf.keys = u"""chosen_map reward reward_std num_goal
+            prob_shortest_per_episode prob_shortest_per_episode_std
             dist_ratio_per_episode dist_ratio_per_episode_std
             num_goals_std goal_first_found goal_after_found num_maps
             goal_first_found_std goal_after_found_std sourcedir
             loaded_model vars apple_prob train_test_same label train jsonfile
             """.split()
+
+_d_neg_one = lambda r : -1
+conf.default_key_values = [
+    (u"loaded_model", lambda r: r[u"chosen_map"])
+    , (u"dist_ratio_per_episode", _d_neg_one)
+    , (u"dist_ratio_per_episode_std", _d_neg_one)
+    , (u"prob_shortest_per_episode", _d_neg_one)
+    , (u"prob_shortest_per_episode_std", _d_neg_one)
+    # Assume that the keys defaults are addressed in order
+    , (u"train_test_same", lambda r: r[u"chosen_map"] == r["loaded_model"])]
 
 def merge_dicts(*args):
     dicts = args
@@ -57,10 +73,10 @@ def filename_to_model_details(genstatjson
     """
     >>> filename_to_model_details(
     ... "gen_stats_latest_training-1000_vars-True_apples-25.json")
-    {'apple_prob': 25, 'train_test_same': False, 'loaded_model': 'training-1000', 'vars': True}
+    {'apple_prob': 25, 'loaded_model': 'training-1000', 'vars': True}
     """
     if genstatjson == "gen_stats.json":
-        return {"train_test_same" : True }
+        return {}
 
     stem = op.splitext(genstatjson)[0]
     ignorelen = len("gen_stats_latest_")
@@ -69,7 +85,7 @@ def filename_to_model_details(genstatjson
     key_values = remaining.split("_")[1:]
     dict_ = {translations.get(k, k) : try_types(v)
             for k, v in [s.split("-") for s in key_values]}
-    dict_.update( { "loaded_model" : loaded_model, "train_test_same" : False })
+    dict_.update( { "loaded_model" : loaded_model })
     return dict_
 
 def filename_to_model_details_v2(
@@ -84,22 +100,20 @@ def filename_to_model_details_v2(
     match = re.match(patt, genstatjson)
     if match:
         m_details = {k : try_types(v) for k, v in match.groupdict().items()}
-        m_details.update( { "train_test_same"  : False } )
     else:
         m_details = None
     return m_details
 
-def ensure_loaded_model(func):
+def ensure_keys_with_defaults(key_defaults, func):
     @wraps(func)
     def wrapped(sourcedir):
         for row_d in func(sourcedir):
-            row_d["loaded_model"] = (row_d["loaded_model"]
-                                    if "loaded_model" in row_d
-                                    else row_d["chosen_map"])
+            for k, default_from_row in key_defaults:
+                row_d[k] = (row_d[k] if k in row_d else default_from_row(row_d))
             yield row_d
     return wrapped
 
-@ensure_loaded_model
+@partial(ensure_keys_with_defaults, conf.default_key_values)
 def loadmodels(sourcedir):
     return loadmodels_from_filelist(
         glob.glob(op.join(sourcedir, '*/gen_stats*.json')))
@@ -145,6 +159,9 @@ def where_str_contains(**key_val):
 
 def where_equals(**equality_kw):
     return where_op(operator.eq, equality_kw)
+
+def where_not_nan(keys):
+    return lambda row: all( not math.isnan(row[k]) for k in keys )
 
 def default_keys_transform(keys, transform=lambda v: v):
     return [((k , transform) if isinstance(k, (str, unicode)) else k)
@@ -216,14 +233,20 @@ def hdata_save(csvfname, hdata):
     np.savetxt(csvfname, hdata.data, fmt='%.02f', delimiter=",",
                header=",".join(hdata.header))
 
+def format_csv_row(row, sep, linesep):
+    dummyfile = StringIO()
+    csv.writer(dummyfile, delimiter=sep, lineterminator=linesep).writerow(row)
+    return dummyfile.getvalue()
+
 def format_csv_writer(dicts, sep=",", linesep="\n", header=None):
     try:
         first = next(dicts)
     except StopIteration:
         raise ValueError("Empty dicts")
     header = header or sorted(map(str, first.keys()))
-    yield sep.join(header) + linesep
-    row2str = lambda r : sep.join(map(str, (r[h] for h in header))) + linesep
+    yield format_csv_row(header, sep, linesep)
+    row2str = lambda r : format_csv_row(map(str, (r[h] for h in header))
+                                        , sep, linesep)
     yield row2str(first)
     for row in dicts:
         yield row2str(row)
@@ -292,6 +315,7 @@ def ntrain_data(source="../exp-results/"
                 , outfile="../exp-results/ntrained.csv"
                 , ntrain = [1, 10, 100, 500, 1000]
                 , keys = conf.keys
+                , not_nan_keys = []#"dist_ratio_per_episode dist_ratio_per_episode_std".split()
                 , condition = {
                     "label" : "Random_Goal_Random_Spawn_Random_Maze"
                     , "chosen_map" : "testing-100" }):
@@ -301,7 +325,8 @@ def ntrain_data(source="../exp-results/"
     """
     results_latest = (latest_row(values)
                         for _, values in group_by(
-                                loadmodels(source),
+                                select(from_=loadmodels(source)
+                                       , where=where_not_nan(not_nan_keys)),
                                 "chosen_map loaded_model vars apple_prob label".split())
                       .items())
     dicts = select(keys
@@ -446,8 +471,12 @@ def goal_map_video_to_snapshot(source = "../exp-results/planning-09x09-0006/vide
 def collect_jsons_to_csv(
         source="../exp-results/*/gen_stats_latest_*.json"
         , outfile="/tmp/one_big.csv"
-        , keys = conf.full_keys):
-    dicts = loadmodels_from_filelist(glob.glob(source))
+        , keys = conf.full_keys
+        , default_key_values = conf.default_key_values):
+    dicts = partial(ensure_keys_with_defaults
+                    , default_key_values)(
+                        loadmodels_from_filelist)(
+                            glob.glob(source))
     lines = format_csv_writer(dicts, header=keys)
     print("Writing data to big csv file: {}".format(outfile))
     with open(outfile, "w") as csvf:

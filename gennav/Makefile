@@ -25,6 +25,9 @@ images/plot_ntrain_summary.pdf: ./exp-results/ntrained.csv py/plot.py
 	pushd $(@D) && ./copy-files.sh ; popd
 	pushd py && python process.py ; popd
 
+./exp-results/ntrained.csv: py/process.py
+	pushd py && python process.py ntrain_data; popd
+
 # Nice way for optional dependencies
 maybe_shared_bib=$(wildcard /z/home/dhiman/wrk/group-bib/shared.bib)
 
