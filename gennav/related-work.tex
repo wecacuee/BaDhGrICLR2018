@@ -5,13 +5,13 @@ In the last three decades since these seminal works, the field has exploded with
 These algorithms vary in how much detail is captured in the map. For example, topological maps, like \cite{KuCOGSCI1978}, aim to capture as little information as possible while occupancy grid maps, \cite{ElCOMPUTER1980}, aim to capture metrically accurate maps in resolution dependent upon navigation task.
 
 % JJC: tie it back to the main theme of the paper
-All these approaches not only require significant hand-tuning and design for deployment in different kinds of environments and sensor types.
+All these approaches require significant hand-tuning depending on the environment, sensor types and navigation constraints of the hardware.
 %The level of detail utilized in the creation of the  maps also needs to be decided before hand irrespective of the application and hence the amount of information stored is not optimized for the task at hand.
 In contrast, end-to-end navigation algorithms optimize the detail of map storage based on the navigation task at hand which makes them worth exploring.
 
 \paragraph{Deep reinforcement learning}
 %Deep reinforcement learning (DRL) was originally conceived in 1995 (\cite{TeACM1995}).
-Deep reinforcement learning (DRL) gained prominence recently when \cite{MnKaSiNIPSDLW2013,MnKaSiNATURE2015} used DRL to create agents that outperformed humans on Atari games while being purely trained on the games visual outputs.
+DRL gained prominence recently when \cite{MnKaSiNIPSDLW2013,MnKaSiNATURE2015} used DRL to create agents that outperformed humans on Atari games while being purely trained on the games visual outputs.
 % VD: On a second look, this train of thought is a distraction
 %Subsequently, the field has been extended in several directions \cite{MnBaMiICML2016} being applied to creation of the Alpha-GO agent\cite{SiHuMaNATURE2016}, simulated platforms \cite{KaStJoNIPS2017}, real world robots \cite{LePaKrISER2017} and more recently to robotic navigation \cite{MiPaViICLR2017,OhChSiICML2016}.
 Recently, DRL has been applied to end-to-end navigation (\cite{OhChSiICML2016,MiPaViICLR2017,ChLaSaNIPS2016}).
@@ -21,7 +21,7 @@ Recently, DRL has been applied to end-to-end navigation (\cite{OhChSiICML2016,Mi
 In fact, it is common for agents to be trained and tested on the same maps with the variation only being applied to the agent's initial spawn point and the map's goal location (\cite{MiPaViICLR2017,ZhMoKoICRA2017,KuSaGaAPA2016}). 
 
 In contrast, \cite{OhChSiICML2016} do test their algorithm on random unseen maps but their agents are trained to choose between multiple possible goal locations based on past observations.
-Their episodes end when the agent collects a goal and hence there is no requirement for their methods to store map information during their exploration.
+The episodes end when the agent collects the goal, so there is no requirement for the algorithm to store map information during their exploration.
 Thus the decisions made by these agents are to avoid a goal of particular a color and seek other colors rather than remembering the path to the goal.
 On similar lines, \cite{ChLaSaNIPS2016} test their method on unseen maps in VizDoom environment but only vary the maps with unseen textures. Thus their agents are texture invariant but continue to train and test on maps with the same geometric structure.
 %
