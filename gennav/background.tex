@@ -1,8 +1,13 @@
-Our experimental setup is \cite{MiPaViICLR2017} work. We summarize the technical setup here for completeness. We recommend \cite{MnBaMiICML2016,MiPaViICLR2017} for more details of the setup.
+Our problem formulation is based upon the work of \cite{MiPaViICLR2017}. We summarize the technical setup here for completeness.
+We refer the reader to \cite{MnBaMiICML2016,MiPaViICLR2017} for more details of the setup.
 
-The problem of navigation is formulated as interaction between environment and agent. At time time $t$ the agent takes an action $\actt \in \Action$ and observes observation $\obst \in \Obs$ along with a real reward $\rewt \in \R$.
+The problem of navigation is formulated as interaction between an environment and an agent.
+At any time $t$ the agent takes an action $\actt \in \Action$ and observes observation $\obst \in \Obs$ along with a reward $\rewt \in \R$.
 We assume the environment to be Partially Observable Markov Decision Process (POMDP).
-In a POMDP the state of the environment $\statet \in \State$ is assumed to be the only information that is propagated over time and both $\obst$ and $\rewt$ are assumed to be independent of previous states given current state and last action. Formally, a POMDP is a six tuple $(\Obs, \ObsFunc, \State, \Action, \Trans, \Rew)$ that is observation space $\Obs$, observation function $\ObsFuncFull$, state space $\State$, action space $\Action$, transition function $\TransFull$ and reward function $\RewFull$ respectively.
+In a POMDP, the state of the environment $\statet \in \State$
+is assumed to be the only information that is propagated over time and both
+$\obst$ and $\rewt$ are assumed to be independent of previous states given current state and last action.
+Formally, a POMDP is a six tuple $(\Obs, \ObsFunc, \State, \Action, \Trans, \Rew)$ that is observation space $\Obs$, observation function $\ObsFuncFull$, state space $\State$, action space $\Action$, transition function $\TransFull$ and reward function $\RewFull$ respectively.
 For our problem setup, the observation space $\Obs$ is the space of encoded feature vector that can be generated from input image or combination of other inputs, action space $\Action$ contains four actions: rotate left, rotate right, moved forward and move backward and reward function $\Rew$ is defined for each experiment so that the reaching the goal leads to high reward with auxilary reward to encourage certain kind of behavior.
 
 For Deep reinforement learning the state space $\State$ is not hand tuned, instead it is modeled as semantically meaningless \emph{hidden state} of a fixed size float vector.

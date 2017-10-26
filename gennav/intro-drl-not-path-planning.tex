@@ -41,7 +41,7 @@ One such work, \cite{MiPaViICLR2017}, has demonstrated algorithms that are able 
 \includegraphics[width=\textwidth,trim=0 336pt 0 0,clip]{./exp-results/training-09x09-0127-on-0127.png}%
 \caption{
 Snapshots of the path taken by the agent while evaluating algorithm on map ID 127.
-The top row shows the top view of the robot moving through the maze along with goal location in orange, second row shows the first person which is the only input available to the agent (except reward).}
+The top row shows the top view of the robot moving through the maze along with goal location in orange, second row shows the first person view which is the only input available to the agent (except reward).}
 \label{fig:training-qualitative}
 \end{figure}
 
@@ -78,7 +78,7 @@ It is also unclear whether these results generalize to unseen maps.
 
 Even though separating training and testing sets is standard practice in machine learning, to the best of our knowledge, we are the first work to evaluate any DRL based navigation method on maps with unseen structure.
 We expand on \cite{MiPaViICLR2017} analysis to address above limitations and ask the question whether DRL based algorithms such as \NavAiiiCDiDiiL{} perform any mapping followed by shortest path planning.
-We find no evidence of mapping in the cases when algorithms are evaluated on unseen maps and no evidence of optimal path planning even in cases when the map is same and only goal is randomized.
+Our experiments do not show any evidence of mapping in the cases when algorithms are evaluated on unseen maps and no evidence of optimal path planning even in cases when the map is same and only goal is randomized.
 
 We also compute attention-maps for these agents to understand the kind of features used in the context of their navigation.
 We find that the agents discard most of the image information, focusing attention on a small band in the middle of the image except for a few frames close to junctions where the attention is distributed evenly throughout the image.
