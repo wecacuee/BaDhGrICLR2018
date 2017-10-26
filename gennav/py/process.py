@@ -139,14 +139,6 @@ def loadmodels_from_filelist(filelist):
             , json.load(open(genstat)).values()[0])
         for genstat in filelist)
 
-def multigetitem(d, keys):
-    return [d[k] for k in keys]
-
-def append_to_dict_val(acc, row, keys):
-    acc_keys = tuple(multigetitem(row, keys))
-    acc[acc_keys] = acc.setdefault(acc_keys, []) + [row]
-    return acc
-
 def dict_diff(dicts):
     common_dict = dicts[0]
     for d in dicts[1:]:

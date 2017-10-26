@@ -1,3 +1,6 @@
+import operator
+import math
+
 def select_keys(keys, from_):
     return ({k : transform(row[k]) for k, transform in keys}
             for row in from_)
@@ -33,6 +36,14 @@ def where_not_nan(keys):
 def default_keys_transform(keys, transform=lambda v: v):
     return [((k , transform) if isinstance(k, (str, unicode)) else k)
             for k in keys]
+
+def multigetitem(d, keys):
+    return [d[k] for k in keys]
+
+def append_to_dict_val(acc, row, keys):
+    acc_keys = tuple(multigetitem(row, keys))
+    acc.setdefault(acc_keys, []).append(row)
+    return acc
 
 def group_by(from_, keys):
     return reduce(lambda acc, row: append_to_dict_val(acc, row, keys)
