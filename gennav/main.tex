@@ -1,6 +1,7 @@
 \documentclass{article} % For LaTeX2e
 \input{preamble}
 \title{Do deep reinforcement learning algorithms really learn to navigate?}
+\title{Do deep reinforcement learning algorithms really learn to navigate?}
 
 % Authors must not appear in the submitted version. They should be hidden
 % as long as the \iclrfinalcopy macro remains commented out below.
@@ -42,13 +43,14 @@ Ann Arbor, MI 48109, USA \\
 \begin{document}
 \maketitle
 \begin{abstract}
-  Deep reinforcement learning (DRL) algorithms have demonstrated strong progress in learning to reach a goal in challenging environments.
-  As the title of the paper by \cite{MiPaViICLR2017} suggests, one might assume that DRL based algorithms are able to learn to navigate and is thus ready to replace traditional mapping and path planning algorithms.
-  Yet, from experiments and analysis in this earlier work, it is not clear whether or not these DRL agents are indeed doing any form of mapping and path planning.
-  In this paper, we pose and study this question: are DRL agents doing some form of mapping or path-planning?  Our experiments show that the agents are not memorizing the maps of mazes at the testing stage but, rather, at the training stage.
-  Hence, the DRL algorithms fall short of qualifying as mapping and path-planning algorithms with any reasonable definition of mapping.
-  We perform extensive experimentation on Nav-A3C-D-L algorithm proposed by
-  \cite{MiPaViICLR2017} by  
+  Deep reinforcement learning (DRL) algorithms have demonstrated progress in learning to find a goal in challenging environments.
+  As the title of the paper by \cite{MiPaViICLR2017} suggests, one might assume that DRL based algorithms are able to ``learn to navigate'' and are thus ready to replace classical mapping and path planning algorithms, at least in simulated environments.
+  Yet, from experiments and analysis in this earlier work, it is not clear what strategies these DRL algorithms are learning to navigate the mazes and find the goal.
+  In this paper, we pose and study this question: are DRL algorithms doing some form of mapping and/or path-planning?  Our experiments show that the algorithms are not memorizing the maps of mazes at the testing stage but, rather, at the training stage.
+  Hence, the DRL algorithms fall short of qualifying as mapping or path-planning algorithms with any reasonable definition of mapping.
+  We extend the experiments in \cite{MiPaViICLR2017} by separating the set of training and testing maps and by a more systemetic coverage of the space of experiment.
+  Our experiments show that the \NavAiiiCDiDiiL{} algorithm, when trained and tested on the same maps, is able to choose the shorter paths to the goal.
+  However, when tested on unseen maps the algorithms utilize a bug exploration like strategy to find the goal without doing any mapping or path planning.
 \end{abstract}
 
 \section{Introduction}
@@ -61,24 +63,15 @@ Ann Arbor, MI 48109, USA \\
 \section{Background}
 \input{background}
 
-%\section{Approach}
-%\input{approach}
-\section{Experiments}
+\section{The DRL Navigation Challenge}
 \input{experiments}
 
-\section{Analysis}
+\section{Results and Analysis}
+\label{sec:analysis}
 \input{analysis}
 
 \section{Conclusion}
 \input{conclusion}
-
-\begin{figure}%
-  \includegraphics[width=\linewidth]{images/plot_ntrain_summary.pdf}%
-  \vspace{-1em}%
-  \caption{Plots showing the effect of number of training maps with random texture (Rnd Texture) and presence of apples (With apples), when evaluated on unseen maps. We note that although the difference between mean metrics is negligible as compared to standard deviation of the metrics. Hence we say that the effect of apples or textures can be ignored.
-  The only clear trend is apparrent \LatencyOneGtOne{} metric which suggest that random texture along without apples is advantageous in exploiting goal location while finding the goal second time onwards.}
-  \label{fig:num-training-maps}
-\end{figure}
 
 \subsubsection*{Acknowledgments}
 
@@ -94,7 +87,8 @@ acknowledgments, including those to funding agencies, go at the end of the paper
 \bibliographystyle{iclr2018_conference}
 }
 
+
 \newpage
-\subsubsection{Qualitative results}
-\input{fig-planning-qualitative}
+\input{appendix}
+
 \end{document}
