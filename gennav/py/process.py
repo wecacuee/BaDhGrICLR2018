@@ -15,7 +15,17 @@ from itertools import product
 from argparse import Namespace
 
 conf = Namespace()
+conf.full_keys = """ apple_characters apple_prob blind chosen_map cols
+        double_action_space end_time episode_length_seconds gen_stats
+        goal_after_found goal_after_found_std goal_characters goal_first_found
+        goal_first_found_std hostname job_id job_name jsonfile label learning
+        learning_rate load_model loaded_model make_dataset make_plots maze
+        method mode num_ep num_goal num_goals_std num_maps
+        reward reward_std rows sourcedir spawn_characters
+        start_time status test time_taken train train_test_same vars videos
+        withvariations """.split()
 conf.keys = """chosen_map reward reward_std num_goal
+            dist_ratio_per_episode dist_ratio_per_episode_std
             num_goals_std goal_first_found goal_after_found num_maps
             goal_first_found_std goal_after_found_std sourcedir
             loaded_model vars apple_prob train_test_same label train jsonfile
@@ -91,6 +101,10 @@ def ensure_loaded_model(func):
 
 @ensure_loaded_model
 def loadmodels(sourcedir):
+    return loadmodels_from_filelist(
+        glob.glob(op.join(sourcedir, '*/gen_stats*.json')))
+
+def loadmodels_from_filelist(filelist):
     """
     Loads all the json files from sourcedir
     """
@@ -104,7 +118,7 @@ def loadmodels(sourcedir):
             , filename_to_model_details_v2(op.basename(genstat))
             or filename_to_model_details(op.basename(genstat))
             , json.load(open(genstat)).values()[0])
-        for genstat in glob.glob(op.join(sourcedir, '*/gen_stats*.json')))
+        for genstat in filelist)
 
 def select_keys(keys, from_):
     return ({k : transform(row[k]) for k, transform in keys}
@@ -207,7 +221,7 @@ def format_csv_writer(dicts, sep=",", linesep="\n", header=None):
         first = next(dicts)
     except StopIteration:
         raise ValueError("Empty dicts")
-    header = header or sorted(first.keys())
+    header = header or sorted(map(str, first.keys()))
     yield sep.join(header) + linesep
     row2str = lambda r : sep.join(map(str, (r[h] for h in header))) + linesep
     yield row2str(first)
@@ -429,6 +443,17 @@ def goal_map_video_to_snapshot(source = "../exp-results/planning-09x09-0006/vide
 
     video_to_snapshot(source, outfile, timestamps)
 
+def collect_jsons_to_csv(
+        source="../exp-results/*/gen_stats_latest_*.json"
+        , outfile="/tmp/one_big.csv"
+        , keys = conf.full_keys):
+    dicts = loadmodels_from_filelist(glob.glob(source))
+    lines = format_csv_writer(dicts, header=keys)
+    print("Writing data to big csv file: {}".format(outfile))
+    with open(outfile, "w") as csvf:
+        for line in lines:
+            csvf.write(line)
+
 
 if __name__ == '__main__':
     import sys
@@ -436,4 +461,5 @@ if __name__ == '__main__':
     kwargs = dict()
     if len(sys.argv) > 2 and sys.argv[2]: kwargs["source"] = sys.argv[2]
     if len(sys.argv) > 3 and sys.argv[3]: kwargs["outfile"] = sys.argv[3]
+    if len(sys.argv) > 4: raise ValueError("Unused argument {}".format(sys.argv[4]))
     globals()[func](**kwargs)
