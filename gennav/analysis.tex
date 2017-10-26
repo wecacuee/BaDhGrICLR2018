@@ -1,10 +1,10 @@
 The results for DRL Navigation challenge are shown in Fig~\ref{fig:latency-goal-reward}.
-We note that when the goal is static then rewards are consistently higher as compared to random goal while static spawn location and random spawn location are roughly close to each other within bounds of uncertainity. As expected, switching each variable from static to random increases the standard deviation on the results.
+We note that when the goal is static then rewards are consistently higher as compared to random goal while static spawn location and random spawn location are roughly close to each other within bounds of uncertainty. As expected, switching each variable from static to random increases the standard deviation on the results.
   From the \LatencyOneGtOne{} results we note that the current state of art algorithms do well when trained and tested on the same map but fail to generalize to new maps when evaluated on ability to exploit the information about goal location.
   Also note that \LatencyOneGtOne{} metric for cases of static goals is expected to be close to one because the location of goal is learned at train time.
 
 \subsection{Evaluation on unseen maps}
-The results for training on $N$ maps, where $N \in \{10, 100, 500, 1000\}$, and testing on 100 unseen maps are shown in Fig~\ref{fig:num-training-maps}. We observe that their is significant jump of average reward and averge goal hits when number of training maps is increased from 10 to 100 but no significant increase when number of training maps are increased from 100 to 500 to 1000.
+The results for training on $N$ maps, where $N \in \{10, 100, 500, 1000\}$, and testing on 100 unseen maps are shown in Fig~\ref{fig:num-training-maps}. We observe that their is significant jump of average reward and average goal hits when number of training maps is increased from 10 to 100 but no significant increase when number of training maps are increased from 100 to 500 to 1000.
 This is due to the fact that the bug exploration strategy learnt by the algorithm,
 is learnt with enough variation in 100 maps and training on additional maps does not add to the learnt strategy.
 
@@ -25,7 +25,7 @@ in Fig~\ref{fig:planning-qualitative}.
   \includegraphics[width=\linewidth]{images/plot_ntrain_summary.pdf}%
   \vspace{-1em}%
   \caption{Plots showing the effect of number of training maps with random texture (Rnd Texture) and presence of apples (With apples), when evaluated on unseen maps. We note that although the difference between mean metrics is negligible as compared to standard deviation of the metrics. Hence we say that the effect of apples or textures can be ignored.
-  The only clear trend is apparrent \LatencyOneGtOne{} metric which suggest that random texture along without apples is advantageous in exploiting goal location while finding the goal second time onwards.}
+  The only clear trend is apparent \LatencyOneGtOne{} metric which suggest that random texture along without apples is advantageous in exploiting goal location while finding the goal second time on-wards.}
   \label{fig:num-training-maps}
 \end{figure}
 
@@ -82,7 +82,7 @@ We observe that the attention is uniformly distributed on the image when the age
 \includegraphics[width=\textwidth,trim=0 0 0 336pt,clip]{./exp-results/training-09x09-0127-on-0127.png}\vspace{1ex}\\
 %
 \includegraphics[width=\textwidth,trim=0 0 0 336pt,clip]{./exp-results/training-1000-on-0127.png}%
-\caption{Visualizing attention for two sequences. The first two rows show the sequance when the model is trained on and evaluated on the same map. The last two rows shows the sequence for a model trained on 1000 maps and evaluated on one of the maps. We observe that the attention is uniformly distributed on the image when the agent spawns. The attention narrows down few pixels in the center when the agent is navigating through the corridor. It spreads to the entire image around turns and junctions. The attention also pays close attention to important objects like goal, apples and unique decals.}
+\caption{Visualizing attention for two sequences. The first two rows show the sequin when the model is trained on and evaluated on the same map. The last two rows shows the sequence for a model trained on 1000 maps and evaluated on one of the maps. We observe that the attention is uniformly distributed on the image when the agent spawns. The attention narrows down few pixels in the center when the agent is navigating through the corridor. It spreads to the entire image around turns and junctions. The attention also pays close attention to important objects like goal, apples and unique decals.}
 \label{fig:attention}
 \end{figure}
 

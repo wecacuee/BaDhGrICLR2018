@@ -66,11 +66,11 @@ In this work, we build on \cite{MiPaViICLR2017} and analyze their methods across
 %Our setup is similar, utilizing the same simulation environment, Deepmind Lab \cite{BeLeTeARXIV2016}.
 We set up the environment as a randomly generated map, as shown in Fig~\ref{fig:training-qualitative}, with an agent and a goal.
 % VD: Defining the objective in terms of reward is wrong because designing rewards is a part of reinforcement learning not the problem statement.
-The agent is provided only with the first-person view and is tasked to find the goal as many times as possible within a fixed amount of time, respawning at the spawn location each time it reaches the goal.
+The agent is provided only with the first-person view and is tasked to find the goal as many times as possible within a fixed amount of time, re-spawning at the spawn location each time it reaches the goal.
 We train and evaluate the algorithms with increasingly difficulty.
 In the easiest stage, we keep the goal location, spawn location and map constant over the training and the testing.
 We call this set up \emph{static goal, static spawn, and static map}.
-To increase the difficulty, we incrementally randomize the spawn locations, goal locations and map structures untill all three are random.
+To increase the difficulty, we incrementally randomize the spawn locations, goal locations and map structures until all three are random.
 We discuss the design of experiments in Section~\ref{sec:navtasks} with more detail.
 %We randomly genereate our mazes wherein the agent and goal are both statically and randomly spawned across experiments. 
 

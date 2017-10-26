@@ -3,10 +3,10 @@
 Since deep reinforcement learning algorithms need millions of iterations to train, in the absence of thousands of robotic replicas like \cite{LePaKrISER2017}, we evaluate the algorithms on a simulated environment.
 We use the same game engine as \cite{MiPaViICLR2017}, called Deepmind Lab (\cite{BeLeTeARXIV2016}).
 The game is setup such that an agent is placed within a randomly generated maze containing a \emph{goal} at a particular location.
-On reaching the goal, the agent \emph{respawns} within the same maze while the goal location remains unchanged. 
+On reaching the goal, the agent \emph{re-spawns} within the same maze while the goal location remains unchanged. 
 Following \cite{MiPaViICLR2017}, we scatter the maze with randomly placed smaller apple rewards (+1) to encourage initial explorations and assign the goal a reward of 10.
 % VD: Defining the objective in terms of reward is wrong because designing rewards is a part of reinforcement learning not the problem statement.
-The agent is tasked to find the goal as many times as possible within a fixed amount of time, respawning at the spawn location each time it reaches the goal.
+The agent is tasked to find the goal as many times as possible within a fixed amount of time, re-spawning at the spawn location each time it reaches the goal.
 
 Unlike \cite{MiPaViICLR2017}, we include a small wall penalty (-0.2) that pushes the agent away from the wall.
 % VD: Do we need experiments to support that?
