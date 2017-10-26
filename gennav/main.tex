@@ -67,19 +67,12 @@ Ann Arbor, MI 48109, USA \\
 \section{The DRL Navigation Challenge}
 \input{experiments}
 
-\section{Analysis}
+\section{Results and Analysis}
+\label{sec:analysis}
 \input{analysis}
 
 \section{Conclusion}
 \input{conclusion}
-
-\begin{figure}%
-  \includegraphics[width=\linewidth]{images/plot_ntrain_summary.pdf}%
-  \vspace{-1em}%
-  \caption{Plots showing the effect of number of training maps with random texture (Rnd Texture) and presence of apples (With apples), when evaluated on unseen maps. We note that although the difference between mean metrics is negligible as compared to standard deviation of the metrics. Hence we say that the effect of apples or textures can be ignored.
-  The only clear trend is apparrent \LatencyOneGtOne{} metric which suggest that random texture along without apples is advantageous in exploiting goal location while finding the goal second time onwards.}
-  \label{fig:num-training-maps}
-\end{figure}
 
 \subsubsection*{Acknowledgments}
 

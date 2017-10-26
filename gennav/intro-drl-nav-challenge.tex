@@ -40,7 +40,7 @@ We propose these experiments as a 5-stage benchmark for all end-to-end navigatio
   \ditem{Random goal, random spawn, and random map}
     We believe that any proposed algorithms on end-to-end navigation problems, should be evaluated on unseen maps.
     To our knowledge, this is the first paper to do so in the case of deep reinforcement learning based navigation methods.
-    We train agents to simultaneously learn to explore 1, 10, 100, 500 and 1000 maps and test them on the same 100 unseen maps. The relevant reward curves showing performance over training and testing can be found in Fig~\ref{fig:plot_reward_on_testing}. 
+    We train agents to simultaneously learn to explore 1, 10, 100, 500 and 1000 maps and test them on the same 100 unseen maps. The relevant results can be found in Fig~\ref{fig:num-training-maps} and discussed in Section~\ref{sec:analysis}.
 \end{description}
 
 The comparative evaluation of different the stages of this benchmark are shown in Fig~\ref{fig:latency-goal-reward} and expanded upon in the next section.
@@ -68,10 +68,10 @@ The comparative evaluation of different the stages of this benchmark are shown i
 %    We evaluate the number of times the agent takes the right descision at the fork after exploring the goal once.
 %\end{description}
 
-\begin{figure}%
-\includegraphics[width=0.5\columnwidth]{images/plot_reward_3D-1000.pdf}%
-\includegraphics[width=0.5\columnwidth]{images/plot_probability_3D-1000.pdf}%
-\vspace{-1em}%
-\caption{Mean reward while tested on 100 unseen maps, while being trained on different number of training maps. Note that while training on 1000 maps eventually achieves high reward, it is only higher mean reward (44.2), training on 1 map hits the maximum (31) much faster.}%
-\label{fig:plot_reward_on_testing}%
-\end{figure}
+% \begin{figure}%
+% \includegraphics[width=0.5\columnwidth]{images/plot_reward_3D-1000.pdf}%
+% \includegraphics[width=0.5\columnwidth]{images/plot_probability_3D-1000.pdf}%
+% \vspace{-1em}%
+% \caption{Mean reward while tested on 100 unseen maps, while being trained on different number of training maps. Note that while training on 1000 maps eventually achieves high reward, it is only higher mean reward (44.2), training on 1 map hits the maximum (31) much faster.}%
+% \label{fig:plot_reward_on_testing}%
+% \end{figure}
