@@ -1,15 +1,17 @@
 %VD: a subheading immediately after a headng should be avoided
 %\subsection{Setup}
 Since deep reinforcement learning algorithms need millions of iterations to train, in the absence of thousands of robotic replicas like \cite{LePaKrISER2017}, we evaluate the algorithms on a simulated environment.
-We use the same game engine as used by \cite{MiPaViICLR2017}, called Deepmind Lab \cite{BeLeTeARXIV2016}.
+We use the same game engine as \cite{MiPaViICLR2017}, called Deepmind Lab (\cite{BeLeTeARXIV2016}).
 The game is setup such that an agent is placed within a randomly generated maze containing a \emph{goal} at a particular location.
 On reaching the goal, the agent \emph{respawns} within the same maze while the goal location remains unchanged. 
 Following \cite{MiPaViICLR2017}, we scatter the maze with randomly placed smaller apple rewards (+1) to encourage initial explorations and assign the goal a reward of 10.
-The agents are tasked with maximizing possible reward over the course of episodes of fixed time lengths and thus must learn to repeatedly find the goal within the maze as often as possible to achieve this objective.
+% VD: Defining the objective in terms of reward is wrong because designing rewards is a part of reinforcement learning not the problem statement.
+The agent is tasked to find the goal as many times as possible over within a fixed amount of time, respawning at the spawn location each time it reaches the goal.
 
 Unlike \cite{MiPaViICLR2017}, we include a small wall penalty (-0.2) that pushes the agent away from the wall.
-% VD: we will need to show experiments, if we claim that.
-%We find that this penalty is useful to prevent agents from picking up scattered rewards while moving backwards that in turn lead to local-optima based backward-moving agents that discard vision all together in their explorations.
+% VD: Do we need experiments to support that?
+% VD: It is not clear how wall penality will avoid backward motion. Let's avoid that argument.
+The wall penalty is useful to prevent agents from moving along the walls, thereby discarding vision intput for exploration.
 % Reward formulation
 %The setup of game is such that it enables evaluating the algorithm for optimal path planning as well as enable dividing experiments into exploration and exploitation stages.
 %We introduce a metric that evaluates how well the agent exploits the information gained during exploration before finding the goal for the first time.

@@ -6,11 +6,11 @@ At time $t$ the agent takes an action $\actt \in \Action$ and observes observati
 We assume the environment to be Partially Observable Markov Decision Process (POMDP).
 In a POMDP, the future state of the environment, $\statetn \in \State$, is conditionally independent of all the past states, $\statehist$, given the current state $\statet$. It is further assumed that
 $\obst$ and $\rewt$ are independent of previous states given current state $\statet$ and last action $\acttp$.
-Formally, a POMDP is defined as a six tuple $(\Obs, \ObsFunc, \State, \Action, \Trans, \Rew)$ composed of an observation space $\Obs$, observation function $\ObsFuncFull$, state space $\State$, action space $\Action$, transition function $\TransFull$ and reward function $\RewFull$.
-For our problem setup, the observation space $\Obs$ is the space of encoded feature vector that is generated from input image along with previous action and reward.
+Formally, a POMDP is defined as a six tuple $(\Obs, \ObsFunc, \State, \Action, \Trans, \Rew)$ that is composed of an observation space $\Obs$, an observation function $\ObsFuncFull$, a state space $\State$, an action space $\Action$, a transition function $\TransFull$ and a reward function $\RewFull$.
+For our problem setup, the observation space $\Obs$ is the space of an encoded feature vector that is generated from input image along with previous action and reward.
 Action space $\Action$ contains four actions: rotate left, rotate right, move forward and move backward and reward function $\Rew$ is defined for each experiment so that the reaching the goal leads to high reward with auxilary reward to encourage certain kind of behavior.
 
-For DRL algorithms, the state space $\State$ is not hand tuned, but it is modeled as semantically meaningless \emph{hidden state} of a fixed size float vector.
+For DRL algorithms, the state space $\State$ is not hand tuned, but it is modeled as a semantically meaningless vector of floats.
 Also, instead of modeling observation function $\ObsFuncFull$ and $\TransFull$, a combined transition function $\TransObsFull$ is modeled such that it estimates the next state $\statetn$ directly considering previous observation as well as reward into account.
 For policy-based DRL a policy function $\piDef$ and a value function $\ValueDef$ are also modeled.
 All three functions $\TransObs$, $\pit$, $\Valuet$ share most of the parameters in a way such that $\theta_T \subseteq \theta_{\pi} \cap \theta_\Value$
@@ -43,7 +43,7 @@ Our objective is to estimate unknown weights $\theta = \theta_T \cup \theta_\pi 
 In this paper we use the policy-based method called Asynchronous Advantage Actor-Critic (A3C) (\cite{MnBaMiICML2016}) that allows weight updates to happen asynchronously in a multi-threaded environment.
 It works by keeping a ``shared and slowly changing copy of target network'' that is updated every few iterations by accumulated gradients in each of the threads.
 The gradients are never applied to the local copy of the weights, but the local copy of weights is periodically synced from the shared copy of target weights.
-The gradient for weight update is proportional to the product of \emph{advantage}, $R_t - \Value_t(\theta_\Value)$, and \emph{characteristic eligibility}, $\charelig$ (\cite{WiML1992}), updating the weights according to the following update equations
+The gradient for the weight update is proportional to the product of \emph{advantage}, $R_t - \Value_t(\theta_\Value)$, and \emph{characteristic eligibility}, $\charelig$ (\cite{WiML1992}), updating the weights according to the following update equations
 \begin{align}
   \theta_\pi &\leftarrow \theta_\pi
   + \sum_{t \in \text{episode}}\alpha_\pi \charelig (R_t - \Value_t(\theta_\Value))
