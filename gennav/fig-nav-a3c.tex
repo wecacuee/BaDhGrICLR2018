@@ -1,23 +1,27 @@
 \usetikzlibrary{positioning}
-\begin{tikzpicture}[]
+\begin{tikzpicture}
 %\draw [use as bounding box] (0,0) rectangle (1.8in, 3in);
-\node[networknode] at (2.3, 4) (lstm2) {LSTM(64)};
-\node[networknode, below=0.4 of lstm2] (lstm) {LSTM(256)};
-\node[networknode, below=0.4 of lstm]  (enc) {Encoder};
-\node[below=0.4 of enc] (It) {$I_t$};
-\node[left=0.1 of It] (at) {$\actt$};
-\node[right=0.1 of It]  (rt) {$\rewt$};
-\node [above=0.4 of lstm2] (V)  {$V$};
-\node [shift={(0,-0.3)},left=0.1 of V] (pi)  {$\pi$};
-\node [shift={(0,-0.3)},right=0.1 of V] (D)  {$D_2$};
-\draw [-stealth] (It) -- (enc);
-\draw [-stealth] (at) edge [out=120,in=-160] (lstm2);
-\draw [-stealth] (enc) edge [bend left=70] (lstm2);
-\draw [-stealth] (enc) edge node [left]{$o_t$} (lstm);
+\node[networknode] at (7.5, 2.5) (lstm2) {\rotatebox{-90}{LSTM(64)}};
+\node[networknode, left=0.8 of lstm2] (lstm) {\rotatebox{-90}{LSTM(256)}};
+\node[networknode, left=0.8 of lstm]  (enc2) {\rotatebox{-90}
+{\parbox{0.3in}{CNN(32)\\4x4/2x2}}};
+\node[networknode, left=0.4 of enc2]  (enc) {\rotatebox{-90}
+{\parbox{0.3in}{CNN(16)\\8x8/4x4}}};
+\node[left=0.4 of enc] (It) {$I_t$};
+\node[above=0.1 of It] (at) {$\actt$};
+\node[below=0.1 of It]  (rt) {$\rewt$};
+\node [right=0.8 of lstm2] (V)  {$V$};
+\node [shift={(-0.4,0)},above=0.4 of V] (pi)  {$\pi$};
+\node [shift={(-0.4,0)},below=0.4 of V] (D)  {$D_2$};
+\draw [-stealth] (It) edge (enc);
+\draw [-stealth] (at) edge [out=60,in=110,looseness=0.5] (lstm2);
+\draw [-stealth] (enc) edge [bend left=70,looseness=0.6] (lstm2);
+\draw [-stealth] (enc) edge (enc2);
+\draw [-stealth] (enc2) edge node [shift={(0.2,0.1)},left]{$o_t$} (lstm);
 \draw [-stealth] (rt) edge  [bend right] (lstm);
-\draw [-stealth] (lstm) edge node[right=0.4] (D1) {$D_1$} (lstm2);
+\draw [-stealth] (lstm) edge node[below=0.4] (D1) {$D_1$} (lstm2);
 \draw [-stealth] (lstm) edge [bend left] (D1);
-\draw [-stealth] (lstm2) edge [bend right] (pi);
+\draw [-stealth] (lstm2) edge [bend right, looseness=0.5] (pi);
 \draw [-stealth] (lstm2) edge  (V);
 \draw [-stealth] (lstm2) edge [bend left] (D);
 \end{tikzpicture}

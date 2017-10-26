@@ -24,16 +24,17 @@ Our objective is to estimate unknown weights $\theta = \theta_T \cup \theta_\pi 
 \end{align}
 %
 % need \graphicspath{{images/}}
-\def\svgwidth{0.25\columnwidth}%
+%\def\svgwidth{0.25\columnwidth}%
 \begin{figure}%
-\input{images/a3c-as-pomdp.pdf_tex}%
-\def\svgwidth{0.25\columnwidth}%
-\input{images/a3c-as-nn.pdf_tex}%
-\input{fig-nav-a3c}\hspace{-1ex}%
-\input{fig-cnn-enc}\hspace{-1ex}%
-\input{fig-fc-enc}%
-\caption{POMDP on the left, neural network implementation on the right. \NavAiiiCDiDiiL{} architecture on left and two possible Encoders: CNN encoder on center, FC encoder on right. We use CNN encoder for the 3D world while FC encoder for the gridworld.
-}
+%\input{images/a3c-as-pomdp.pdf_tex}%
+%\def\svgwidth{0.25\columnwidth}%
+%\input{images/a3c-as-nn.pdf_tex}%
+\begin{center}
+\input{fig-nav-a3c}%
+\end{center}
+%\input{fig-cnn-enc}\hspace{-1ex}%
+%\input{fig-fc-enc}%
+\caption{\NavAiiiCDiDiiL{} architecture}
 \label{fig:architectures}
 \end{figure}
 
