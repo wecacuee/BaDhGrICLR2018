@@ -1,12 +1,9 @@
 \input{fig-latency-goal-reward}
 \input{grid-2d-dmlab-figure}
-
-The results for the DRL Navigation challenge are shown in Fig~\ref{fig:latency-goal-reward} and described below.
-
 \subsection{Metric Evaluations}
 \paragraph{static goal, static spawn, static maze} In this simplest case, the agents memorizes the a path to the goal during training and repeats it during testing. The reward is high, and both the \LatencyOneGtOne{} and distance-efficiency is close to 1 with small standard deviations implying the path chosen is the shortest available.
 
-\paragraph{Static goal, random spawn, static map}
+\paragraph{Static goal, random spawn, static map} The agent must memorize the goal's location and learn to traverse to it from different parts of the map. The large deviations in the \LatencyOneGtOne{} indicate that the agent is able to better traverse to the goal from certain sections of the map implying that the goal-exploitation ability is not uniform to every spawn location. The distance-efficiency is close to 1 implying that when the goal is found, the shortest path is traversed.
 
 We note that when the goal is static the rewards are consistently higher as compared to when it is random. In the case of static versus random spawn locations, rewards are close to each other within bounds of uncertainty. As expected, switching each variable from static to random increases the standard deviation on the results.
   From the \LatencyOneGtOne{} results we note that the current state of art algorithms do well when trained and tested on the same map but fail to generalize to new maps when evaluated on ability to exploit the information about goal location.
