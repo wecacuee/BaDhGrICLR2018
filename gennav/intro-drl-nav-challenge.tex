@@ -1,6 +1,6 @@
 \subsection{Experiments}
 \label{sec:navtasks}
-We evaluate the Nav-A3C algorithm on maps with 5 stages of difficulty. While the Nav-A3C algorithm works smoothly on the easier stages, it does not perform better than wall-following  methods on the hardest stage.
+We evaluate the \NavAiiiCDiDiiL{} algorithm on maps with 5 stages of difficulty. While the algorithm works smoothly on the easier stages, it does not perform better than wall-following  methods on the hardest stage.
 We propose these experiments as a 5-stage benchmark for all end-to-end navigation algorithms.
 
 %While there already exists optimal algorithms to find shortest path between two points and perform optimal navigation between given set of points in a given map, the advantage of Deep reinforcement learning comes from its ability to extract required features from the input images and its promise
@@ -18,7 +18,7 @@ We propose these experiments as a 5-stage benchmark for all end-to-end navigatio
   \ditem{Static goal, random spawn and static map}
   % VD: Probably clear from the name
   % In this setup, we keep the goal location and the map fixed during both training and testing but chose a random spawn point every time the agents re-spawns.
-  This is a textbook version of the reinforcement learning problem, especially in gridworld \cite{SuBaBOOK1998}, with the only difference being that the environment is partially observable instead of fully observable.
+  This is a textbook version of the reinforcement learning problem, especially in grid-world \cite{SuBaBOOK1998}, with the only difference being that the environment is partially observable instead of fully observable.
   This problem is more difficult than Problem~\ref{prob:sss} because the agent
   must find an optimal policy to the goal from each possible starting point in the maze.
   \ditem{Random goal, static spawn, and static map}
