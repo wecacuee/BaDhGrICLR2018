@@ -47,7 +47,7 @@ The gradient for the weight update is proportional to the product of \emph{advan
 For additional details of the A3C algorithm, we refer the reader to \cite{MnBaMiICML2016}.
 %\input{fig-nav-a3c-vert-figure}
 \paragraph{\NavAiiiCDiDiiL{}}
-In this work, we use the \NavAiiiCDiDiiL{} architecture as proposed by \cite{MiPaViICLR2017}, which builds modifying the network architecture to have two LSTMs and with auxiliary outputs of depth predictions along with loop-closure predictions. % TODO "which builds modifying the network architecture..." this doesn't make sense to me, should be corrected.
+In this work, we use the \NavAiiiCDiDiiL{} architecture as proposed by \cite{MiPaViICLR2017}, which builds modifying the network architecture to have two LSTMs and with auxiliary outputs of depth predictions along with loop-closure predictions.
 The schematic of the architecture is shown in Fig~\ref{fig:architectures}.
 The architecture has three inputs: the current image $I_t$, previous action $\acttp$ and previous reward $\rewtp$.
 As shown by \cite{MiPaViICLR2017}, the architecture improves upon vanilla A3C architecture by optimizing predictions for the auxiliary outputs of loop closure signal $L$ and predicted depth $D_1$ and $D_2$.

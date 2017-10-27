@@ -42,8 +42,7 @@ One such algorithm by \cite{MiPaViICLR2017} has shown promise in exploring and f
 \includegraphics[width=\textwidth,trim=0 336pt 0 0,clip]{./exp-results/training-09x09-0127-on-0127.png}%
 \caption{
 Snapshots of the path taken by the agent while evaluating the model trained on the same random map with random goal and random spawn.
-% JJC: TODO: make sure that you communicate that the top view is not available to the algorithm.
-The first row shows the top view of the robot moving through the maze with the goal location marked orange, the agent marked black and the agent's orientation marked red. The second row shows the first person view, which, besides reward, is the only input available to the agent.}
+The first row shows the top view of the robot moving through the maze with the goal location marked orange, the agent marked black and the agent's orientation marked red. The second row shows the first person view, which, besides reward, is the only input available to the agent and the top view is available only for human analysis.}
 \label{fig:training-qualitative}
 \end{figure}
 
@@ -60,7 +59,6 @@ Recent work analyzing neural networks has shown that deep learning-based object 
 % 4.2 We find that no path planning is  happening only, memorizing and regeneration of the sequence of steps. However, it is not 
 
 % Prior setup
-% JJC: TODO: Generalize to multiple fields
 In this work, we develop a better understanding of recent DRL-based methods. In particular, we thoroughly explore and analyze the state-of-the-art \cite{MiPaViICLR2017} methods across hundreds of maps with increasing difficulty levels. 
 % VD: Cutting down unncessary sentences
 % VD: No need to tell the license and name of the environment
