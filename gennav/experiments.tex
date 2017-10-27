@@ -26,7 +26,8 @@ A smaller action space helps the algorithm train faster while achieving similar 
 % VD: this will raise more questions like why grounding in vision is necesary
 % The agent's picking up of rewards is thus explicitly grounded in its vision as the agent must rotate in the direction of motion during exploration.
 
-We generate 1100 random maps using depth-first search based maze generation methods. More information on maze generation can be found in the appendix. 
+We generate 1100 random maps using depth-first search based maze generation methods.
+More information on maze generation can be found in the appendix. 
 Of the first 1000 maps, 10 are randomly selected for our static-map experiments (Fig. \ref{fig:environments}). For our unseen map experiments, agents are trained on increasing subsets of the first 1000 maps and tested on the remaining 100.
 Unlike \cite{MiPaViICLR2017} and similar to \cite{ChLaSaNIPS2016}, we use randomly textured walls in our mazes so that the policies learned are texture-independent.
 

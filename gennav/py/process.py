@@ -178,6 +178,7 @@ def format_csv_row(row, sep, linesep):
     csv.writer(dummyfile, delimiter=sep, lineterminator=linesep).writerow(row)
     return dummyfile.getvalue()
 
+
 def format_csv_writer(dicts, sep=",", linesep="\n", header=None):
     try:
         first = next(dicts)
@@ -190,6 +191,7 @@ def format_csv_writer(dicts, sep=",", linesep="\n", header=None):
     yield row2str(first)
     for row in dicts:
         yield row2str(row)
+
 
 def sourcedir():
     return op.dirname(__file__) or '.'
@@ -204,6 +206,7 @@ def process(source="../exp-results/"
                 , 'Random_Goal_Random_Spawn_Static_Maze'
                 , 'Random_Goal_Random_Spawn_Random_Maze']
             , keys = conf.keys
+            , not_nan_keys = "dist_ratio_per_episode dist_ratio_per_episode_std".split()
             , condition = dict(vars=True, apple_prob=0)):
     source = op.join(sourcedir(), source)
     outfile = op.join(sourcedir(), outfile)
@@ -216,8 +219,10 @@ def process(source="../exp-results/"
     # Pickup the latest results when the results are grouped by keys
     results_latest = [latest_row(values)
                         for _, values in group_by(
-                                loadmodels(source),
-                                "chosen_map loaded_model vars apple_prob label".split())
+                                select(from_=loadmodels(source),
+                                       where=where_not_nan(not_nan_keys))
+                                , """chosen_map loaded_model vars
+                                     apple_prob label""".split())
                       .items()
     ]
     for label in labels:
@@ -255,7 +260,7 @@ def ntrain_data(source="../exp-results/"
                 , outfile="../exp-results/ntrained.csv"
                 , ntrain = [1, 10, 100, 500, 1000]
                 , keys = conf.keys
-                , not_nan_keys = []#"dist_ratio_per_episode dist_ratio_per_episode_std".split()
+                , not_nan_keys = "dist_ratio_per_episode dist_ratio_per_episode_std".split()
                 , condition = {
                     "label" : "Random_Goal_Random_Spawn_Random_Maze"
                     , "chosen_map" : "testing-100" }):

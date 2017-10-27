@@ -30,7 +30,7 @@ We propose these experiments as a 5-stage benchmark for all end-to-end navigatio
   The agent can perform well on this experiment by remembering the goal location after it has been discovered and exploiting the information to revisit the goal faster.  
   
   Following \cite{MiPaViICLR2017}, we report the ratio
-  of time taken to hit the goal for the first time (exploration time) vs the average amount of time taken to hit goal subsequently (exploitation time). The metric, called \emph{\LatencyOneGtOne{}}, is a measure of how efficiently the agent exploits map information to find shorter path once the goal location is known. 
+  of time taken to hit the goal for the first time (exploration time) verses the average amount of time taken to hit goal subsequently (exploitation time). The metric, called \emph{\LatencyOneGtOne{}}, is a measure of how efficiently the agent exploits map information to find a shorter path once the goal location is known. 
   If this ratio is greater than 1, the agent is doing better than random exploration and the higher the value, the better its map-exploitation ability.
   \ditem{Random goal, random spawn, and static map}
   In this version of the experiment both the spawn point and the goal location is randomized. To perform optimally, the agent must localize itself within the map in addition to being able to exploit map-information.

@@ -2,6 +2,7 @@ import os
 import os.path as op
 import itertools
 import types
+import csv
 
 import numpy as np
 import matplotlib as mplab
@@ -292,6 +293,17 @@ def num_goals_summary(source, outfile, **kwargs):
         , xlim = [0, 24]
         , **kwargs)
 
+def distance_inefficiency_summary(source, outfile, **kwargs):
+    return summary_bar_plot(
+        source, outfile,
+        data_source = lambda src, labels: get_summary_bar_plot_data(
+            src, labels
+            , columns = "chosen_map dist_ratio_per_episode dist_ratio_per_episode_std".split())
+        , xlabel="Distance traveled : shortest path"
+        , ylabel=None
+        , xlim = [0, 5.0]
+        , **kwargs)
+
 
 def latency_from_goal_data(hdata):
     time_to_goal_first_found = hdata.data[:, 1:2]
@@ -337,16 +349,16 @@ def summary_bar_plots(source, outfile):
     legends = reward_summary(source, None, ax=ax1
                      , barwidth = lambda h, nmaps : h/(nmaps * 1.5))
     ax2 = fig_add_subplot(fig, parent_box=(l + w*0.33, b, w*0.33, h)
-                         , left_margin=FONTSIZEIN/width, bottom_margin=0
+                         , left_margin=1.5*FONTSIZEIN/width, bottom_margin=0
                          , right_margin=0, top_margin=0)
-    legends = num_goals_summary(source, None, ax=ax2
+    legends = distance_inefficiency_summary(source, None, ax=ax2
                      , barwidth = lambda h, nmaps : h/(nmaps * 1.5))
     ax2.legend(legends, loc='upper right', framealpha=0.2
                , bbox_to_anchor=(1.8, 1.12)
                , fontsize=SMALLERFONTSIZE, ncol=3)
 
     ax3 = fig_add_subplot(fig, parent_box=(l + w*0.66, b, w*0.33, h)
-                         , left_margin=FONTSIZEIN/width, bottom_margin=0
+                         , left_margin=1.5*FONTSIZEIN/width, bottom_margin=0
                          , right_margin=0, top_margin=0)
     latency_summary(source, None, ax=ax3
                      , barwidth = lambda h, nmaps : h/(nmaps * 1.5))
@@ -421,7 +433,7 @@ def ntrain_summary(source="../exp-results/ntrained.csv"
         , barwidth = lambda h, nmaps: h / (nmaps * 4)
         , ax=ax1)
     ax2 = fig_add_subplot(fig, parent_box=(l + w*0.33, b, w*0.33, h)
-                         , left_margin=FONTSIZEIN/width, bottom_margin=0
+                         , left_margin=1.5*FONTSIZEIN/width, bottom_margin=0
                          , right_margin=0, top_margin=0)
 
     legends = summary_bar_plot(
@@ -429,18 +441,19 @@ def ntrain_summary(source="../exp-results/ntrained.csv"
         , labels = labels 
         , short_labels = short_labels
         , data_source = get_ntrain_summary_data(
-            "num_maps num_goal num_goals_std".split())
+            #"num_maps num_goal num_goals_std".split())
+            "num_maps dist_ratio_per_episode dist_ratio_per_episode_std".split())
         , ylabel = None
-        , xlabel = "Average goal hits"
+        , xlabel = "Distance traveled : shortest path"
         , barwidth = lambda h, nmaps: h / (nmaps * 4)
-        , xlim = [0, 10]
+        , xlim = [0, 5]
         , ax=ax2)
     ax2.legend(legends, loc='upper right', framealpha=0.2
                , bbox_to_anchor=(1.8, 1.14)
                , fontsize=SMALLERFONTSIZE, ncol=4)
 
     ax3 = fig_add_subplot(fig, parent_box=(l + w*0.66, b, w*0.33, h)
-                         , left_margin=FONTSIZEIN/width, bottom_margin=0
+                         , left_margin=1.5*FONTSIZEIN/width, bottom_margin=0
                          , right_margin=0, top_margin=0)
     legends = summary_bar_plot(
         source, None
@@ -531,9 +544,9 @@ def planning_maps_summary(source="../exp-results/planning_maps.csv"
 
 
 def keeplotting(outfile):
-    #summary_bar_plots("../exp-results", outfile)
+    summary_bar_plots("../exp-results", outfile)
     #ntrain_summary(op.join(thisdir, "../exp-results/ntrained.csv"), outfile)
-    planning_maps_summary(op.join(thisdir, "../exp-results/planning_maps.csv"), outfile)
+    #planning_maps_summary(op.join(thisdir, "../exp-results/planning_maps.csv"), outfile)
 
 if __name__ == '__main__':
     # for relative imports
