@@ -3,18 +3,29 @@
 % Experiments are as discussed in Section
 % The maps are as show in figure 4
 \input{fig-latency-goal-reward}
-In this section we discuss the results for experiments as discussed in Section~\ref{sec:navtasks} over ten randomly chosen maps shown in Fig~\ref{fig:environments}. The results over threare show
+In this section we discuss the results for experiments as discussed in Section~\ref{sec:navtasks} over ten randomly chosen maps shown in Fig~\ref{fig:environments}. The results in Fig~\ref{fig:latency-goal-reward}.
 \paragraph{Static goal, static spawn, static maze}
-In this simplest case, the agents memorizes the path to the goal during training and repeats it during testing.
-The reward is high, and both the \LatencyOneGtOne{} and \DistanceInefficiency{} is close to 1 with small standard deviations implying the path chosen is the shortest available.
+For this case, the reward is consistently high, and \DistanceInefficiency{} is close to 1 with small standard deviations implying the path chosen is the shortest available.
+Please note that \LatencyOneGtOne{}, is should be close to 1 for static goal case, because the goal location is known at training time.
 
-\paragraph{Static goal, random spawn, static map} The agent must memorize the goal's location and learn to traverse to it from different parts of the map. The large deviations in the \LatencyOneGtOne{} indicate that the agent is able to better traverse to the goal from certain sections of the map implying that the goal-exploitation ability is not uniform to every spawn location. The \DistanceInefficiency{} is close to 1 implying that when the goal is found, the shortest path is traversed.
+\paragraph{Static goal, random spawn, static map}
+Again, note that \DistanceInefficiency{} is close to 1 implying that when the goal is found, the shortest path is traversed.
+This is because the agent can learn the optimal  policy for shortest path to the goal at train time.
 
-\paragraph{Random goal, static spawn, static map} The goal is randomized and must be found at evaluation time. The mean of the \LatencyOneGtOne{} is more than 1 show that in general the agent is able to exploit map information. However the large standrd deviations in this metric and the reward values show that this exploitation is not consistent through episodes. For most of the experiments, the \DistanceInefficiency{} is close to one within error metrics, again imply that the shortest path is taken when the goal is found. 
+\paragraph{Random goal, static spawn, static map}
+In this case, the mean of the \LatencyOneGtOne{} is more than 1 show that in general the agent is able to exploit map information.
+However the large standard deviations in this metric and the reward values show that this exploitation is not consistent through episodes.
+For most of the experiments, the \DistanceInefficiency{} is close to one within error metrics, again imply that the shortest path is taken when the goal is found. 
 
-\paragraph{Random goal, Random spawn, static map} Similar to the previous experiment, the \LatencyOneGtOne{} is more than 1 but with a large standard deviation implying inconsistent performance from episode to episode. The \DistanceInefficiency{} is larger than 1 showcasing the paths traversed to the goal are not necessarily the shortest.
+\paragraph{Random goal, Random spawn, static map}
+Similar to the previous experiment, the \LatencyOneGtOne{} is more than 1 but with a large standard deviation implying inconsistent performance from episode to episode.
+The \DistanceInefficiency{} is larger than 1 showcasing the paths traversed to the goal are not necessarily the shortest.
 
-\paragraph{Random goal, Random spawn, Random map} Agents trained on a 1000 maps are tested individually on the 10 chosen maps. The \LatencyOneGtOne{} is close to 1 implying that map-exploitation is taking place. The large \DistanceInefficiency{} numbers seem to confirm this statement. Qualitatively, based on video results, the agents appear to randomly explore the maze in the direction of initiialization.
+\paragraph{Random goal, Random spawn, Random map}
+For this experiment, agents trained on a 1000 maps are tested individually on the 10 chosen maps that are a subset of the 1000 maps.
+The \LatencyOneGtOne{} is close to 1 implying that map-exploitation is taking place.
+The large \DistanceInefficiency{} numbers seem to confirm this statement.
+We present, qualitative results in  Sec.~\ref{sec:qualitative-simple} on very simple, to show that the agents are only randomly exploring the maze rather than utilizing shortest path planning.
 
 \subsection{Evaluation on unseen maps}
 The results for training on $N$ maps, where $N \in \{10, 100, 500, 1000\}$, and testing on 100 unseen maps are shown in Fig~\ref{fig:num-training-maps}.
@@ -29,6 +40,7 @@ We find that the algorithm, being trained on random textures and random placemen
 
 
 \subsection{Qualitative evaluation on simple maps}
+\label{sec:qualitative-simple}
 % 1. We test the trained algorithms on simple maps.
 To evaluate what strategies that the algorithm is employing to reach the
 goal we evaluate the algorithm on very simple maps where there are only two
