@@ -351,7 +351,7 @@ def summary_bar_plots(source, outfile):
     ax2 = fig_add_subplot(fig, parent_box=(l + w*0.33, b, w*0.33, h)
                          , left_margin=1.5*FONTSIZEIN/width, bottom_margin=0
                          , right_margin=0, top_margin=0)
-    legends = distance_inefficiency_summary(source, None, ax=ax2
+    legends = latency_summary(source, None, ax=ax2
                      , barwidth = lambda h, nmaps : h/(nmaps * 1.5))
     ax2.legend(legends, loc='upper right', framealpha=0.2
                , bbox_to_anchor=(1.8, 1.12)
@@ -360,7 +360,7 @@ def summary_bar_plots(source, outfile):
     ax3 = fig_add_subplot(fig, parent_box=(l + w*0.66, b, w*0.33, h)
                          , left_margin=1.5*FONTSIZEIN/width, bottom_margin=0
                          , right_margin=0, top_margin=0)
-    latency_summary(source, None, ax=ax3
+    legends = distance_inefficiency_summary(source, None, ax=ax3
                      , barwidth = lambda h, nmaps : h/(nmaps * 1.5))
     print("Saving to {}".format(outfile))
     fig.savefig(outfile)
@@ -412,7 +412,7 @@ def ntrain_summary(source="../exp-results/ntrained.csv"
                                      , "St Texture, No apples"
                                      , "St Texture, With apples"
                    ]
-                   , ):
+                   , barwidth = lambda h, nmaps: h / (nmaps * 3.0)):
     fig = figure(figsize=(LINEWIDTH, COLWIDTH/GOLDENR))
     width, height = fig.bbox_inches.width, fig.bbox_inches.height
     plot_box = subplot_box(left_margin=4*FONTSIZEIN/width,
@@ -430,7 +430,7 @@ def ntrain_summary(source="../exp-results/ntrained.csv"
             "num_maps reward reward_std".split())
         , ylabel = "Num training maps"
         , xlim = [0, 100]
-        , barwidth = lambda h, nmaps: h / (nmaps * 4)
+        , barwidth = barwidth
         , ax=ax1)
     ax2 = fig_add_subplot(fig, parent_box=(l + w*0.33, b, w*0.33, h)
                          , left_margin=1.5*FONTSIZEIN/width, bottom_margin=0
@@ -440,13 +440,11 @@ def ntrain_summary(source="../exp-results/ntrained.csv"
         source, None
         , labels = labels 
         , short_labels = short_labels
-        , data_source = get_ntrain_summary_data(
-            #"num_maps num_goal num_goals_std".split())
-            "num_maps dist_ratio_per_episode dist_ratio_per_episode_std".split())
+        , data_source = get_ntrain_latency_summary
         , ylabel = None
-        , xlabel = "Distance traveled : shortest path"
-        , barwidth = lambda h, nmaps: h / (nmaps * 4)
-        , xlim = [0, 5]
+        , xlabel = "Latency $1:>1$"
+        , barwidth = barwidth
+        , xlim=[0, 1.25]
         , ax=ax2)
     ax2.legend(legends, loc='upper right', framealpha=0.2
                , bbox_to_anchor=(1.8, 1.14)
@@ -459,11 +457,13 @@ def ntrain_summary(source="../exp-results/ntrained.csv"
         source, None
         , labels = labels 
         , short_labels = short_labels
-        , data_source = get_ntrain_latency_summary
+        , data_source = get_ntrain_summary_data(
+            #"num_maps num_goal num_goals_std".split())
+            "num_maps dist_ratio_per_episode dist_ratio_per_episode_std".split())
         , ylabel = None
-        , xlabel = "Latency $1:>1$"
-        , barwidth = lambda h, nmaps: h / (nmaps * 4)
-        , xlim=[0, 1.25]
+        , xlabel = "Distance traveled : shortest path"
+        , barwidth = barwidth
+        , xlim = [0, 5]
         , ax=ax3)
 
     print("Saving to {}".format(outfile))
