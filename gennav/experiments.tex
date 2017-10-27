@@ -4,9 +4,9 @@ Since deep reinforcement learning algorithms need millions of iterations to trai
 We use the same game engine as \cite{MiPaViICLR2017}, called Deepmind Lab (\cite{BeLeTeARXIV2016}).
 The game is setup such that an agent is placed within a randomly generated maze containing a \emph{goal} at a particular location.
 On reaching the goal, the agent \emph{re-spawns} within the same maze while the goal location remains unchanged. 
-Following \cite{MiPaViICLR2017}, we scatter the maze with randomly placed smaller apple rewards (+1) to encourage initial explorations and assign the goal a reward of 10.
+Following \cite{MiPaViICLR2017}, we scatter the maze with randomly placed smaller apple rewards (+1) to encourage initial explorations and assign the goal a reward of +10.
 % VD: Defining the objective in terms of reward is wrong because designing rewards is a part of reinforcement learning not the problem statement.
-The agent is tasked to find the goal as many times as possible within a fixed amount of time, re-spawning at the spawn location each time it reaches the goal.
+The agent is tasked to find the goal as many times as possible within a fixed amount of time, re-spawning within the maze, either statically or randomly, each time it reaches the goal.
 % JJC: TODO: remind that the spawn location can be random or static
 
 Unlike \cite{MiPaViICLR2017}, we include a small wall penalty (-0.2) that pushes the agent away from the wall.
@@ -26,8 +26,8 @@ A smaller action space helps the algorithm train faster while achieving similar 
 % VD: this will raise more questions like why grounding in vision is necesary
 % The agent's picking up of rewards is thus explicitly grounded in its vision as the agent must rotate in the direction of motion during exploration.
 
-We generate 1100 random maps using depth first search based maze generation methods. More information on maze generation can be found in the appendix. 
-Of these 1100 maps, 1000 maps are used for training while the remaining 100 are used for testing.
+We generate 1100 random maps using depth-first search based maze generation methods. More information on maze generation can be found in the appendix. 
+Of the first 1000 maps, 10 are randomly selected for our static-map experiments (Fig. \ref{fig:environments}). For our unseen map experiments, agents are trained on increasing subsets of the first 1000 maps and tested on the remaining 100.
 Unlike \cite{MiPaViICLR2017} and similar to \cite{ChLaSaNIPS2016}, we use randomly textured walls in our mazes so that the policies learned are texture-independent.
 
 % VD: Let's describe this terminology in the descriptions of tasks

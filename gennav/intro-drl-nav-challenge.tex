@@ -1,6 +1,6 @@
 \subsection{Experiments}
 \label{sec:navtasks}
-We evaluate the Nav-A3C algorithm on maps with 5 stages of difficulty. While the Nav-A3C algorithm works smoothly on the easier stages, it does not perform better than bug-exploration methods on the hardest stage.
+We evaluate the Nav-A3C algorithm on maps with 5 stages of difficulty. While the Nav-A3C algorithm works smoothly on the easier stages, it does not perform better than wall-following  methods on the hardest stage.
 We propose these experiments as a 5-stage benchmark for all end-to-end navigation algorithms.
 
 %While there already exists optimal algorithms to find shortest path between two points and perform optimal navigation between given set of points in a given map, the advantage of Deep reinforcement learning comes from its ability to extract required features from the input images and its promise
@@ -23,15 +23,15 @@ We propose these experiments as a 5-stage benchmark for all end-to-end navigatio
   must find an optimal policy to the goal from each possible starting point in the maze.
   \ditem{Random goal, static spawn, and static map}
   % VD: The randomness of the goal is what we need to qualify
-  In this setup, we keep the spawn location and the map fixed during both training and testing but chose a random goal location for each episode.
+  In this setup, we keep the spawn location and the map fixed during both training and testing but choose a random goal location for each episode.
   Note that the goal location stays constant throughout an episode.
   % VD: This line does not add any information
   %This experiments highlights the map-exploitation ability of the agent.
-  The agent can perform well on this experiment, by remembering the goal location after it has been discovered and exploiting the information to revisit goal faster.  
+  The agent can perform well on this experiment by remembering the goal location after it has been discovered and exploiting the information to revisit the goal faster.  
   
   Following \cite{MiPaViICLR2017}, we report the ratio
   of time taken to hit the goal for the first time (exploration time) vs the average amount of time taken to hit goal subsequently (exploitation time). The metric, called \emph{\LatencyOneGtOne{}}, is a measure of how efficiently the agent exploits map information to find shorter path once the goal location is known. 
-  If this ratio is greater than 1, then we say that the agent is doing better than random exploration and higher values is better.
+  If this ratio is greater than 1, the agent is doing better than random exploration and the higher the value, the better its map-exploitation ability.
   \ditem{Random goal, random spawn, and static map}
   In this version of the experiment both the spawn point and the goal location is randomized. To perform optimally, the agent must localize itself within the map in addition to being able to exploit map-information.
   
@@ -40,7 +40,7 @@ We propose these experiments as a 5-stage benchmark for all end-to-end navigatio
   \ditem{Random goal, random spawn, and random map}
     We believe that any proposed algorithms on end-to-end navigation problems, should be evaluated on unseen maps.
     To our knowledge, this is the first paper to do so in the case of deep reinforcement learning based navigation methods.
-    We train agents to simultaneously learn to explore 1, 10, 100, 500 and 1000 maps and test them on the same 100 unseen maps. The relevant results can be found in Fig~\ref{fig:num-training-maps} and discussed in Section~\ref{sec:analysis}.
+    We train agents to simultaneously learn to explore 1, 10, 100, 500 and 1000 maps and test them on the same 100 unseen maps. The relevant results can be found in Fig~\ref{fig:num-training-maps} and discussed in Section~\ref{sec:analysis}. 
 \end{description}
 
 The comparative evaluation of the different the stages of this benchmark are shown in Fig~\ref{fig:latency-goal-reward} and expanded upon in the next section.

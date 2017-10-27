@@ -1,8 +1,23 @@
+
 \section*{Appendix}
 
-\subsection*{Tabulatated Latency Metrics}
-
 \subsection*{Hyperparameters}
+The hyperparameters used for training the A3C algorithm are as follows:
+\begin{enumerate}
+    \item Learning rate: $10^{-4}$
+    \item Number of Asynchronous workers: 16
+    \item Max number of iterations till completion: 1e8
+
+\end{enumerate}
+
+The hyperparameters used for structuring episodes are as follows:
+\begin{enumerate}
+    \item Number of frames per episode: 40 seconds x 30 frames per second = 1200 
+    \item Goal rewards: +10
+    \item Apple rewards: +1
+    \item Wall penalty: Linearly increasing to mininum of -.2 per frame
+\end{enumerate}
+
 
 \subsection*{Maze Generation Details}
 

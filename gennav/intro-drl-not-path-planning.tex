@@ -35,7 +35,7 @@ solve the navigation problem without breaking it down into separate parts of map
 %      mapping and path-planning
 With the recent advances in Deep Reinforcement Learning (DRL), these end-to-end navigation methods, like \cite{MnBaMiICML2016,SiHuMaNATURE2016,LePaKrISER2017,MiPaViICLR2017,OhChSiICML2016}, forego decisions about the details that are required in the intermediate step of mapping.
 The potential for simpler yet more capable methods is rich; for example, agents thus trained can potentially optimize the amount of map information that is required to perform the navigation task.
-One such algorithm by \cite{MiPaViICLR2017}, has shown promise in exploring and finding the goal efficiently within complex environments. Notably, this is done using monocular first-person view only.
+One such algorithm by \cite{MiPaViICLR2017}, has shown promise in exploring and finding the goal efficiently within complex environments. Notably, this is done using only monocular first-person views.
 %Of significance is the fact that these agents upon finding the goal within a previously seen environment, are able to navigate to it faster in subsquent explorations implying that agents are able to learn to exploit map structures in the execution of learned navigational tasks. 
 
 \begin{figure}
@@ -62,7 +62,7 @@ This makes it even more important to analyze these DRL methods across a wide var
 
 % Prior setup
 % JJC: TODO: Generalize to multiple fields
-In this work, we build on \cite{MiPaViICLR2017} and analyze their methods across hundreds of maps with increasing difficulty levels. 
+In this work, we take a step towards better understanding these recent methods. In particualr, we thorougly explore and analyze the state-of-the-art \cite{MiPaViICLR2017} methods across hundreds of maps with increasing difficulty levels. 
 % VD: Cutting down unncessary sentences
 % VD: No need to tell the license and name of the environment
 %Our setup is similar, utilizing the same simulation environment, Deepmind Lab \cite{BeLeTeARXIV2016}.
@@ -77,11 +77,11 @@ We discuss the design of experiments in Section~\ref{sec:navtasks} with more det
 %We randomly genereate our mazes wherein the agent and goal are both statically and randomly spawned across experiments. 
 
 \cite{MiPaViICLR2017} train and test their algorithms with randomized goals, randomized spawns but constant map structures and show that algorithm is able to exploit the knowledge of the goal location at evaluation time to maximize reward.
-However, this result is shown to be successful only on one map making the repeatability of the results questionable.
+However, this state-of-the-art result is shown to be successful on only one map bringing into question the repeatability of the results.
 It is also unclear whether these results generalize to unseen maps.
 
 Even though separating training and testing sets is standard practice in machine learning, to the best of our knowledge, we are the first work to evaluate any DRL-based navigation method on maps with unseen structures.
-We expand on the analysis in \cite{MiPaViICLR2017} to address its limitations and ask the question whether DRL-based algorithms such as \NavAiiiCDiDiiL{} perform any mapping followed by shortest path planning.
+We expand on the analysis in \cite{MiPaViICLR2017} to address its limitations and ask the question of whether DRL-based algorithms such as \NavAiiiCDiDiiL{} perform any mapping followed by shortest path planning.
 Our experiments do not show any evidence of mapping in the cases when algorithms are evaluated on unseen maps and no evidence of optimal path planning even in cases when the map is constant and only the goal is randomized.
 
 We also compute attention-maps for the models to understand what part of the image is being used for the navigation.

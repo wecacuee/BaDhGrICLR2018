@@ -8,7 +8,7 @@ In a POMDP, the future state of the environment, $\statetn \in \State$, is condi
 $\obst$ and $\rewt$ are independent of previous states given current state $\statet$ and last action $\acttp$.
 Formally, a POMDP is defined as a six tuple $(\Obs, \ObsFunc, \State, \Action, \Trans, \Rew)$ that is composed of an observation space $\Obs$, an observation function $\ObsFuncFull$, a state space $\State$, an action space $\Action$, a transition function $\TransFull$ and a reward function $\RewFull$.
 For our problem setup, the observation space $\Obs$ is the space of an encoded feature vector that is generated from input image along with previous action and reward.
-Action space $\Action$ contains four actions: rotate left, rotate right, move forward and move backward and reward function $\Rew$ is defined for each experiment so that the reaching the goal leads to high reward with auxiliary reward to encourage certain kind of behavior.
+Action space $\Action$ contains four actions: rotate left, rotate right, move forward and move backward and reward function $\Rew$ is defined for each experiment so that reaching the goal leads to high reward with auxiliary reward to encourage certain kind of behavior.
 
 For DRL algorithms, the state space $\State$ is not hand tuned, but it is modeled as a vector of floats.
 Also, instead of modeling observation function $\ObsFuncFull$ and $\TransFull$, a combined transition function $\TransObsFull$ is modeled such that it estimates the next state $\statetn$ directly considering previous observation as well as reward into account.
@@ -18,7 +18,7 @@ All three functions $\TransObs$, $\pit$, $\Valuet$ share most of the parameters 
 %Since we aim to estimate $\ObsFuncInv$ and $\Trans$ from experience, we formulate the experience as observation tuples divided into episodes of fixed length $E$.
 %Each episode experience contains $E$ tuples with observation, action and corresponding reward $D_E = \{(\obs_0, \act_0, r_0), \dots, (\obs_E, \act_E, r_E)\}$. After each episode the state $\state_t$ is reset to all zeros and another data sequence is collected. Let the collected dataset be $D_N = \{
 % JJC: TODO: Our objective or The DRL objective
-Our objective is to estimate unknown weights $\theta = \theta_T \cup \theta_\pi \cup \theta_V$ that maximizes the expected future reward, $R_t = \sum_{k=t}^{t_{end} - t} \gamma^{k-t} r_k$, where $\gamma$ is the discount factor,
+The DRL objective is to estimate unknown weights $\theta = \theta_T \cup \theta_\pi \cup \theta_V$ that maximizes the expected future reward, $R_t = \sum_{k=t}^{t_{end} - t} \gamma^{k-t} r_k$, where $\gamma$ is the discount factor,
 %
 \begin{align}
 \theta^* = \arg\max_{\theta} \E[R_t] \,.
@@ -61,9 +61,9 @@ The gradient for the weight update is proportional to the product of \emph{advan
 
 For more details of the A3C algorithm we refer the reader to \cite{MnBaMiICML2016}.
 \paragraph{\NavAiiiCDiDiiL{}}
-In this work we use the \NavAiiiCDiDiiL{} architecture as proposed by \cite{MiPaViICLR2017} which builds modifying the network architecture to have two LSTMs and with auxiliary outputs of depth predictions along with loop closure predictions.
+In this work we use the \NavAiiiCDiDiiL{} architecture as proposed by \cite{MiPaViICLR2017} which builds modifying the network architecture to have two LSTMs and with auxiliary outputs of depth predictions along with loop-closure predictions.
 The schematic of the architecture is shown in Fig~\ref{fig:architectures}.
-The architecture is has three inputs the current image $I_t$ and previous action $\acttp$ and previous reward $\rewtp$.
-As shown by \cite{MiPaViICLR2017}, the architecture improves upon vanilla A3C architecture by using auxiliary outputs of loop closure signal $L$ and predicted depth $D_1$ and $D_2$.
-Since we use a smaller action space then \cite{MiPaViICLR2017} and our agent moves with constant velocity, we do not use velocity at the previous time step as in input signal.
+The architecture has three inputs the current image $I_t$ and previous action $\acttp$ and previous reward $\rewtp$.
+As shown by \cite{MiPaViICLR2017}, the architecture improves upon vanilla A3C architecture by optimizing predictions for the auxiliary outputs of loop closure signal $L$ and predicted depth $D_1$ and $D_2$.
+Since we use a smaller action space than \cite{MiPaViICLR2017} and our agent moves with constant velocity, we do not use velocity at the previous time step as an input signal.
 
