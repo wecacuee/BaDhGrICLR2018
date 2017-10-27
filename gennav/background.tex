@@ -18,12 +18,12 @@ All three functions $\TransObs$, $\pit$ and $\Valuet$ share most of the paramete
 
 %Since we aim to estimate $\ObsFuncInv$ and $\Trans$ from experience, we formulate the experience as observation tuples divided into episodes of fixed length $E$.
 %Each episode experience contains $E$ tuples with observation, action and corresponding reward $D_E = \{(\obs_0, \act_0, r_0), \dots, (\obs_E, \act_E, r_E)\}$. After each episode the state $\state_t$ is reset to all zeros and another data sequence is collected. Let the collected dataset be $D_N = \{
-% JJC: TODO: Our objective or The DRL objective
 The DRL objective is to estimate unknown weights $\theta = \theta_T \cup \theta_\pi \cup \theta_V$ that maximizes the expected future reward $R_t = \sum_{k=t}^{t_{end} - t} \gamma^{k-t} r_k$ (where $\gamma$ is the discount factor) and is expressed as
 %
 \begin{align}
-\theta^* = \arg\max_{\theta} \E[R_t] \,.
+\theta^* = \arg\max_{\theta} \E[R_t] \,,
 \end{align}
+where $\E[.]$ denotes the expected value.
 %
 %\input{fig-nav-a3c-horiz-figure}
 
