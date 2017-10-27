@@ -1,3 +1,6 @@
-In this work we show that state of art Deep reinforcement learning algorithms do not perform long term mapping and or path planning.
-We provide evidence that the algorithms are learning to perform bug exploration algorithms when the position of goal is random. When the position of goal and structure of map is known at training time, deep reinforcement learning algorithms
-are able to learn near optimal policy and able to repeat it at test time.
+In this work we comprehensively evaluate  \cite{MiPaViICLR2017}'s \NavAiiiCDiDiiL{} DRL-based navigation model across a systematic coverage of the experiment state space.
+Our experiments show that DRL-based navigation models are able to perform some degree of path-planning and mapping when trained and tested on the same map even when spawn locations and goal locations are randomized. 
+However the large standard deviations of our reported metrics show how such behaviour is not consistent through each episode. 
+We also train and test these methods on disjoint maps and show that such trained models fail to perform any form of path-planning or mapping in unseen environments.
+We hope that the systamic approach to the experiments in this work serve as a benchmark for future DRL-based navigation methods.
+
