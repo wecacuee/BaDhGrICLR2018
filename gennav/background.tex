@@ -1,5 +1,6 @@
-Our problem formulation is based upon the work of \cite{MiPaViICLR2017}. We summarize the technical setup here for completeness.
-We refer the reader to \cite{MnBaMiICML2016,MiPaViICLR2017} for more details of the setup.
+Our problem formulation is based on the work of \cite{MiPaViICLR2017}. 
+For completeness, we summarize the technical setup here.
+For additional details regarding the setup, we refer the reader to \cite{MnBaMiICML2016,MiPaViICLR2017}.
 
 The problem of navigation is formulated as an interaction between an environment and an agent.
 At time $t$ the agent takes an action $\actt \in \Action$ and observes observation $\obst \in \Obs$ along with a reward $\rewt \in \R$.
@@ -8,17 +9,17 @@ In a POMDP, the future state of the environment, $\statetn \in \State$, is condi
 $\obst$ and $\rewt$ are independent of previous states given current state $\statet$ and last action $\acttp$.
 Formally, a POMDP is defined as a six tuple $(\Obs, \ObsFunc, \State, \Action, \Trans, \Rew)$ that is composed of an observation space $\Obs$, an observation function $\ObsFuncFull$, a state space $\State$, an action space $\Action$, a transition function $\TransFull$ and a reward function $\RewFull$.
 For our problem setup, the observation space $\Obs$ is the space of an encoded feature vector that is generated from input image along with previous action and reward.
-Action space $\Action$ contains four actions: rotate left, rotate right, move forward and move backward and reward function $\Rew$ is defined for each experiment so that reaching the goal leads to high reward with auxiliary reward to encourage certain kind of behavior.
+Action space $\Action$ contains four actions: rotate left, rotate right, move forward and move backward and reward function $\Rew$ is defined for each experiment so that reaching the goal location leads to high reward with auxiliary rewards to encourage certain kinds of behavior.
 
 For DRL algorithms, the state space $\State$ is not hand tuned, but it is modeled as a vector of floats.
-Also, instead of modeling observation function $\ObsFuncFull$ and $\TransFull$, a combined transition function $\TransObsFull$ is modeled such that it estimates the next state $\statetn$ directly considering previous observation as well as reward into account.
+Additionally, instead of modeling observation function $\ObsFuncFull$ and $\TransFull$, a combined transition function $\TransObsFull$ is modeled to estimate the next state $\statetn$ and directly take previous observation and reward into account.
 For policy-based DRL a policy function $\piDef$ and a value function $\ValueDef$ are also modeled.
-All three functions $\TransObs$, $\pit$, $\Valuet$ share most of the parameters in a way such that $\theta_T \subseteq \theta_{\pi} \cap \theta_\Value$
+All three functions $\TransObs$, $\pit$ and $\Valuet$ share most of the parameters such that $\theta_T \subseteq \theta_{\pi} \cap \theta_\Value$
 
 %Since we aim to estimate $\ObsFuncInv$ and $\Trans$ from experience, we formulate the experience as observation tuples divided into episodes of fixed length $E$.
 %Each episode experience contains $E$ tuples with observation, action and corresponding reward $D_E = \{(\obs_0, \act_0, r_0), \dots, (\obs_E, \act_E, r_E)\}$. After each episode the state $\state_t$ is reset to all zeros and another data sequence is collected. Let the collected dataset be $D_N = \{
 % JJC: TODO: Our objective or The DRL objective
-The DRL objective is to estimate unknown weights $\theta = \theta_T \cup \theta_\pi \cup \theta_V$ that maximizes the expected future reward, $R_t = \sum_{k=t}^{t_{end} - t} \gamma^{k-t} r_k$, where $\gamma$ is the discount factor,
+The DRL objective is to estimate unknown weights $\theta = \theta_T \cup \theta_\pi \cup \theta_V$ that maximizes the expected future reward $R_t = \sum_{k=t}^{t_{end} - t} \gamma^{k-t} r_k$ (where $\gamma$ is the discount factor) and is expressed as
 %
 \begin{align}
 \theta^* = \arg\max_{\theta} \E[R_t] \,.
