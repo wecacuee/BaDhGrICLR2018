@@ -301,7 +301,7 @@ def distance_inefficiency_summary(source, outfile, **kwargs):
             , columns = "chosen_map dist_ratio_per_episode dist_ratio_per_episode_std".split())
         , xlabel="Distance traveled : shortest path"
         , ylabel=None
-        , xlim = [0, 5.0]
+        , xlim = [0, 5]
         , **kwargs)
 
 
