@@ -32,6 +32,8 @@ MARKERS = "+xov^s128pP*hHXdD|_<>34"
 LINES = "- -- -. :".split()
 COLORS = "kbmcrgy"
 
+DISTANCE_INEFFICIENCY =  "Distance-inefficiency"
+
 ############ 
 thisdir = op.abspath(op.dirname(__file__) or '.')
 texdir = op.join(thisdir, '..')
@@ -299,7 +301,7 @@ def distance_inefficiency_summary(source, outfile, **kwargs):
         data_source = lambda src, labels: get_summary_bar_plot_data(
             src, labels
             , columns = "chosen_map dist_ratio_per_episode dist_ratio_per_episode_std".split())
-        , xlabel="Distance traveled : shortest path"
+        , xlabel=DISTANCE_INEFFICIENCY
         , ylabel=None
         , xlim = [0, 5]
         , **kwargs)
@@ -461,7 +463,7 @@ def ntrain_summary(source="../exp-results/ntrained.csv"
             #"num_maps num_goal num_goals_std".split())
             "num_maps dist_ratio_per_episode dist_ratio_per_episode_std".split())
         , ylabel = None
-        , xlabel = "Distance traveled : shortest path"
+        , xlabel = DISTANCE_INEFFICIENCY
         , barwidth = barwidth
         , xlim = [0, 5]
         , ax=ax3)

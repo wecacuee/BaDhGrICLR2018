@@ -33,40 +33,16 @@ Unlike \cite{MiPaViICLR2017} and similar to \cite{ChLaSaNIPS2016}, we use random
 
 \paragraph{Evaluation Metrics}
 
-We evaluate the performance in terms of three metrics: rewards, \emph{distance-efficiency} and \emph{\LatencyOneGtOne{}}.
-
+We evaluate the performance in terms of three metrics: rewards, \emph{\LatencyOneGtOne{}} and \emph{\DistanceInefficiency}.
 Following \cite{MiPaViICLR2017}, we report \emph{\LatencyOneGtOne{}}, a ratio of the time taken to hit the goal for the first time (exploration time) versus the average amount of time taken to hit goal subsequently (exploitation time).
 The metric is a measure of how efficiently the agent exploits map information to find a shorter path once the goal location is known. 
 If this ratio is greater than 1, the agent is doing better than random exploration and the higher the value, the better its map-exploitation ability.
 Note that the metric is meaningful only when the goal location is unknown at evaluation time.
 
 
-Distance-efficiency is defined to be the ratio of the total distance traveled by the agent versus the sum of approximate shortest distances to the goal from each spawn point. The metric also disregards goals found during exploitation time as the agent must first find the goal before it can traverse the shortest path to it.
+\emph{\DistanceInefficiency{}} is defined to be the ratio of the total distance traveled by the agent versus the sum of approximate shortest distances to the goal from each spawn point. The metric also disregards goals found during exploitation time as the agent must first find the goal before it can traverse the shortest path to it.
 Note that the shortest distance between the spawn and goal locations is computed in the top-down block world perspective and hence is only an approximation.
 
-While the \emph{\LatencyOneGtOne{}} measures whether the agent is able to find a shorter path than the exploitation path, the distance-efficiency measures the length of this path with respect to the shortest possible path. 
+While the \LatencyOneGtOne{} measures whether the agent is able to find a shorter path than the exploitation path, the \DistanceInefficiency{} measures the length of this path with respect to the shortest possible path. 
 
-% VD: Let's describe this terminology in the descriptions of tasks
-% Througout our experiments we refer to goal locations, spawn locations and maps as static or random.
-% When static is used for spawn and goal location, they described positions that remain fixed through all episodes during both the training and the testing.
-% When random is used, the spawn location changes randomly throughout the duration of the episode for both training and testing. When used for the goal, random means that its locations changes between episodes for training and testing. During the course of an episode, however, a random goal remains in the same position allowing for agents that exploit map information to find it repeatedly and thus maximize reward.
-% In the context of maps, statics maps imply that the same map is used for training and testing. Random means that agents are simulataneously trained on multiple maps and tested on previously unseen ones.
-
-\input{fig-latency-goal-reward}
-\input{grid-2d-dmlab-figure}
 \input{intro-drl-nav-challenge}
-
-%We evaluate the Nav-A3C\cite{MiPaViICLR2017} algorithm on randomly chosen ten maps with increasing difficulty.
-%The results of our experiments are shown in Fig~\ref{fig:latency-goal-reward}.
-%We change the randomness of either the spawn point or the goal location.
-%We note that the increasing randomness gradually reduce the maximum reward achived and the number of times the goal is reached. As expected, the variance in reward and number of times goals is reached also increases with randomless.
-%
-
-%\subsection{Evaluation Metrics}
-%We report three evaluation metrics in all our experiments: reward, average number of goal hits and \LatencyOneGtOne{}. We run evaluations on a map for 100 episodes and take the mean and standard deviation of the rewards per episode and number of goal hits per episode. Even though reward includes rewards due to apples and negative rewards due to wall penalities, the reward due to goal dominates dominates the reward metric making reward approximately ten times the average goal hits.
-%
-%The \LatencyOneGtOne{} is defined as the ratio of time take to find the goal first time to the average time take to find goal thereafter.
-%Note that whenever the goal location is ``Random'' (different in each episode but same for the episode), untill the goal is found for the first time, the agent is just exploring the map.
-%After the first goal hit, the agent should be able to exploit the location of the goal to find the goal in shorter times.
-%Hence a \LatencyOneGtOne{} value greater than one indicates that the algorithm is able to successfully exploit information gathered during goal finding exploration.
-%
