@@ -25,7 +25,7 @@ The DRL objective is to estimate unknown weights $\theta = \theta_T \cup \theta_
 \end{align}
 where $\E[.]$ denotes the expected value.
 %
-%\input{fig-nav-a3c-horiz-figure}
+\input{fig-nav-a3c-horiz-figure}
 
 \paragraph{Asynchronous Advantage Actor-Critic}
 \def\charelig{\nabla_{\theta_\pi}\ln \pit(\acttn; \theta_\pi)}
@@ -45,7 +45,7 @@ The gradient for the weight update is proportional to the product of \emph{advan
 \end{align}
 
 For additional details of the A3C algorithm, we refer the reader to \cite{MnBaMiICML2016}.
-\input{fig-nav-a3c-vert-figure}
+%\input{fig-nav-a3c-vert-figure}
 \paragraph{\NavAiiiCDiDiiL{}}
 In this work, we use the \NavAiiiCDiDiiL{} architecture as proposed by \cite{MiPaViICLR2017}, which builds modifying the network architecture to have two LSTMs and with auxiliary outputs of depth predictions along with loop-closure predictions. % TODO "which builds modifying the network architecture..." this doesn't make sense to me, should be corrected.
 The schematic of the architecture is shown in Fig~\ref{fig:architectures}.
