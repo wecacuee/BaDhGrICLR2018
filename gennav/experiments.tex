@@ -33,12 +33,12 @@ Unlike \cite{MiPaViICLR2017} and similar to \cite{ChLaSaNIPS2016}, we use random
 
 \paragraph{Evaluation Metrics}
 We evaluate the performance in terms of three metrics: rewards, \emph{distance traveled : shortest path} and \emph{\LatencyOneGtOne{}}.
-The metric \emph{distance traveled : shortest path} is defined as the ratio of total distance traveled by the agent verses the sum of approximate shortest distances to the goal for every goal hit, except for the first iteration of finding the goal.
+The metric \emph{distance traveled : shortest path} is defined as the ratio of total distance traveled by the agent versus the sum of approximate shortest distances to the goal for every goal hit, except for the first iteration of finding the goal.
 We ignore the first iteration of finding the goal, considering it as the exploration time and not penalizing the agent for taking a longer than shortest path during exploration.
 Also note, that the shortest distance between the spawn point and goal location is computed in the block world and hence is only an approximation of the shortest distance.
 
 
-Following \cite{MiPaViICLR2017}, we report \emph{\LatencyOneGtOne{}}, a ratio of time taken to hit the goal for the first time (exploration time) verses the average amount of time taken to hit goal subsequently (exploitation time).
+Following \cite{MiPaViICLR2017}, we report \emph{\LatencyOneGtOne{}}, a ratio of the time taken to hit the goal for the first time (exploration time) versus the average amount of time taken to hit goal subsequently (exploitation time).
 The metric is a measure of how efficiently the agent exploits map information to find a shorter path once the goal location is known. 
 If this ratio is greater than 1, the agent is doing better than random exploration and the higher the value, the better its map-exploitation ability.
 Note that the metric is meaningful only when the goal location is unknown at evaluation time.
