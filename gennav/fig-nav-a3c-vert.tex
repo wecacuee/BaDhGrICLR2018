@@ -1,0 +1,25 @@
+\usetikzlibrary{positioning}
+\begin{tikzpicture}
+\node[networknode,fill=green!20] at (1.5, 3.5) (lstm2) {LSTM:64};
+\node[networknode,fill=green!20,below=0.4 of lstm2] (lstm) {LSTM:256};
+\node[networknode,fill=orange!20,below=0.4 of lstm]  (enc2) {\parbox{10ex}{CNN:32\\4x4/2x2}};
+\node[networknode,,fill=orange!20,below=0.4 of enc2]  (enc) {\parbox{10ex}{CNN:16\\8x8/4x4}};
+\node[below=0.4 of enc, inputvar] (It) {$I_t$:84x84x3};
+\node[left=0.1 of It,inputvar] (at) {$\acttp$};
+\node[right=0.1 of It,inputvar]  (rt) {$\rewtp$};
+\node [above=0.8 of lstm2,outvar] (V)  {$V$, $\pi$};
+\node [shift={(-0,0)},left=0.4 of V,auxvar] (pi)  {$L$};
+\node [shift={(-0,0)},right=0.4 of V,auxvar] (D)  {$D_2$};
+\draw [-stealth] (It) edge (enc);
+\draw [-stealth] (at) edge [in=-180,out=90,looseness=0.5] (lstm2);
+\draw [-stealth] (enc2) edge [bend left=70,in=90,looseness=0.9] (lstm2);
+\draw [-stealth] (enc) edge (enc2);
+\draw [-stealth] (enc2) edge node [shift={(0,0.0)},left]{$o_t$} (lstm);
+\draw [-stealth] (rt) edge  [bend right,in=-110,looseness=0.5] (lstm);
+\draw [-stealth] (lstm) edge node[right=0.4,auxvar] (D1) {$D_1$} (lstm2);
+\draw [-stealth] (lstm) edge [bend left] (D1);
+\draw [-stealth] (lstm2) edge [bend right] (pi);
+\draw [-stealth] (lstm2) edge  (V);
+\draw [-stealth] (lstm2) edge [bend left] (D);
+%\draw [use as bounding box] (0,-1.0) rectangle (3.0, 5.0);
+\end{tikzpicture}

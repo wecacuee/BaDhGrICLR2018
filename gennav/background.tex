@@ -25,8 +25,8 @@ The DRL objective is to estimate unknown weights $\theta = \theta_T \cup \theta_
 \theta^* = \arg\max_{\theta} \E[R_t] \,.
 \end{align}
 %
-% need \graphicspath{{images/}}
-%\def\svgwidth{0.25\columnwidth}%
+%% need \graphicspath{{images/}}
+%% \def\svgwidth{0.25\columnwidth}%
 \begin{figure}%
 %\input{images/a3c-as-pomdp.pdf_tex}%
 %\def\svgwidth{0.25\columnwidth}%
@@ -43,6 +43,7 @@ Since we use a smaller action space than \cite{MiPaViICLR2017} and our agent mov
 \label{fig:architectures}
 \end{figure}
 
+
 \paragraph{Asynchronous Advantage Actor-Critic}
 \def\charelig{\nabla_{\theta_\pi}\ln \pit(\acttn; \theta_\pi)}
 % There are many different variations of RL. There are many different RL algorithms: value-based methods like Q-learning and SARSA and policy-based method like actor-critic.
@@ -50,9 +51,10 @@ In this work, we use the policy-based method called Asynchronous Advantage Actor
 It works by keeping a ``shared and slowly changing copy of target network'' that is updated every few iterations by accumulated gradients in each of the threads.
 The gradients are never applied to the local copy of the weights; instead, a local copy of weights is periodically synced from the shared copy of target weights.
 The gradient for the weight update is proportional to the product of \emph{advantage}, $R_t - \Value_t(\theta_\Value)$, and \emph{characteristic eligibility}, $\charelig$ (\cite{WiML1992}), which update the weights as
+%\input{fig-nav-a3c-vert-figure}
 \begin{align}
   \theta_\pi &\leftarrow \theta_\pi
-  + \sum_{t \in \text{episode}}\alpha_\pi \charelig (R_t - \Value_t(\theta_\Value))
+  + \sum_{t \in \text{episode}}\alpha_\pi \nabla_{\theta_\pi}\ln \pit (R_t - \Value_t(\theta_\Value))
   \\
   \theta_\Value &\leftarrow \theta_\Value
   + \sum_{t \in \text{episode}} \alpha_\Value \frac{\partial (R_t - \Value_t(\theta_\Value))^2}

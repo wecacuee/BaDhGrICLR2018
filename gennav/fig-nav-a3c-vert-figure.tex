@@ -1,0 +1,9 @@
+\begin{wrapfigure}[20]{r}{0.5\textwidth}
+\centering%
+\input{fig-nav-a3c-vert}%
+\caption{Modified \NavAiiiCDiDiiL{} (\cite{MiPaViICLR2017}) architecture.
+The architecture is has three inputs the current image $I_t$ and previous action $\acttp$ and previous reward $\rewtp$.
+As shown by \cite{MiPaViICLR2017}, the architecture improves upon vanilla A3C architecture by using auxiliary outputs of loop-closure signal $L$ and predicted depth $D_1$ and $D_2$.
+Since we use a smaller action space than \cite{MiPaViICLR2017} and our agent moves with constant velocity, we do not use velocity at previous time step as input signal.}
+\label{fig:architectures}
+\end{wrapfigure}
