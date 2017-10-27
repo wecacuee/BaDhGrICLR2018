@@ -31,6 +31,15 @@ More information on maze generation can be found in the appendix.
 Of the first 1000 maps, 10 are randomly selected for our static-map experiments (Fig. \ref{fig:environments}). For our unseen map experiments, agents are trained on increasing subsets of the first 1000 maps and tested on the remaining 100.
 Unlike \cite{MiPaViICLR2017} and similar to \cite{ChLaSaNIPS2016}, we use randomly textured walls in our mazes so that the policies learned are texture-independent.
 
+\paragraph{Evaluation Metrics}
+We evaluate the performance in terms of three meteric: rewards, ratio of distance traveled to shortest distance and \LatencyOneGtOne{}.
+For all the experiments we compute mean and standard deviation over 100 episodes.
+\begin{itemize}
+\item The total reward per episode 
+\item We also compute the ratio of total distance traveled by the agent to the sum of approximate shortest distances to the goal. The shortest distance between the spawn point and goal location is computed in the block world and hence is only an approximation of the shortest distance. 
+\item 
+\end{itemize}
+
 % VD: Let's describe this terminology in the descriptions of tasks
 % Througout our experiments we refer to goal locations, spawn locations and maps as static or random.
 % When static is used for spawn and goal location, they described positions that remain fixed through all episodes during both the training and the testing.

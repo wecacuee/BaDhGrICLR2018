@@ -297,24 +297,28 @@ def planning_maps_data(source="../exp-results/"
                        , outfile="../exp-results/planning_maps.csv"
                        , planning_maps = range(1, 11)
                        , keys = conf.keys
+                       , not_nan_keys = "dist_ratio_per_episode dist_ratio_per_episode_std".split()
                        , constraints = {
-                           "loaded_model" : "training-1000"
-                           , "vars" : True
+                            "vars" : True
                            , "apple_prob" : 0
                            }):
     results_latest = (latest_row(values)
                         for _, values in group_by(
-                                loadmodels(source),
+                                select(from_=loadmodels(source)
+                                       , where=where_not_nan(not_nan_keys)),
                                 "chosen_map loaded_model vars apple_prob label".split())
                       .items())
     dicts = select(keys
                 , results_latest
                 , where_all(
                     where_str_contains(chosen_map="planning-09x09-")
+                    , lambda r: (r["loaded_model"] == "training-1000"
+                                 or ("planning-09x09-" in r["loaded_model"]))
+                    , lambda r: not (r["loaded_model"] == "training-1000"
+                                     and r["label"] == "Planning")
                     , where_equals(**constraints)))
 
-    dicts = iter(sorted(
-        dicts , key=lambda d: int(d["chosen_map"].split("-")[-1])))
+    dicts = iter(sorted(dicts , key=lambda d: d["chosen_map"]))
     try:
         lines = list(format_csv_writer(dicts, header=keys))
     except ValueError:
