@@ -43,7 +43,7 @@ One such algorithm by \cite{MiPaViICLR2017} has shown promise in exploring and f
 \caption{
 Snapshots of the path taken by the agent while evaluating the model trained on the same random map with random goal and random spawn.
 % JJC: TODO: make sure that you communicate that the top view is not available to the algorithm.
-The first row shows the top view of the robot moving through the maze with the goal location marked in orange. The second row shows the first person view, the only input available to the agent (except reward).}
+The first row shows the top view of the robot moving through the maze with the goal location marked orange, the agent marked black and the agent's orientation marked red. The second row shows the first person view, which, besides reward, is the only input available to the agent.}
 \label{fig:training-qualitative}
 \end{figure}
 
@@ -79,16 +79,16 @@ We discuss the design of experiments in Section~\ref{sec:navtasks} in more detai
 However, following training and testing on constant map structures, this state-of-the-art result is shown to be successful on only one map, which brings into question the repeatability of the results.
 It is also unclear whether these results generalize to unseen maps.
 
-Even though separating training and testing sets is standard practice in machine learning, to the best of our knowledge, we are the first work to evaluate any DRL-based navigation method on maps with unseen structures.
-We expand on the analysis in \cite{MiPaViICLR2017} to address its limitations and ask the question of whether DRL-based algorithms such as \NavAiiiCDiDiiL{} perform any mapping followed by shortest path planning.
-Our experiments do not show any evidence of mapping in the cases when algorithms are evaluated on unseen maps and no evidence of optimal path planning even in cases when the map is constant and only the goal is randomized.
+Although disjoint training and testing sets are standard practice in machine learning, to the best of our knowledge, we are the first to evaluate any DRL-based navigation method on maps with unseen structures.
+We expand on the analysis in \cite{MiPaViICLR2017} to address its limitations and ask whether DRL-based algorithms such as \NavAiiiCDiDiiL{} perform any mapping followed by shortest path planning.
+Our experiments show no evidence of mapping in cases where algorithms are evaluated on unseen maps and no evidence of optimal path planning, even when the map is constant and only the goal is randomized.
 
-We also compute attention-maps for the models to understand what part of the image is being used for the navigation.
-We find that the models discard most of the image information, focusing attention on a small band in the middle of the image except around junctions where the attention is distributed evenly throughout the image.
+To better understand navigation, we compute attention-maps for models to show which portions of the input image are being used.
+We find that the models discard most of the image information, focusing attention on a small band in the middle of the image except around junctions, in which case the attention is distributed evenly throughout the image.
 
-These findings are the results on training and testing on multiple maps that were randomly chosen from a set of 1100 randomly generated maps.
-We provide the results of our experiments on ten randomly chosen maps and as well as on a testing set of 100 unseen maps to make sure the results are independent of the choice of map.
-We will make our code and data available following the blind review process is over.
+These findings result from training and testing on multiple maps that were randomly selected from a set of 1100 randomly generated maps.
+We provide experimental results on ten randomly selected maps and a testing set of 100 unseen maps to ensure results are independent of map choice.
+We will make our code and data available following the blind review process.
 
 % Explained earlier
 % % Systematic experiments
