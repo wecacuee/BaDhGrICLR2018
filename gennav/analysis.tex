@@ -100,7 +100,7 @@ This shows that the models trained on 1000 maps have learned only a wall-followi
 %\subsubsection{Qualitative results}
 \input{fig-planning-qualitative}
 
-\subsection{Attention Maps}
+\subsection{Attention heat maps}
 We use the normalized sum of absolute gradient of the loss with respect to the input image as a proxy for attention in the image.
 The gradients are normalized for each image so that the maximum gradient is one. The attention values are then used as a soft mask on the image to create the visualization as shown in Fig~\ref{fig:attention}
 
@@ -110,7 +110,7 @@ We observe that the attention is uniformly distributed on the image when the age
 \includegraphics[width=\textwidth,trim=0 0 0 336pt,clip]{./exp-results/training-09x09-0127-on-0127.png}\vspace{1ex}\\
 %
 \includegraphics[width=\textwidth,trim=0 0 0 336pt,clip]{./exp-results/training-1000-on-0127.png}%
-\caption{Visualizing attention for two sequences. The first two rows show the sequin when the model is trained on and evaluated on the same map. The last two rows shows the sequence for a model trained on 1000 maps and evaluated on one of the maps. We observe that the attention is uniformly distributed on the image when the agent spawns. The attention narrows down few pixels in the center when the agent is navigating through the corridor. It spreads to the entire image around turns and junctions. The attention also pays close attention to important objects like goal, apples and unique decals.}
+\caption{Visualizing attention for two sequences. The first two rows show the sequence when the model is trained on and evaluated on the same map. The last two rows shows the sequence for a model trained on 1000 maps and evaluated on one of the maps. We observe that the attention is uniformly distributed on the image when the agent spawns. The attention narrows down few pixels in the center when the agent is navigating through the corridor. It spreads to the entire image around turns and junctions. The attention also pays close attention to important objects like goal, apples and unique decals.}
 \label{fig:attention}
 \end{figure}
 
