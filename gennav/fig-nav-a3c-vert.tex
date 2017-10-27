@@ -3,7 +3,7 @@
 \node[networknode,fill=green!20] at (1.5, 3.5) (lstm2) {LSTM:64};
 \node[networknode,fill=green!20,below=0.4 of lstm2] (lstm) {LSTM:256};
 \node[networknode,fill=orange!20,below=0.4 of lstm]  (enc2) {\parbox{08ex}{CNN:32\\4x4/2x2}};
-\node[networknode,,fill=orange!20,below=0.4 of enc2]  (enc) {\parbox{08ex}{CNN:16\\8x8/4x4}};
+\node[networknode,fill=orange!20,below=0.4 of enc2]  (enc) {\parbox{08ex}{CNN:16\\8x8/4x4}};
 \node[below=0.4 of enc, inputvar] (It) {$I_t$:84x84x3};
 \node[left=0.1 of It,inputvar] (at) {$\acttp$};
 \node[right=0.1 of It,inputvar]  (rt) {$\rewtp$};
