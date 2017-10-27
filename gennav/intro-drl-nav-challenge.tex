@@ -29,14 +29,12 @@ We propose these experiments as a 5-stage benchmark for all end-to-end navigatio
   %This experiments highlights the map-exploitation ability of the agent.
   The agent can perform well on this experiment by remembering the goal location after it has been discovered and exploiting the information to revisit the goal faster.  
   
-  Following \cite{MiPaViICLR2017}, we report the ratio
-  of time taken to hit the goal for the first time (exploration time) verses the average amount of time taken to hit goal subsequently (exploitation time). The metric, called \emph{\LatencyOneGtOne{}}, is a measure of how efficiently the agent exploits map information to find a shorter path once the goal location is known. 
-  If this ratio is greater than 1, the agent is doing better than random exploration and the higher the value, the better its map-exploitation ability.
   \ditem{Random goal, random spawn, and static map}
   In this version of the experiment both the spawn point and the goal location is randomized. To perform optimally, the agent must localize itself within the map in addition to being able to exploit map-information.
   
   This is the problem that is addressed by \cite{MiPaViICLR2017} with limited success. 
-  They evaluate this case on two maps and report \LatencyOneGtOne{} to be greater than 1 in one of the two maps. We evaluate the same metric on ten other maps and provide the tools for application to several more.
+  They evaluate this case on two maps and report \LatencyOneGtOne{} to be greater than 1 in one of the two maps. We evaluate the same metric on ten other maps.
+  %and provide the tools for application to several more.
   \ditem{Random goal, random spawn, and random map}
     We believe that any proposed algorithms on end-to-end navigation problems, should be evaluated on unseen maps.
     To our knowledge, this is the first paper to do so in the case of deep reinforcement learning based navigation methods.

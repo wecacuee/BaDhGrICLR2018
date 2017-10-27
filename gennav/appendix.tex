@@ -11,7 +11,7 @@ Our mazes constitute an area of $900 units \times 900 units$ though we provide t
 
 Our A3C implementation is a modified version of OpenAIs open-sourced \emph{universe-starter-agent}. RGB images are fed in to the network of dimensions $84\times84\times3$. 16 threaded agents are used for all experiments. We use a learning rate of $10^{-4}$ along with the \emph{AdamOptimizer} to train our network. Our models train for a maximum of $10^{8}$ iterations though we end them early if maximum reward saturates. 
 
-\subsection*{Benchmark Scores}
+\subsection*{Benchmarking code}
 To motivate more comprehensive experimental evaluations of DRL-based navigation methods, we will be releasing all our trained models coupled with corresponding reward curves and videos of performance online. 
 This will include completely reproducible evaluation sets wherein we display metric scores for all the trained models on the follow environments:
 \begin{itemize}
