@@ -33,33 +33,35 @@ solve the navigation problem without breaking it down into separate parts of map
 %
 % 2. End to end learning algorithms have shown promise to take over
 %      mapping and path-planning
-With the recent advances of Deep Reinforcement Learning (DRL), these end-to-end navigation methods, like \cite{MnBaMiICML2016,SiHuMaNATURE2016,LePaKrISER2017,MiPaViICLR2017,OhChSiICML2016}, forego decisions about the details that are required in the intermediate step of mapping.
+With the recent advances in Deep Reinforcement Learning (DRL), these end-to-end navigation methods, like \cite{MnBaMiICML2016,SiHuMaNATURE2016,LePaKrISER2017,MiPaViICLR2017,OhChSiICML2016}, forego decisions about the details that are required in the intermediate step of mapping.
 The potential for simpler yet more capable methods is rich; for example, agents thus trained can potentially optimize the amount of map information that is required to perform the navigation task.
-One such work, \cite{MiPaViICLR2017}, has demonstrated algorithms that are able to explore and find goals in complex environments utilizing only monocular first-person views.
+One such algorithm by \cite{MiPaViICLR2017}, has shown promise in exploring and finding the goal efficiently within complex environments. Notably, this is done using monocular first-person view only.
 %Of significance is the fact that these agents upon finding the goal within a previously seen environment, are able to navigate to it faster in subsquent explorations implying that agents are able to learn to exploit map structures in the execution of learned navigational tasks. 
 
 \begin{figure}
 \includegraphics[width=\textwidth,trim=0 336pt 0 0,clip]{./exp-results/training-09x09-0127-on-0127.png}%
 \caption{
-Snapshots of the path taken by the agent while evaluating the model trained on the same map with random goal and random spawn.
+Snapshots of the path taken by the agent while evaluating the model trained on the same random map with random goal and random spawn.
+% JJC: TODO: make sure that you communicate that the top view is not available to the algorithm.
 The first row shows the top view of the robot moving through the maze with the goal location marked in orange. The second row shows the first person view, the only input available to the agent (except reward).}
 \label{fig:training-qualitative}
 \end{figure}
 
 % 3. We do not know how these algorithms work. There has been work in computer vision that shows the learning on neural network based methods can be learning totally different kind of patterns from what we would expect.
-Despite such potential advances, DRL based navigation remains a relatively unexplored field with its own set of limitations. 
+Despite such potential advances, DRL-based navigation remains a relatively unexplored field with its own set of limitations. 
 The black-box nature of these methods make them hard to study and the patterns captured by the methods are not well understood. 
 % VD: This is not the limitation of DRL algorithms
 %Their exists no comprehensive set of experiments that answer how and when these algorithms perform well and how their performance differs based on variations in the training and testing conditions. 
 % VD: This is a detail and is repeated in next paragraphs
 % It is also unknown how well these algorithms generalize especially to previously unseen worlds.
-Recent work in analyzing neural networks have shown that such object detection methods can be easily fooled by introducing noise that is imperceptible to humans (\cite{NgYoClCVPR2015}). 
-This makes it even more important to analyze these DRL methods across a wide variety of experiments to understand their strengths and weaknesses.
+For example, recent work in analyzing neural networks have shown that deep learning based object detection methods can be easily fooled by introducing noise that is imperceptible to humans (\cite{NgYoClCVPR2015}). 
+This makes it even more important to analyze these DRL methods across a wide variety of experiments to understand their strengths and limitations.
 
 % 4.1 We find that it is not remembering the map it is being trained on
 % 4.2 We find that no path planning is  happening only, memorizing and regeneration of the sequence of steps. However, it is not 
 
 % Prior setup
+% JJC: TODO: Generalize to multiple fields
 In this work, we build on \cite{MiPaViICLR2017} and analyze their methods across hundreds of maps with increasing difficulty levels. 
 % VD: Cutting down unncessary sentences
 % VD: No need to tell the license and name of the environment
@@ -67,7 +69,7 @@ In this work, we build on \cite{MiPaViICLR2017} and analyze their methods across
 We set up the environment as a randomly generated map, as shown in Fig~\ref{fig:training-qualitative}, with an agent and a goal.
 % VD: Defining the objective in terms of reward is wrong because designing rewards is a part of reinforcement learning not the problem statement.
 The agent is provided only with the first-person view and is tasked to find the goal as many times as possible within a fixed amount of time, re-spawning at the spawn location each time it reaches the goal.
-We train and evaluate the algorithms with increasingly difficulty.
+We train and evaluate the algorithms with increasing difficulty.
 In the easiest stage, we keep the goal location, spawn location and map constant over the training and the testing.
 We call this set up \emph{static goal, static spawn, and static map}.
 To increase the difficulty, we incrementally randomize the spawn locations, goal locations and map structures until all three are random.
@@ -78,11 +80,11 @@ We discuss the design of experiments in Section~\ref{sec:navtasks} with more det
 However, this result is shown to be successful only on one map making the repeatability of the results questionable.
 It is also unclear whether these results generalize to unseen maps.
 
-Even though separating training and testing sets is standard practice in machine learning, to the best of our knowledge, we are the first work to evaluate any DRL based navigation method on maps with unseen structures.
-We expand on \cite{MiPaViICLR2017} analysis to address its limitations and ask the question whether DRL based algorithms such as \NavAiiiCDiDiiL{} perform any mapping followed by shortest path planning.
+Even though separating training and testing sets is standard practice in machine learning, to the best of our knowledge, we are the first work to evaluate any DRL-based navigation method on maps with unseen structures.
+We expand on the analysis in \cite{MiPaViICLR2017} to address its limitations and ask the question whether DRL-based algorithms such as \NavAiiiCDiDiiL{} perform any mapping followed by shortest path planning.
 Our experiments do not show any evidence of mapping in the cases when algorithms are evaluated on unseen maps and no evidence of optimal path planning even in cases when the map is constant and only the goal is randomized.
 
-We also compute attention-maps for the models to understand what part of image is being used for the navigation.
+We also compute attention-maps for the models to understand what part of the image is being used for the navigation.
 We find that the models discard most of the image information, focusing attention on a small band in the middle of the image except around junctions where the attention is distributed evenly throughout the image.
 
 These findings are the results on training and testing on multiple maps that were randomly chosen from a set of 1100 randomly generated maps.

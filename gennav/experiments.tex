@@ -7,6 +7,7 @@ On reaching the goal, the agent \emph{re-spawns} within the same maze while the 
 Following \cite{MiPaViICLR2017}, we scatter the maze with randomly placed smaller apple rewards (+1) to encourage initial explorations and assign the goal a reward of 10.
 % VD: Defining the objective in terms of reward is wrong because designing rewards is a part of reinforcement learning not the problem statement.
 The agent is tasked to find the goal as many times as possible within a fixed amount of time, re-spawning at the spawn location each time it reaches the goal.
+% JJC: TODO: remind that the spawn location can be random or static
 
 Unlike \cite{MiPaViICLR2017}, we include a small wall penalty (-0.2) that pushes the agent away from the wall.
 % VD: Do we need experiments to support that?
@@ -20,6 +21,7 @@ The wall penalty is useful to prevent agents from moving along the walls, thereb
 % However, an end-to-end navigation algorithm might find other ways of finding optimal strategies to find the goal.
 We also use a discrete 4-action space (move forward/backward, rotate left/right)which is different from the 8-action space one used by \cite{MiPaViICLR2017}.
 % VD: Do we need to show experiments for these claims?
+% JJC: TODO: explain why this won't effect the comparability of results.
 A smaller action space helps the algorithm train faster while achieving similar reward values.
 % VD: this will raise more questions like why grounding in vision is necesary
 % The agent's picking up of rewards is thus explicitly grounded in its vision as the agent must rotate in the direction of motion during exploration.
