@@ -61,22 +61,22 @@ Recent work analyzing neural networks has shown that deep learning-based object 
 
 % Prior setup
 % JJC: TODO: Generalize to multiple fields
-In this work, we develop a better understanding of these recent methods. In particualr, we thorougly explore and analyze the state-of-the-art \cite{MiPaViICLR2017} methods across hundreds of maps with increasing difficulty levels. 
+In this work, we develop a better understanding of recent DRL-based methods. In particular, we thoroughly explore and analyze the state-of-the-art \cite{MiPaViICLR2017} methods across hundreds of maps with increasing difficulty levels. 
 % VD: Cutting down unncessary sentences
 % VD: No need to tell the license and name of the environment
 %Our setup is similar, utilizing the same simulation environment, Deepmind Lab \cite{BeLeTeARXIV2016}.
 We set up the environment as a randomly generated map, as shown in Fig~\ref{fig:training-qualitative}, with an agent and a goal.
 % VD: Defining the objective in terms of reward is wrong because designing rewards is a part of reinforcement learning not the problem statement.
-The agent is provided only with the first-person view and is tasked to find the goal as many times as possible within a fixed amount of time, re-spawning at the spawn location each time it reaches the goal.
+The agent is provided only with the first-person view and is tasked to find the goal as many times as possible within a fixed amount of time, re-spawning its location each time it reaches the goal. 
 We train and evaluate the algorithms with increasing difficulty.
-In the easiest stage, we keep the goal location, spawn location and map constant over the training and the testing.
+In the easiest stage, we keep the goal location, spawn location and map constant over the training and testing.
 We call this set up \emph{static goal, static spawn, and static map}.
 To increase the difficulty, we incrementally randomize the spawn locations, goal locations and map structures until all three are random.
-We discuss the design of experiments in Section~\ref{sec:navtasks} with more detail.
+We discuss the design of experiments in Section~\ref{sec:navtasks} in more detail.
 %We randomly genereate our mazes wherein the agent and goal are both statically and randomly spawned across experiments. 
 
-\cite{MiPaViICLR2017} train and test their algorithms with randomized goals, randomized spawns but constant map structures and show that algorithm is able to exploit the knowledge of the goal location at evaluation time to maximize reward.
-However, this state-of-the-art result is shown to be successful on only one map bringing into question the repeatability of the results.
+\cite{MiPaViICLR2017} do train and test their algorithms with randomized goals and spawns and show that their algorithm is able to exploit the knowledge of the goal location at evaluation time to maximize reward.
+However, following training and testing on constant map structures, this state-of-the-art result is shown to be successful on only one map, which brings into question the repeatability of the results.
 It is also unclear whether these results generalize to unseen maps.
 
 Even though separating training and testing sets is standard practice in machine learning, to the best of our knowledge, we are the first work to evaluate any DRL-based navigation method on maps with unseen structures.
@@ -88,7 +88,7 @@ We find that the models discard most of the image information, focusing attentio
 
 These findings are the results on training and testing on multiple maps that were randomly chosen from a set of 1100 randomly generated maps.
 We provide the results of our experiments on ten randomly chosen maps and as well as on a testing set of 100 unseen maps to make sure the results are independent of the choice of map.
-We will make our code and data available after the blind review process is over.
+We will make our code and data available following the blind review process is over.
 
 % Explained earlier
 % % Systematic experiments
