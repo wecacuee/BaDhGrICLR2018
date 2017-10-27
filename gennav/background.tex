@@ -46,10 +46,10 @@ Since we use a smaller action space than \cite{MiPaViICLR2017} and our agent mov
 \paragraph{Asynchronous Advantage Actor-Critic}
 \def\charelig{\nabla_{\theta_\pi}\ln \pit(\acttn; \theta_\pi)}
 % There are many different variations of RL. There are many different RL algorithms: value-based methods like Q-learning and SARSA and policy-based method like actor-critic.
-In this paper we use the policy-based method called Asynchronous Advantage Actor-Critic (A3C) (\cite{MnBaMiICML2016}) that allows weight updates to happen asynchronously in a multi-threaded environment.
+In this work, we use the policy-based method called Asynchronous Advantage Actor-Critic (A3C) (\cite{MnBaMiICML2016}), which allows weight updates to happen asynchronously in a multi-threaded environment.
 It works by keeping a ``shared and slowly changing copy of target network'' that is updated every few iterations by accumulated gradients in each of the threads.
-The gradients are never applied to the local copy of the weights, but the local copy of weights is periodically synced from the shared copy of target weights.
-The gradient for the weight update is proportional to the product of \emph{advantage}, $R_t - \Value_t(\theta_\Value)$, and \emph{characteristic eligibility}, $\charelig$ (\cite{WiML1992}), updating the weights according to the following update equations
+The gradients are never applied to the local copy of the weights; instead, a local copy of weights is periodically synced from the shared copy of target weights.
+The gradient for the weight update is proportional to the product of \emph{advantage}, $R_t - \Value_t(\theta_\Value)$, and \emph{characteristic eligibility}, $\charelig$ (\cite{WiML1992}), which update the weights as
 \begin{align}
   \theta_\pi &\leftarrow \theta_\pi
   + \sum_{t \in \text{episode}}\alpha_\pi \charelig (R_t - \Value_t(\theta_\Value))
@@ -60,11 +60,11 @@ The gradient for the weight update is proportional to the product of \emph{advan
                   \, .
 \end{align}
 
-For more details of the A3C algorithm we refer the reader to \cite{MnBaMiICML2016}.
+For additional details of the A3C algorithm, we refer the reader to \cite{MnBaMiICML2016}.
 \paragraph{\NavAiiiCDiDiiL{}}
-In this work we use the \NavAiiiCDiDiiL{} architecture as proposed by \cite{MiPaViICLR2017} which builds modifying the network architecture to have two LSTMs and with auxiliary outputs of depth predictions along with loop-closure predictions.
+In this work, we use the \NavAiiiCDiDiiL{} architecture as proposed by \cite{MiPaViICLR2017}, which builds modifying the network architecture to have two LSTMs and with auxiliary outputs of depth predictions along with loop-closure predictions. % TODO "which builds modifying the network architecture..." this doesn't make sense to me, should be corrected.
 The schematic of the architecture is shown in Fig~\ref{fig:architectures}.
-The architecture has three inputs the current image $I_t$ and previous action $\acttp$ and previous reward $\rewtp$.
+The architecture has three inputs: the current image $I_t$, previous action $\acttp$ and previous reward $\rewtp$.
 As shown by \cite{MiPaViICLR2017}, the architecture improves upon vanilla A3C architecture by optimizing predictions for the auxiliary outputs of loop closure signal $L$ and predicted depth $D_1$ and $D_2$.
 Since we use a smaller action space than \cite{MiPaViICLR2017} and our agent moves with constant velocity, we do not use velocity at the previous time step as an input signal.
 
