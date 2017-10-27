@@ -3,19 +3,19 @@
 % Experiments are as discussed in Section
 % The maps are as show in figure 4
 \input{fig-latency-goal-reward}
-In this section we discuss the results for experiments as discussed in Section~\ref{sec:navtasks} over ten randomly chosen maps shown in Fig~\ref{fig:environments}. The results in Fig~\ref{fig:latency-goal-reward}.
+In this section we discuss the results for experiments as discussed in Section~\ref{sec:navtasks} over the ten randomly chosen maps shown in Fig~\ref{fig:environments}. The results are in Fig~\ref{fig:latency-goal-reward}.
 \paragraph{Static goal, static spawn, static maze}
 For this case, the reward is consistently high, and \DistanceInefficiency{} is close to 1 with small standard deviations implying the path chosen is the shortest available.
-Please note that \LatencyOneGtOne{}, is should be close to 1 for static goal case, because the goal location is known at training time.
+Please note that \LatencyOneGtOne{} should be close to 1 for the static goal case because the goal location is known at training time.
 
 \paragraph{Static goal, random spawn, static map}
 Again, note that \DistanceInefficiency{} is close to 1 implying that when the goal is found, the shortest path is traversed.
-This is because the agent can learn the optimal  policy for shortest path to the goal at train time.
+This is because the agent can learn the optimal  policy for the shortest path to the goal at training time.
 
 \paragraph{Random goal, static spawn, static map}
-In this case, the mean of the \LatencyOneGtOne{} is more than 1 show that in general the agent is able to exploit map information.
+In this case, the mean of the \LatencyOneGtOne{} is more than 1 showing that in general the agent is able to exploit map information.
 However the large standard deviations in this metric and the reward values show that this exploitation is not consistent through episodes.
-For most of the experiments, the \DistanceInefficiency{} is close to one within error metrics, again imply that the shortest path is taken when the goal is found. 
+For most of the experiments, the \DistanceInefficiency{} is close to one within error metrics, again implying that the shortest path is taken when the goal is found. 
 
 \paragraph{Random goal, Random spawn, static map}
 Similar to the previous experiment, the \LatencyOneGtOne{} is more than 1 but with a large standard deviation implying inconsistent performance from episode to episode.
@@ -23,9 +23,9 @@ The \DistanceInefficiency{} is larger than 1 showcasing the paths traversed to t
 
 \paragraph{Random goal, Random spawn, Random map}
 For this experiment, agents trained on a 1000 maps are tested individually on the 10 chosen maps that are a subset of the 1000 maps.
-The \LatencyOneGtOne{} is close to 1 implying that map-exploitation is taking place.
+The \LatencyOneGtOne{} is close to 1 implying that map-exploitation not is taking place.
 The large \DistanceInefficiency{} numbers seem to confirm this statement.
-We present, qualitative results in  Sec.~\ref{sec:qualitative-simple} on very simple, to show that the agents are only randomly exploring the maze rather than utilizing shortest path planning.
+We present, qualitative results in  Sec.~\ref{sec:qualitative-simple} on very simple maps to show that the agents are only randomly exploring the maze rather than utilizing any form of shortest path planning.
 
 \subsection{Evaluation on unseen maps}
 The results for training on $N$ maps, where $N \in \{10, 100, 500, 1000\}$, and testing on 100 unseen maps are shown in Fig~\ref{fig:num-training-maps}.
@@ -34,15 +34,15 @@ This is due to the fact that the wall-following strategy learned by the algorith
 is learned with enough variation in 100 maps and training on additional maps does not add to the learned strategy.
 
 \subsection{Effect of apples and texture}
-We evaluate the effect of apples and texture during evaluation time in Fig~\ref{fig:num-training-maps}.
-We train the algorithm on randomly chosen training maps with random texture and evaluate them no maps with and without random texture and also on maps with and without apples. When the apples are present, we place the apples with probability 0.25 in each block of the map.
-We find that the algorithm, being trained on random textures and random placement of apples, is robust to presence or absence of textures and apples.
+We evaluate the effect of apples and textures during evaluation time in Fig~\ref{fig:num-training-maps}.
+We train the algorithm on randomly chosen training maps with random textures and evaluate them on maps with and without random textures and also with and without apples. 
+We find that the algorithm, being trained on random textures and the random placement of apples is robust to the presence or absence of textures and apples.
 
 
 \subsection{Qualitative evaluation on simple maps}
 \label{sec:qualitative-simple}
 % 1. We test the trained algorithms on simple maps.
-To evaluate what strategies that the algorithm is employing to reach the
+To evaluate what strategies the algorithm is employing to reach the
 goal we evaluate the algorithm on very simple maps where there are only two
 paths to reach the goal. The qualitative results for the evaluation are shown
 in Fig~\ref{fig:planning-qualitative}.
@@ -62,13 +62,13 @@ in Fig~\ref{fig:planning-qualitative}.
 %    Fig. . Hence, the algorithm instead of shortest path planning takes the
 %    the direction in which it is initialized.
 A Square map (Fig~\ref{fig:planning-qualitative}) is the simplest possible map with two paths to the goal.
-We evaluate the algorithm trained on 1000 random maps on square map.
+We evaluate the algorithm trained on 1000 random maps on this map.
 We observe that the agent greedily moves in the direction of
 initialization.
 This may be because of the initial learning which is
 motivated by small rewards of getting apples.
 We compute the percentage of times the agent takes the shortest path over a trial of 100 episodes.
-We find the agent takes the shortest path only $50.4$\% ($\pm 12.8$\%) of the times, no better than random.
+We find the agent takes the shortest path only $50.4$\% ($\pm 12.8$\%) of the times which is no better than random.
 % Quantitative result taken from:
 % exp-results/planning-09x09-0002/gen_stats_latest_loaded-from-training-1000_acting-on-planning-09x09-0002_vars-True_apples-0.json
 
@@ -81,7 +81,7 @@ We find the agent takes the shortest path only $50.4$\% ($\pm 12.8$\%) of the ti
 %     We find no correlation between shortest path and the direction taken. 
 To eliminate the dependency on initial orientation, we evaluate the algorithm on Wrench map as shown in Fig~\ref{fig:planning-qualitative}. We fix in the spawn point at the bottom of the tail so that shortest path is independent of the spawn orientation.
 The decision about the shortest path is made at the junction where the agent can either chose to go left or right.
-We find that the agent is taking shortest path only $32.9$\% ($\pm 25.1$\%) of the times which is again to better than random.
+We find that the agent takes the shortest path only $32.9$\% ($\pm 25.1$\%) of the times which is in fact worse than random.
 % Quantitative result taken from:
 % exp-results/planning-09x09-0004/gen_stats_latest_loaded-from-training-1000_acting-on-planning-09x09-0004_vars-True_apples-0.json
 
@@ -89,14 +89,14 @@ We find that the agent is taking shortest path only $32.9$\% ($\pm 25.1$\%) of t
 % but the penalty for choosing the wrong path is much higher than the
 % wrench map. 
 \paragraph{Goal map}
-Similarly to the wrench map, the goal map (Fig~\ref{fig:planning-qualitative}) provides a decision point independent of the initial orientation, but it penalizes the wrong decision more than the wrench map $42.6$\% ($\pm 35.1$\%) of the times which is again no better than random.
+Similar to the wrench map, the goal map (Fig~\ref{fig:planning-qualitative}) provides a decision point independent of the initial orientation but penalizes the wrong decision more than the wrench map. The shortest path is chosen $42.6$\% ($\pm 35.1$\%) of the times which is again no better than random.
 % Quantitative result taken from:
 % exp-results/planning-09x09-0006/gen_stats_latest_loaded-from-training-1000_acting-on-planning-09x09-0006_vars-True_apples-0.json
 
 % JJC: TODO: Summarize results on simple maps
 These experiments show that \NavAiiiCDiDiiL{} algorithm, even when trained on 1000 maps, do not generalize to these very simple maps.
 Again note that even in cases when there are only two possible paths to the goal, the agent is unable to chose the shorter path with more than 50\% probability.
-This shows that the models trained on 1000 maps have learned only a wall-following strategy rather than learning to plan path based on goal location.
+This shows that the models trained on 1000 maps have learned only a wall-following strategy rather than a learning to plan-path based one.
 
 %\subsubsection{Qualitative results}
 \input{fig-planning-qualitative}
