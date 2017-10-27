@@ -31,9 +31,13 @@ More information on maze generation can be found in the appendix.
 Of the first 1000 maps, 10 are randomly selected for our static-map experiments (Fig. \ref{fig:environments}). For our unseen map experiments, agents are trained on increasing subsets of the first 1000 maps and tested on the remaining 100.
 Unlike \cite{MiPaViICLR2017} and similar to \cite{ChLaSaNIPS2016}, we use randomly textured walls in our mazes so that the policies learned are texture-independent.
 
-\paragraph{Evaluation Metrics}
 
-We evaluate the performance in terms of three metrics: rewards, \emph{\LatencyOneGtOne{}} and \emph{\DistanceInefficiency{}}.
+\input{grid-2d-dmlab-figure}
+\input{intro-drl-nav-challenge}
+
+\subsection{Evaluation Metrics}
+
+We evaluate the algorithms in terms of three metrics: rewards, \emph{\LatencyOneGtOne{}} and \emph{\DistanceInefficiency{}}.
 Following \cite{MiPaViICLR2017}, we report \emph{\LatencyOneGtOne{}}, a ratio of the time taken to hit the goal for the first time (exploration time) versus the average amount of time taken to hit goal subsequently (exploitation time).
 The metric is a measure of how efficiently the agent exploits map information to find a shorter path once the goal location is known. 
 If this ratio is greater than 1, the agent is doing better than random exploration and the higher the value, the better its map-exploitation ability.
@@ -43,6 +47,4 @@ Note that the metric is meaningful only when the goal location is unknown at eva
 \emph{\DistanceInefficiency{}} is defined to be the ratio of the total distance traveled by the agent versus the sum of approximate shortest distances to the goal from each spawn point. The metric also disregards goals found during exploitation time as the agent must first find the goal before it can traverse the shortest path to it.
 Note that the shortest distance between the spawn and goal locations is computed in the top-down block world perspective and hence is only an approximation.
 
-While the \LatencyOneGtOne{} measures whether the agent is able to find a shorter path than the exploitation path, the \DistanceInefficiency{} measures the length of this path with respect to the shortest possible path. 
-
-\input{intro-drl-nav-challenge}
+While the \LatencyOneGtOne{} measures the factor by which planned path to the goal is shorter than the exploration path, the \DistanceInefficiency{} measures the length of this path with respect to the shortest possible path. 

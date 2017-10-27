@@ -1,5 +1,11 @@
 %\subsection{Metric Evaluations}
-\paragraph{Static goal, static spawn, static maze} In this simplest case, the agents memorizes the a path to the goal during training and repeats it during testing.
+% The results are shown in figure 3
+% Experiments are as discussed in Section
+% The maps are as show in figure 4
+\input{fig-latency-goal-reward}
+In this section we discuss the results for experiments as discussed in Section~\ref{sec:navtasks} over ten randomly chosen maps shown in Fig~\ref{fig:environments}. The results over threare show
+\paragraph{Static goal, static spawn, static maze}
+In this simplest case, the agents memorizes the path to the goal during training and repeats it during testing.
 The reward is high, and both the \LatencyOneGtOne{} and \DistanceInefficiency{} is close to 1 with small standard deviations implying the path chosen is the shortest available.
 
 \paragraph{Static goal, random spawn, static map} The agent must memorize the goal's location and learn to traverse to it from different parts of the map. The large deviations in the \LatencyOneGtOne{} indicate that the agent is able to better traverse to the goal from certain sections of the map implying that the goal-exploitation ability is not uniform to every spawn location. The \DistanceInefficiency{} is close to 1 implying that when the goal is found, the shortest path is traversed.
@@ -9,10 +15,6 @@ The reward is high, and both the \LatencyOneGtOne{} and \DistanceInefficiency{} 
 \paragraph{Random goal, Random spawn, static map} Similar to the previous experiment, the \LatencyOneGtOne{} is more than 1 but with a large standard deviation implying inconsistent performance from episode to episode. The \DistanceInefficiency{} is larger than 1 showcasing the paths traversed to the goal are not necessarily the shortest.
 
 \paragraph{Random goal, Random spawn, Random map} Agents trained on a 1000 maps are tested individually on the 10 chosen maps. The \LatencyOneGtOne{} is close to 1 implying that map-exploitation is taking place. The large \DistanceInefficiency{} numbers seem to confirm this statement. Qualitatively, based on video results, the agents appear to randomly explore the maze in the direction of initiialization.
-
-
-\input{fig-latency-goal-reward}
-\input{grid-2d-dmlab-figure}
 
 \subsection{Evaluation on unseen maps}
 The results for training on $N$ maps, where $N \in \{10, 100, 500, 1000\}$, and testing on 100 unseen maps are shown in Fig~\ref{fig:num-training-maps}.
