@@ -12,7 +12,7 @@
 % 1.5 Traditionally addressed by mapping during exploration and path
 %      planning during exploitation.
 Navigation remains a fundamental problem in mobile robotics and artificial intelligence (\cite{SmChIJRR1986,ElCOMPUTER1980}).
-The problem is classically addressed by separating the eventual task of navigation into two steps, exploration and exploitation. 
+The problem is classically addressed by separating the task of navigation into two steps, exploration and exploitation. 
 In the exploration stage, the environment is represented as some kind of \emph{map}. 
 In the exploitation stage, the map is used to \emph{plan a path} to a given destination based on some optimality criterion. 
 % VD: SLAM is just the exploration part. I think we should avoid introducing SLAM here.
@@ -20,7 +20,7 @@ In the exploitation stage, the map is used to \emph{plan a path} to a given dest
  %This classical approach, traditionally called SLAM (Simultaneous Localization and Mapping), constitutes an entire subfield of robotics whose successes include the birthing of the autonomous driving industry. 
 % SLAM however, possesses its own limitations.
 This classical approach has been quite successful in navigation using a variety of sensors.
-However, navigation in generic unstructured environments, especially with texture-less \cite{YaSoKaIROS2016}, transparent and reflective surfaces \cite{lai2011large}, remains a challenge.
+However, navigation in general unstructured environments, especially with texture-less \cite{YaSoKaIROS2016}, transparent and reflective surfaces \cite{lai2011large}, remains a challenge.
 % VD: ``subtly different'' Too generic of a claim
 %Algorithms, especially those centered in vision, lack performance invariance often failing to extend results to environments that are subtly different from the ones they were trained on.
 %As a simple example, state-of-the-art monucular SLAM methods fail when confronted with textureless environments.
@@ -28,14 +28,14 @@ However, navigation in generic unstructured environments, especially with textur
 % Furthermore, the decision about the required mapping details depends upon the end task of path planning, hence requires difficult decisions about the encoding of mapping data structures.
 
 
-More recently, end-to-end navigation methods---methods that attempt to  
+Recently, end-to-end navigation methods---which attempt to  
 solve the navigation problem without breaking it down into separate parts of mapping and path-planning---have gained traction.
 %
 % 2. End to end learning algorithms have shown promise to take over
 %      mapping and path-planning
-With the recent advances in Deep Reinforcement Learning (DRL), these end-to-end navigation methods, like \cite{MnBaMiICML2016,SiHuMaNATURE2016,LePaKrISER2017,MiPaViICLR2017,OhChSiICML2016}, forego decisions about the details that are required in the intermediate step of mapping.
-The potential for simpler yet more capable methods is rich; for example, agents thus trained can potentially optimize the amount of map information that is required to perform the navigation task.
-One such algorithm by \cite{MiPaViICLR2017}, has shown promise in exploring and finding the goal efficiently within complex environments. Notably, this is done using only monocular first-person views.
+With the recent advances in Deep Reinforcement Learning (DRL), these end-to-end navigation methods, such as \cite{MnBaMiICML2016,SiHuMaNATURE2016,LePaKrISER2017,MiPaViICLR2017,OhChSiICML2016}, forego decisions about the details that are required in the intermediate step of mapping.
+The potential for simpler yet more capable methods is rich; for example, the resulting trained agents can potentially optimize the amount of map information required for navigation tasks.
+One such algorithm by \cite{MiPaViICLR2017} has shown promise in exploring and finding the goal efficiently within complex environments. Notably, this is done using only monocular first-person views.
 %Of significance is the fact that these agents upon finding the goal within a previously seen environment, are able to navigate to it faster in subsquent explorations implying that agents are able to learn to exploit map structures in the execution of learned navigational tasks. 
 
 \begin{figure}
@@ -48,21 +48,20 @@ The first row shows the top view of the robot moving through the maze with the g
 \end{figure}
 
 % 3. We do not know how these algorithms work. There has been work in computer vision that shows the learning on neural network based methods can be learning totally different kind of patterns from what we would expect.
-Despite such potential advances, DRL-based navigation remains a relatively unexplored field with its own set of limitations. 
-The black-box nature of these methods make them hard to study and the patterns captured by the methods are not well understood. 
+Despite such potential advances, DRL-based navigation remains a relatively unexplored field with its own limitations. 
+The black-box nature of these methods make them difficult to study, and the patterns captured by the methods are not well understood. 
 % VD: This is not the limitation of DRL algorithms
 %Their exists no comprehensive set of experiments that answer how and when these algorithms perform well and how their performance differs based on variations in the training and testing conditions. 
 % VD: This is a detail and is repeated in next paragraphs
 % It is also unknown how well these algorithms generalize especially to previously unseen worlds.
-For example, recent work in analyzing neural networks have shown that deep learning based object detection methods can be easily fooled by introducing noise that is imperceptible to humans (\cite{NgYoClCVPR2015}). 
-This makes it even more important to analyze these DRL methods across a wide variety of experiments to understand their strengths and limitations.
+Recent work analyzing neural networks has shown that deep learning-based object detection methods can be easily fooled by introducing noise that is imperceptible to humans (\cite{NgYoClCVPR2015}); this motivates why it is important to analyze DRL methods across a wide variety of experiments: we need to understand their strengths and limitations.
 
 % 4.1 We find that it is not remembering the map it is being trained on
 % 4.2 We find that no path planning is  happening only, memorizing and regeneration of the sequence of steps. However, it is not 
 
 % Prior setup
 % JJC: TODO: Generalize to multiple fields
-In this work, we take a step towards better understanding these recent methods. In particualr, we thorougly explore and analyze the state-of-the-art \cite{MiPaViICLR2017} methods across hundreds of maps with increasing difficulty levels. 
+In this work, we develop a better understanding of these recent methods. In particualr, we thorougly explore and analyze the state-of-the-art \cite{MiPaViICLR2017} methods across hundreds of maps with increasing difficulty levels. 
 % VD: Cutting down unncessary sentences
 % VD: No need to tell the license and name of the environment
 %Our setup is similar, utilizing the same simulation environment, Deepmind Lab \cite{BeLeTeARXIV2016}.
