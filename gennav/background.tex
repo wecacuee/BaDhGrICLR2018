@@ -25,24 +25,7 @@ The DRL objective is to estimate unknown weights $\theta = \theta_T \cup \theta_
 \theta^* = \arg\max_{\theta} \E[R_t] \,.
 \end{align}
 %
-%% need \graphicspath{{images/}}
-%% \def\svgwidth{0.25\columnwidth}%
-\begin{figure}%
-%\input{images/a3c-as-pomdp.pdf_tex}%
-%\def\svgwidth{0.25\columnwidth}%
-%\input{images/a3c-as-nn.pdf_tex}%
-\begin{center}
-\scalebox{1.3}{\input{fig-nav-a3c}}%
-\end{center}
-%\input{fig-cnn-enc}\hspace{-1ex}%
-%\input{fig-fc-enc}%
-\caption{Modified \NavAiiiCDiDiiL{} (\cite{MiPaViICLR2017}) architecture.
-The architecture is has three inputs the current image $I_t$ and previous action $\acttp$ and previous reward $\rewtp$.
-As shown by \cite{MiPaViICLR2017}, the architecture improves upon vanilla A3C architecture by using auxiliary outputs of loop-closure signal $L$ and predicted depth $D_1$ and $D_2$.
-Since we use a smaller action space than \cite{MiPaViICLR2017} and our agent moves with constant velocity, we do not use velocity at previous time step as input signal.}
-\label{fig:architectures}
-\end{figure}
-
+%\input{fig-nav-a3c-horiz-figure}
 
 \paragraph{Asynchronous Advantage Actor-Critic}
 \def\charelig{\nabla_{\theta_\pi}\ln \pit(\acttn; \theta_\pi)}
@@ -51,7 +34,6 @@ In this work, we use the policy-based method called Asynchronous Advantage Actor
 It works by keeping a ``shared and slowly changing copy of target network'' that is updated every few iterations by accumulated gradients in each of the threads.
 The gradients are never applied to the local copy of the weights; instead, a local copy of weights is periodically synced from the shared copy of target weights.
 The gradient for the weight update is proportional to the product of \emph{advantage}, $R_t - \Value_t(\theta_\Value)$, and \emph{characteristic eligibility}, $\charelig$ (\cite{WiML1992}), which update the weights as
-%\input{fig-nav-a3c-vert-figure}
 \begin{align}
   \theta_\pi &\leftarrow \theta_\pi
   + \sum_{t \in \text{episode}}\alpha_\pi \nabla_{\theta_\pi}\ln \pit (R_t - \Value_t(\theta_\Value))
@@ -63,6 +45,7 @@ The gradient for the weight update is proportional to the product of \emph{advan
 \end{align}
 
 For additional details of the A3C algorithm, we refer the reader to \cite{MnBaMiICML2016}.
+\input{fig-nav-a3c-vert-figure}
 \paragraph{\NavAiiiCDiDiiL{}}
 In this work, we use the \NavAiiiCDiDiiL{} architecture as proposed by \cite{MiPaViICLR2017}, which builds modifying the network architecture to have two LSTMs and with auxiliary outputs of depth predictions along with loop-closure predictions. % TODO "which builds modifying the network architecture..." this doesn't make sense to me, should be corrected.
 The schematic of the architecture is shown in Fig~\ref{fig:architectures}.
