@@ -1,13 +1,26 @@
 SHELL:=/bin/bash
 OO=out
 
+all: BaDhGrICLR2018.pdf BaDhGrNIPS2017.pdf
+
 BaDhGrICLR2018.pdf: $(OO)/main.pdf
 	ln -fs $< $@
 	if [ $${DISPLAY} == ":0" ]; then \
 		xdg-open $@ & \
 	fi
 
+BaDhGrNIPS2017.pdf: $(OO)/nips-drl-symposium.pdf
+	ln -fs $< $@
+	if [ $${DISPLAY} == ":0" ]; then \
+		xdg-open $@ & \
+	fi
+
 $(OO)/main.pdf: iclr2018_conference.sty main_filtered.bib 
+
+$(OO)/nips-drl-symposium.pdf: nips_2017.sty main_filtered.bib
+
+nips_2017.sty:
+	wget https://media.nips.cc/Conferences/NIPS2017/Styles/nips_2017.sty -O $@
 
 images/plot_reward_%.pdf: npz_files/%.npz #py/plot.py
 	python py/plot.py reward $< $@
