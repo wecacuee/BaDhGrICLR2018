@@ -2,7 +2,7 @@
 
 \subsection*{Hyperparameters}
 We use the Deepmind Lab environment to train our experiments. 
-As mentioned previously, apple rewards are scattered throughout the maze and constitue a +1 reward. 
+As mentioned previously, apple rewards are scattered throughout the maze and constitute a +1 reward. 
 Goals constitute a +10 reward. An included wall penalty linearly penalizes the agent as it moves closer to the wall with the penalty being capped off at -.2 per frame.
 Our episodes are of fixed time length ending at 40 seconds each.
 The agent interacts with the environment at a rate of 30 frames per second. 
@@ -23,4 +23,12 @@ This will include completely reproducible evaluation sets wherein we display met
 We hope our work can also be utilized as a stepping stone for the creation of better generalized DRL navigation methods bypassing the needless amounts of time spent engineering the infrastructure necessary for these experiments. 
 All our work will be available on github after the blind-review process is over.
 
+\subsection{Reward curves with different number of training maps}
+\begin{figure}%
+\includegraphics[width=0.5\columnwidth]{images/plot_reward_3D-1000.pdf}%
+\includegraphics[width=0.5\columnwidth]{images/plot_probability_3D-1000.pdf}%
+\vspace{-1em}%
+\caption{Mean reward while tested on 100 unseen maps, while being trained on different number of training maps. Note that while training on 1000 maps eventually achieves high reward, it is only higher mean reward (44.2), training on 1 map hits the maximum (31) much faster.}%
+\label{fig:plot_reward_on_testing}%
+\end{figure}
 

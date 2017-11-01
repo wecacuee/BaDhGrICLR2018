@@ -4,20 +4,12 @@ Localization and mapping for navigation is a classic problem in mobile robotics 
 In the three decades since these seminal works, the field has exploded with hundreds of algorithms for many types of sensors (e.g., cameras, laser scanners, sonars and depth sensors).
 These algorithms vary by how much detail is captured in their respective maps. For example, topological maps, like \cite{KuCOGSCI1978}, aim to capture as little information as possible while occupancy grid maps, \cite{ElCOMPUTER1980}, aim to capture metrically accurate maps in resolutions dependent upon the navigation task.
 
-% JJC: tie it back to the main theme of the paper
 All these approaches require significant hand-tuning for the environment, sensor types and navigation constraints of the hardware.
-%The level of detail utilized in the creation of the  maps also needs to be decided before hand irrespective of the application and hence the amount of information stored is not optimized for the task at hand.
 In contrast, end-to-end navigation algorithms optimize the detail of map storage based on the navigation task at hand, which makes them worth exploring.
 
 \paragraph{Deep reinforcement learning}
-%Deep reinforcement learning (DRL) was originally conceived in 1995 (\cite{TeACM1995}).
 DRL gained prominence recently when used by \cite{MnKaSiNIPSDLW2013,MnKaSiNATURE2015} to train agents that outperform humans on Atari games; agents that trained using only the games' visual output.
-% VD: On a second look, this train of thought is a distraction
-%Subsequently, the field has been extended in several directions \cite{MnBaMiICML2016} being applied to creation of the Alpha-GO agent\cite{SiHuMaNATURE2016}, simulated platforms \cite{KaStJoNIPS2017}, real world robots \cite{LePaKrISER2017} and more recently to robotic navigation \cite{MiPaViICLR2017,OhChSiICML2016}.
 More recently, DRL has been applied to end-to-end navigation (\cite{OhChSiICML2016,MiPaViICLR2017,ChLaSaNIPS2016}).
-%The exploration into robotic navigation using DRL is a nascent topic having the potential to disrupt the fields of simultaneous localization, mapping and path planning.
-% VD: this is repeated in the next line
-%However literature concerning DRL based navigation usually ignores the standard machine learning practice of separating the training and testing sets thereby limiting our understanding of the generality of these methods.
 It is common for agents to be trained and tested on the same maps with the only variation being the agent's initial spawn point and the map's goal location (\cite{MiPaViICLR2017,ZhMoKoICRA2017,KuSaGaAPA2016}). 
 
 In contrast, \cite{OhChSiICML2016} test their algorithm on random unseen maps, but their agents are trained to choose between multiple potential goal locations based on past observations.
