@@ -49,12 +49,11 @@ Ann Arbor, MI 48109, USA \\
   In this paper, we pose and study this underlying question: are DRL algorithms doing some form of mapping and/or path-planning?  Our experiments show that the algorithms are not memorizing the maps of mazes at the testing stage but, rather, at the training stage.
   Hence, the DRL algorithms fall short of qualifying as mapping or path-planning algorithms with any reasonable definition of mapping.
   We extend the experiments in \cite{MiPaViICLR2017} by separating the set of training and testing maps and by a more ablative coverage of the space of experiments.
-  Our systematic experiments show that the \NavAiiiCDiDiiL{} algorithm, when trained and tested on the same maps, is able to choose the shorter paths to the goal. % GRIFFB: shortest instead of shorter? VD: shorter is right.
+  Our systematic experiments show that the \NavAiiiCDiDiiL{} algorithm, when trained and tested on the same maps, is able to choose the shorter paths to the goal. 
   However, when tested on unseen maps the algorithm utilizes a wall-following strategy to find the goal without doing any mapping or path planning.
 \end{abstract}
 
 \section{Introduction}
-%\input{intro-drl-doesnt-generalize}
 \input{intro-drl-not-path-planning}
 
 \section{Related Work}

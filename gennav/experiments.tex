@@ -1,28 +1,14 @@
-%VD: a subheading immediately after a headng should be avoided
-%\subsection{Setup}
 Since deep reinforcement learning algorithms need millions of iterations to train, in the absence of thousands of robotic replicas like \cite{LePaKrISER2017}, we evaluate the algorithms on a simulated environment.
 We use the same game engine as \cite{MiPaViICLR2017}, called Deepmind Lab (\cite{BeLeTeARXIV2016}).
 The game is setup such that an agent is placed within a randomly generated maze containing a \emph{goal} at a particular location.
 On reaching the goal, the agent \emph{re-spawns} within the same maze while the goal location remains unchanged. 
 Following \cite{MiPaViICLR2017}, we scatter the maze with randomly placed smaller apple rewards (+1) to encourage initial explorations and assign the goal a reward of +10.
-% VD: Defining the objective in terms of reward is wrong because designing rewards is a part of reinforcement learning not the problem statement.
 The agent is tasked to find the goal as many times as possible within a fixed amount of time, re-spawning within the maze, either statically or randomly, each time it reaches the goal.
 
 Unlike \cite{MiPaViICLR2017}, we include a small wall penalty (-0.2) that pushes the agent away from the wall.
-% VD: Do we need experiments to support that?
-% VD: It is not clear how wall penality will avoid backward motion. Let's avoid that argument.
 The wall penalty is useful to prevent agents from moving along the walls, thereby discarding vision input for exploration.
-% Reward formulation
-%The setup of game is such that it enables evaluating the algorithm for optimal path planning as well as enable dividing experiments into exploration and exploitation stages.
-%We introduce a metric that evaluates how well the agent exploits the information gained during exploration before finding the goal for the first time.
-% The optimal way of finding the goal in fastest way is to collect
-% enough information for creating a map and use the map to find the shortest path from start to end location.
-% However, an end-to-end navigation algorithm might find other ways of finding optimal strategies to find the goal.
 We also use a discrete 4-action space (move forward/backward, rotate left/right)which is different from the 8-action space one used by \cite{MiPaViICLR2017}.
-% VD: Do we need to show experiments for these claims?
 A smaller action space helps the algorithm train faster while achieving similar reward values.
-% VD: this will raise more questions like why grounding in vision is necesary
-% The agent's picking up of rewards is thus explicitly grounded in its vision as the agent must rotate in the direction of motion during exploration.
 
 We generate 1100 random maps using depth-first search based maze generation methods.
 More information on maze generation can be found in the appendix. 

@@ -16,8 +16,6 @@ Additionally, instead of modeling observation function $\ObsFuncFull$ and $\Tran
 For policy-based DRL a policy function $\piDef$ and a value function $\ValueDef$ are also modeled.
 All three functions $\TransObs$, $\pit$ and $\Valuet$ share most of the parameters such that $\theta_T \subseteq \theta_{\pi} \cap \theta_\Value$
 
-%Since we aim to estimate $\ObsFuncInv$ and $\Trans$ from experience, we formulate the experience as observation tuples divided into episodes of fixed length $E$.
-%Each episode experience contains $E$ tuples with observation, action and corresponding reward $D_E = \{(\obs_0, \act_0, r_0), \dots, (\obs_E, \act_E, r_E)\}$. After each episode the state $\state_t$ is reset to all zeros and another data sequence is collected. Let the collected dataset be $D_N = \{
 The DRL objective is to estimate unknown weights $\theta = \theta_T \cup \theta_\pi \cup \theta_V$ that maximizes the expected future reward $R_t = \sum_{k=t}^{t_{end} - t} \gamma^{k-t} r_k$ (where $\gamma$ is the discount factor) and is expressed as
 %
 \begin{align}
@@ -29,7 +27,6 @@ where $\E[.]$ denotes the expected value.
 
 \paragraph{Asynchronous Advantage Actor-Critic}
 \def\charelig{\nabla_{\theta_\pi}\ln \pit(\acttn; \theta_\pi)}
-% There are many different variations of RL. There are many different RL algorithms: value-based methods like Q-learning and SARSA and policy-based method like actor-critic.
 In this work, we use the policy-based method called Asynchronous Advantage Actor-Critic (A3C) (\cite{MnBaMiICML2016}), which allows weight updates to happen asynchronously in a multi-threaded environment.
 It works by keeping a ``shared and slowly changing copy of target network'' that is updated every few iterations by accumulated gradients in each of the threads.
 The gradients are never applied to the local copy of the weights; instead, a local copy of weights is periodically synced from the shared copy of target weights.
